@@ -1,4 +1,4 @@
-23351168836297576
+23352894199472902
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -11,7 +11,7 @@ ANT_1575AT_JOT-L
 
 1575AT43A0040E 
 0
-2
+4
 2
 1575AT43A0040E
 ANT_1575AT_JOT-M
@@ -84384,6 +84384,13 @@ http://www.susumu-usa.com/pdf/Foot_Print_38.pdf, https://www.susumu.co.jp/common
 0
 3
 3
+RF_GPS
+ATGM336H
+
+GPS ATGM336H Cheap
+0
+18
+18
 RF_GPS
 Linx_RXM-GPS
 GPS Module, Linx (https://linxtechnologies.com/wp/wp-content/uploads/rxm-gps-rm.pdf)
