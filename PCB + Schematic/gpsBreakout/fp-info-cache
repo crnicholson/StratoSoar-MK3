@@ -1,4 +1,4 @@
-23352894199472902
+23356333141761516
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -12,7 +12,7 @@ ANT_1575AT_JOT-L
 1575AT43A0040E 
 0
 4
-2
+3
 1575AT43A0040E
 ANT_1575AT_JOT-M
 
@@ -20,6 +20,13 @@ ANT_1575AT_JOT-M
 0
 2
 2
+AT2659
+DFN150X100X80-6N
+
+
+0
+6
+6
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -374,6 +381,13 @@ Battery
 Battery_Panasonic_CR3032-VCN_Vertical_CircularHoles
 Panasonic CR-3032/VCN battery, https://industrial.panasonic.com/cdbs/www-data/pdf2/AAA4000/AAA4000D508.PDF
 battery CR-3032 coin cell vertical
+0
+2
+2
+Battery
+MS621R
+
+
 0
 2
 2
