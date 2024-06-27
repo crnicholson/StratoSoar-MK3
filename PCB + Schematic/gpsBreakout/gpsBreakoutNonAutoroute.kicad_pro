@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.4
+          "min_clearance": 0.5
         }
       },
       "diff_pair_dimensions": [
@@ -178,12 +178,7 @@
       ],
       "track_widths": [
         0.0,
-        0.3,
-        0.4,
-        0.5,
-        0.65,
-        1.0,
-        1.5
+        0.3
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -466,7 +461,7 @@
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
+        "track_width": 0.2,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
