@@ -1,5 +1,9 @@
 # This is for Hack Club Arcade
 
+This is a glider that is very easy to manufacture. You simply cut it out with a laser, plotter, CNC, or another tool and fold it up. It is designed to be outfitted with my custom electronics and to be used in disaster releif. My goal is for the entire bundle to be less than $75 to make it open to everyone. 
+
+# Sessions
+
 ## https://hackclub.slack.com/archives/C06SBHMQU8G/p1719598218516089
 
 So to summarize my last session, you can cut foam board with a 5 watt laser diode only if the foam board is black because of the wavelengths interfering. Black foam board is about 4.50 per sheet, so not too expensive. I may go this route.
