@@ -1,0 +1,53 @@
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 220:Plugin executed on: 'darwin'
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 221:Plugin executed with python version: '3.9.13 (v3.9.13:6de2ca5339, May 17 2022, 11:37:23) \n[Clang 13.0.0 (clang-1300.0.29.30)]'
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 222:KiCad build version: 8.0.2-1
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 223:Plugin version: 1.0.12
+
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 228:Screen sizes: [wx.Size(1920, 1080)]
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 235:Dialog size: wx.Size(213, 81)
+06-27 06:54:03 com_github_MitjaNemec_Archive3DModels.action_archive_3d_models 237:Char size: 16
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 26:Starting to archive 3D models
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: AE1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: D2
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: C3
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: AE2
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: L1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: JP1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: U1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/RF_GPS.3dshapes/ublox_MAX.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 135:Did not copy: ${KICAD8_3DMODEL_DIR}/RF_GPS.3dshapes/ublox_MAX.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/RF_GPS.3dshapes/ublox_MAX.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: C5
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: C4
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: L2
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: D1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: C2
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: U2
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: U3
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: R1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0402_1005Metric.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: J1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 59:Trying to copy: ${KICAD8_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x10_P2.54mm_Vertical.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 139:Remapping: ${KICAD8_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x10_P2.54mm_Vertical.wrl
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 47:Getting 3D models for footprint of: BT1
+06-27 06:54:12 com_github_MitjaNemec_Archive3DModels.archive_3d_models 153:Did not succeed to copy 3D models!
+('U1', '${KICAD8_3DMODEL_DIR}/RF_GPS.3dshapes/ublox_MAX.wrl')
