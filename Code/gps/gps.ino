@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
-#include <TinyGPS++.h>
+#include <TinyGPSPlus.h>
 
-#define GPS_RX_PIN 11
-#define GPS_TX_PIN 10
+#define GPS_RX_PIN 10
+#define GPS_TX_PIN 11
 
 TinyGPSPlus gps;
 SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
@@ -13,9 +13,10 @@ void setup() {
   ss.begin(9600);
   delay(1000);
 
-//   ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
-//   Serial.print(ss.read(), HEX);
-//   delay(1000);
+  ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
+  Serial.print("0x");
+  Serial.println(ss.read(), HEX);
+  delay(1000);
 }
 
 void loop() {
