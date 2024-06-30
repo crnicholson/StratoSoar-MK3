@@ -74,11 +74,16 @@ void displayInfo() {
 
   Serial.println();
 }
-
 void sleep(int ms) {
-  long start = millis();
-  while (millis() - start >= ms) {
+  long delayStartTime;
+  bool isDelayActive;
+
+  if (!isDelayActive) {
+    delayStartTime = millis();
     digitalWrite(SLEEP_PIN, LOW);
+    isDelayActive = true;
+  } else if (millis() - delayStartTime >= ms) {
+    digitalWrite(SLEEP_PIN, HIGH);
+    isDelayActive = false;
   }
-  digitalWrite(SLEEP_PIN, HIGH);
 }
