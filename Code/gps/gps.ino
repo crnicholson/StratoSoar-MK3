@@ -12,14 +12,23 @@ TinyGPSPlus gps;
 SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
 
 void setup() {
+  pinMode(SLEEP_PIN, OUTPUT);
+  digitalWrite(SLEEP_PIN, HIGH);
+
   Serial.begin(115200);
-  Serial.println("GPS Example");
+  Serial.println("ATGM336H GPS Testing Code");
   ss.begin(9600);
   delay(1000);
 
   Serial.println("Setting dynamic model to airborne.");
   ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
   delay(1000);
+
+  Serial.println("Testing GPS sleep mode for 10 seconds.");
+  gpsSleep();
+  delay(10000);
+  gpsWakeup(waitForFix = false);
+  Serial.println("Done sleeping GPS, hopefully h")
 }
 
 void loop() {
@@ -32,8 +41,8 @@ void loop() {
     while (true)
       ;
   }
-
-  // gpsSleep(60000) // Sleep for 60 seconds. 
+  
+  // gpsSleepTime(60000) // Sleep for 60 seconds.
 }
 
 void displayInfo() {
@@ -81,13 +90,26 @@ void displayInfo() {
   Serial.println();
 }
 
-void gpsSleep(int ms) {
+void gpsSleepTime(long ms) {
   if (!sleepStarted) {
     sleepStart = millis();
-    digitalWrite(SLEEP_PIN, LOW);
+    gpsSleep();
     sleepStarted = true;
   } else if (millis() - sleepStart >= ms) {
-    digitalWrite(SLEEP_PIN, HIGH);
+    gpsWakeup();
     sleepStarted = false;
+  }
+}
+
+void gpsSleep() {
+  digitalWrite(SLEEP_PIN, LOW);
+}
+
+void gpsWakeup(bool waitForFix) { // Default is to wait for a fix, as defined in gps.h.
+  digitalWrite(SLEEP_PIN, HIGH);
+  if (waitForFix) {
+    while (!gps.location.isValid()) { // Wait for a valid location before continuing with sketch.
+      return 0;
+    }
   }
 }
