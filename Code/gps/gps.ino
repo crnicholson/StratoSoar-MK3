@@ -15,13 +15,7 @@ void setup() {
 
   Serial.println("Setting dynamic model to airborne.");
   ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
-  //   Serial.print("0x");
-  //   Serial.println(ss.read(), HEX);
   delay(1000);
-
-  Serial.println("Setting the GPS to sleep for 60 seconds.");
-  ss.print("$PCAS12,60*28\r\n"); // Make the GPS sleep for 60 seconds.
-  delay(60000);
 }
 
 void loop() {
@@ -79,4 +73,12 @@ void displayInfo() {
   }
 
   Serial.println();
+}
+
+void sleep(int ms) {
+  long start = millis();
+  while (millis() - start >= ms) {
+    digitalWrite(SLEEP_PIN, LOW);
+  }
+  digitalWrite(SLEEP_PIN, HIGH);
 }
