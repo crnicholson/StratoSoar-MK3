@@ -3,6 +3,10 @@
 
 #define GPS_RX_PIN 10
 #define GPS_TX_PIN 11
+#define SLEEP_PIN 12
+
+long sleepStart;
+bool sleepStarted;
 
 TinyGPSPlus gps;
 SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
@@ -28,6 +32,8 @@ void loop() {
     while (true)
       ;
   }
+
+  // gpsSleep(60000) // Sleep for 60 seconds. 
 }
 
 void displayInfo() {
@@ -74,16 +80,14 @@ void displayInfo() {
 
   Serial.println();
 }
-void sleep(int ms) {
-  long delayStartTime;
-  bool isDelayActive;
 
-  if (!isDelayActive) {
-    delayStartTime = millis();
+void gpsSleep(int ms) {
+  if (!sleepStarted) {
+    sleepStart = millis();
     digitalWrite(SLEEP_PIN, LOW);
-    isDelayActive = true;
-  } else if (millis() - delayStartTime >= ms) {
+    sleepStarted = true;
+  } else if (millis() - sleepStart >= ms) {
     digitalWrite(SLEEP_PIN, HIGH);
-    isDelayActive = false;
+    sleepStarted = false;
   }
 }
