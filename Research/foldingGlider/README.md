@@ -8,6 +8,10 @@ All images should be in the sessions on Hack Club Slack.
 
 # Research Sessions
 
+### [Session](https://hackclub.slack.com/archives/C06SBHMQU8G/p1719795937090849)
+
+During this session, I delved into researching flying wing design. I started by watching videos and reading documents, focusing on aspect ratios and design parameters like taper, sweep, wingspan, chord, area, and wing cube loading (WCL). I decided on an aspect ratio of 6 for my model and aimed for a WCL of 7. I encountered some challenges with a Python script I was developing but managed to fix it to calculate surface area correctly based on weight and WCL. By the end of the session, I was working on calculating the wing sweep angle.
+
 ### [Session](https://hackclub.slack.com/archives/C06SBHMQU8G/p1719789537091729)
 
 Swept wings decrease drag but also reduce lift and are beneficial near supersonic speeds. They act like a lever, helping balance the center of gravity (CG) and provide better leverage for the plane’s elevons.
