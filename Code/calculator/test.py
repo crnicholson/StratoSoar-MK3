@@ -1,16 +1,15 @@
-import turtle
+import svg_turtle
 import math
 
-# Settings for the flying wing.
-padding = 5  # Padding for the SVG.
-airfoilTopLength = 190.9
-wcl = 7  # Wing cube loading of the glider.
-ar = 6  # Aspect ratio of the wing.
-finAR = 2  # Aspect ratio of the fin.
-taper = 0.45  # Taper ratio of the wing.
-weight = 200  # Weight in grams of the projected glider.
-sweep = 25  # Sweep angle of the leading edge.
+# Settings for the flying wing
+wcl = 7  # Wing cube loading of the glider
+ar = 6  # Aspect ratio of the wing
+finAR = 2  # Aspect ratio of the fin
+taper = 0.45  # Taper ratio of the wing
+weight = 200  # Weight in grams of the projected glider
+sweep = 25  # Sweep angle of the leading edge
 
+# Calculations
 sa = (weight / wcl) ** (1 / 1.5)
 saMM = sa * 10000
 span = (ar * saMM) ** (1 / 2)
@@ -21,52 +20,41 @@ finSA = 0.1 * saMM
 finChord = (finAR * finSA) ** (1 / 2)
 finHeight = finChord / finAR
 
-halfSpan = span / 2
-le = halfSpan / math.cos(math.radians(sweep))
-offset = halfSpan * math.tan(math.radians(sweep))
-width = airfoilTopLength * math.sin(math.radians(180 - sweep * 2))
-height = math.sqrt(airfoilTopLength**2 - width**2)
+print("Surface area:", sa, "dm^2")
+print("Span:", span, "mm")
+print("Chord:", chord, "mm")
+print("Tip chord:", tipChord, "mm")
+print("Root chord:", rootChord, "mm")
+print("Fin surface area:", finSA, "mm^2")
+print("Fin chord:", finChord, "mm")
+print("Fin height:", finHeight, "mm")
+print("Sweep:", sweep, "degrees")
 
-# Turtle setup
-screen = turtle.Screen()
-screen.title("Flying Wing Design")
-wing = turtle.Turtle()
-wing.speed(0)  # Fastest drawing speed
+# Convert degrees to radians for the sweep calculation
+sweep_radians = math.radians(sweep)
 
-# Move to starting position without drawing
-wing.penup()
-wing.goto(-halfSpan / 2, -offset / 2 - height / 2)
-wing.pendown()
+# Create the SVG drawing
+turtle = svg_turtle.SvgTurtle(800, 600)
 
-# Drawing the flying wing
-wing.forward(halfSpan)
-wing.left(90)
-wing.forward(height)
-wing.left(90)
-wing.forward(halfSpan)
-wing.left(90)
-wing.forward(height)
+# Draw the flying wing
+turtle.penup()
+turtle.goto(0, 0)
+turtle.pendown()
 
-# Drawing the leading edge
-wing.penup()
-wing.goto(-halfSpan / 2, -offset / 2 - height / 2)
-wing.pendown()
-wing.setheading(-sweep)
-wing.forward(le)
+# Draw left half of the wing
+turtle.goto(-span / 2 * math.cos(sweep_radians), span / 2 * math.sin(sweep_radians))
+turtle.goto(-span / 2, tipChord)
+turtle.goto(0, rootChord)
 
-# Drawing the trailing edge
-wing.penup()
-wing.goto(halfSpan / 2, -offset / 2 - height / 2)
-wing.pendown()
-wing.setheading(-sweep)
-wing.forward(le)
+# Draw right half of the wing
+turtle.goto(span / 2, tipChord)
+turtle.goto(span / 2 * math.cos(sweep_radians), span / 2 * math.sin(sweep_radians))
+turtle.goto(0, 0)
 
-# Drawing the fin
-wing.penup()
-wing.goto(0, -offset / 2 - height / 2 + chord)
-wing.pendown()
-wing.setheading(90)  # Pointing upwards
-wing.forward(finHeight)
+# Output SVG
+svg_output = turtle.to_svg()
+print(svg_output)
 
-wing.hideturtle()
-screen.mainloop()
+# Save the SVG to a file
+with open("flying_wing.svg", "w") as file:
+    file.write(svg_output)
