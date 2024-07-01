@@ -1,5 +1,3 @@
-import drawsvg as draw
-
 # Settings for the flying wing.
 wcl = 7  # Wing cube loading of the glider.
 ar = 6  # Aspect ratio fo the wing.
@@ -35,13 +33,3 @@ print("Fin surface area:", finSA, "mm^2")
 print("Fin chord:", finChord, "mm")
 print("Fin height:", finHeight, "mm")
 print("Sweep:", sweep, "degrees")
-
-d = draw.Drawing(200, 100, origin="center")
-
-d.append(
-    draw.Lines(
-        -80, 45, 70, 49, 95, -49, -90, -40, close=False, fill="#eeee00", stroke="black"
-    )
-)
-
-d
