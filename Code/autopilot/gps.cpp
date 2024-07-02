@@ -1,8 +1,6 @@
-#include "gps.h"
 
-#include "settings.h"
-#include <Arduino.h>
-#include <TinyGPSPlus.h>
+
+#include "gps.h"
 
 long sleepStart;
 bool sleepStarted;
