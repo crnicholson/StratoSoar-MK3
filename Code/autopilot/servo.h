@@ -2,5 +2,7 @@
 
 #include "settings.h"
 #include <Arduino.h>
+#include <Servo.h>
 
-void i2cScan();
+int pidMagicLeft();
+int pidMagicRight()

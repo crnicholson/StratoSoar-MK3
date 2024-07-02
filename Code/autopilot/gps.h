@@ -12,8 +12,10 @@ extern TinyGPSPlus gps;
 
 void gpsSetup();
 float getGPSData();
-void displayInfo();
+float getGPSLocation();
+int getGPSTime();
+int getGPSDate();
 void gpsSleepTime(long ms);
 void gpsSleep();
 void gpsWakeup(bool wait = true);
-void waitForFix()
+void waitForFix();

@@ -1,9 +1,11 @@
-#include "settings.h"
-
+#include "blink.h"
+#include "calc.h"
 #include "gps.h"
 #include "i2c_scan.h"
+#include "misc.h"
+#include "settings.h"
 
-float lat, lon, altitude, 
+float lat, lon, altitude;
 int year, month, day, hour, minute, second;
 
 void setup() {
@@ -26,12 +28,12 @@ void setup() {
   gpsSetup();
 #endif
 #ifndef USE_GPS
-  lat = 41, lon = -71;
+  lat = TESTING_LAT, lon = TESTING_LON;
 #endif
 }
 
 void loop() {
 #ifdef USE_GPS
-  lat, lon = getGPSLocation();
+  lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
 #endif
 }

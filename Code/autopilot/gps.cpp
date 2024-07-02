@@ -34,9 +34,22 @@ void gpsSetup() {
       ;
     }
   }
+
 #ifdef DEVMODE
   SerialUSB.println("GPS connected correctly.");
 #endif
+}
+
+float getGPSData() {
+  while (Serial.available() > 0) {
+    gps.encode(Serial.read());
+  }
+
+  if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
+    return gps.location.lat(), gps.location.lng(), gps.altitude.meters(), gps.date.year(), gps.date.month(), gps.date.day(), gps.time.hour(), gps.time.minute(), gps.time.second();
+  } else {
+    return 0;
+  }
 }
 
 float getGPSLocation() {
@@ -44,14 +57,14 @@ float getGPSLocation() {
     gps.encode(Serial.read());
   }
 
-  if (gps.location.isValid()) {
-    return gps.location.lat(), gps.location.lng(), gps.altitude.meterrs();
+  if (gps.location.isValid() && gps.altitude.isValid()) {
+    return gps.location.lat(), gps.location.lng(), gps.altitude.meters();
   } else {
     return 0;
   }
 }
 
-float getGPSTime() {
+int getGPSTime() {
   while (Serial.available() > 0) {
     gps.encode(Serial.read());
   }
@@ -63,7 +76,7 @@ float getGPSTime() {
   }
 }
 
-float getGPSDate() {
+int getGPSDate() {
   while (Serial.available() > 0) {
     gps.encode(Serial.read());
   }
