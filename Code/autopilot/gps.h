@@ -1,5 +1,4 @@
-#ifndef GPS_H
-#define GPS_H
+#pragma once
 
 #include "settings.h"
 #include <Arduino.h>
@@ -15,5 +14,3 @@ void displayInfo();
 void gpsSleepTime(long);
 void gpsSleep();
 void gpsWakeup(bool = true);
-
-#endif

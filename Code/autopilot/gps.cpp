@@ -16,6 +16,30 @@ void gpsSetup() {
 #endif
   Serial.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
   delay(1000);
+
+  long start = millis();
+
+#ifdef DEVMODE
+  SerialUSB.println("Testing GPS conenction for 5 seconds.");
+#endif
+
+  while (millis() - start < 5000) {
+    while (Serial.available() > 0) {
+      gps.encode(Serial.read());
+    }
+    while (Serial.available() > 0) {
+      if (gps.encode(ss.read())) {
+        displayInfo();
+      }
+    }
+    if (millis() > 3000 && gps.charsProcessed() < 7) {
+#ifdef DEVMODE
+      SerialUSB.println(F("No GPS detected: check wiring."));
+#endif
+      while (1)
+        ;
+    }
+  }
 }
 
 void displayInfo() {
