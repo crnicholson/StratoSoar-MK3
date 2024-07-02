@@ -1,14 +1,15 @@
-#pragma once
+#include "gps.h"
 
+#include "settings.h"
+#include <Arduino.h>
 #include <TinyGPSPlus.h>
 
 long sleepStart;
 bool sleepStarted;
 
 TinyGPSPlus gps;
-SoftwareSerial Serial(GPS_RX_PIN, GPS_TX_PIN);
 
-void gpSerialetup() {
+void gpsSetup() {
 #ifdef DEVMODE
   SerialUSB.println("ATGM336H GPS Testing Code");
 #endif
@@ -66,10 +67,10 @@ void displayInfo() {
   SerialUSB.println();
 }
 
-void gpSerialleepTime(long ms) {
+void gpsSleepTime(long ms) {
   if (!sleepStarted) {
     sleepStart = millis();
-    gpSerialleep();
+    gpsSleep();
     sleepStarted = true;
   } else if (millis() - sleepStart >= ms) {
     gpsWakeup();
@@ -77,7 +78,7 @@ void gpSerialleepTime(long ms) {
   }
 }
 
-void gpSerialleep() {
+void gpsSleep() {
   digitalWrite(GPS_SLEEP_PIN, LOW);
 }
 
