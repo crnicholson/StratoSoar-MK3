@@ -3,11 +3,17 @@
 #include "gps.h"
 #include "i2c_scan.h"
 
-float lat, lon;
+float lat, lon, altitude, 
+int year, month, day, hour, minute, second;
 
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
-  digitalWrite(GPS_SLEEP_PIN, HIGH);
+  pinMode(LED, OUTPUT);
+  pinMode(ERR_LED, OUTPUT);
+  pinMode(VOLTMETER_PIN, INPUT);
+  digitalWrite(GPS_SLEEP_PIN, HIGH); // GPS on for default.
+  digitalWrite(LED, LOW);
+  digitalWrite(ERR_LED, LOW);
 
 #ifdef DEVMODE
   SerialUSB.begin(BAUD_RATE);
@@ -26,6 +32,6 @@ void setup() {
 
 void loop() {
 #ifdef USE_GPS
-  lat, lon = getGPSData();
+  lat, lon = getGPSLocation();
 #endif
 }

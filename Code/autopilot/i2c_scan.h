@@ -3,4 +3,4 @@
 #include <Arduino.h>
 #include "settings.h"
 
-void I2CScan();
+void i2cScan();

@@ -1,6 +1,6 @@
 #include "i2c_scan.h"
 
-void I2CScan() {
+void i2cScan() {
   int nDevices = 0;
 
 #ifdef DEVMODE

@@ -6,85 +6,73 @@ long sleepStart;
 TinyGPSPlus gps;
 
 void gpsSetup() {
-#ifdef DEVMODE
-  SerialUSB.println("ATGM336H GPS Testing Code");
-#endif
   Serial.begin(GPS_BAUD_RATE);
   delay(1000);
+
 #ifdef DEVMODE
-  SerialUSB.println("Setting dynamic model to airborne.");
+  SerialUSB.println("Setting GPS dynamic model to airborne.");
 #endif
+
   Serial.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
   delay(1000);
 
-  long start = millis();
-
 #ifdef DEVMODE
-  SerialUSB.println("Testing GPS conenction for 5 seconds.");
+  SerialUSB.println("Testing GPS conbection for 5 seconds.");
 #endif
 
+  long start = millis();
   while (millis() - start < 5000) {
     while (Serial.available() > 0) {
       gps.encode(Serial.read());
-    }
-    while (Serial.available() > 0) {
-      if (gps.encode(ss.read())) {
-        displayInfo();
-      }
     }
     if (millis() > 3000 && gps.charsProcessed() < 7) {
 #ifdef DEVMODE
       SerialUSB.println(F("No GPS detected: check wiring."));
 #endif
       while (1)
-        ;
+        longBlink(ERR_LED);
+      ;
     }
+  }
+#ifdef DEVMODE
+  SerialUSB.println("GPS connected correctly.");
+#endif
+}
+
+float getGPSLocation() {
+  while (Serial.available() > 0) {
+    gps.encode(Serial.read());
+  }
+
+  if (gps.location.isValid()) {
+    return gps.location.lat(), gps.location.lng(), gps.altitude.meterrs();
+  } else {
+    return 0;
   }
 }
 
-void displayInfo() {
-  SerialUSB.print(F("Location: "));
-  if (gps.location.isValid()) {
-    SerialUSB.print(gps.location.lat(), 6);
-    SerialUSB.print(F(","));
-    SerialUSB.print(gps.location.lng(), 6);
-  } else {
-    SerialUSB.print(F("INVALID"));
+float getGPSTime() {
+  while (Serial.available() > 0) {
+    gps.encode(Serial.read());
   }
 
-  SerialUSB.print(F("  Date/Time: "));
-  if (gps.date.isValid()) {
-    SerialUSB.print(gps.date.month());
-    SerialUSB.print(F("/"));
-    SerialUSB.print(gps.date.day());
-    SerialUSB.print(F("/"));
-    SerialUSB.print(gps.date.year());
-  } else {
-    SerialUSB.print(F("INVALID"));
-  }
-
-  SerialUSB.print(F(" "));
   if (gps.time.isValid()) {
-    if (gps.time.hour() < 10)
-      SerialUSB.print(F("0"));
-    SerialUSB.print(gps.time.hour());
-    SerialUSB.print(F(":"));
-    if (gps.time.minute() < 10)
-      SerialUSB.print(F("0"));
-    SerialUSB.print(gps.time.minute());
-    SerialUSB.print(F(":"));
-    if (gps.time.second() < 10)
-      SerialUSB.print(F("0"));
-    SerialUSB.print(gps.time.second());
-    SerialUSB.print(F("."));
-    if (gps.time.centisecond() < 10)
-      SerialUSB.print(F("0"));
-    SerialUSB.print(gps.time.centisecond());
+    return gps.time.hour(), gps.time.minute(), gps.time.second();
   } else {
-    SerialUSB.print(F("INVALID"));
+    return 0;
+  }
+}
+
+float getGPSDate() {
+  while (Serial.available() > 0) {
+    gps.encode(Serial.read());
   }
 
-  SerialUSB.println();
+  if (gps.date.isValid()) {
+    return gps.date.month(), gps.date.day(), gps.date.year();
+  } else {
+    return 0;
+  }
 }
 
 void gpsSleepTime(long ms) {
@@ -102,11 +90,19 @@ void gpsSleep() {
   digitalWrite(GPS_SLEEP_PIN, LOW);
 }
 
-void gpsWakeup(bool waitForFix) { // Default is to wait for a fix, as defined in gps.h.
+void gpsWakeup(bool wait) { // Default is to wait for a fix, as defined in gps.h.
   digitalWrite(GPS_SLEEP_PIN, HIGH);
-  if (waitForFix) {
-    while (!gps.location.isValid()) { // Wait for a valid location before continuing with sketch.
-      ;
-    }
+  if (wait) {
+    waitForFix();
+  }
+}
+
+void waitForFix() {
+  while (!gps.location.isValid()) {
+#ifdef DEVMODE
+    SerialUSB.println("Waiting for a GPS fix.");
+    delay(950);
+#endif
+    delay(50);
   }
 }
