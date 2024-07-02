@@ -17,13 +17,13 @@ void setup() {
 }
 
 void loop() {
-//   while (Serial.available() > 0)
-//     if (gps.encode(Serial.read()))
-//       displayInfo();
+  while (Serial.available() > 0)
+    if (gps.encode(Serial.read()))
+      displayInfo();
 
-//   if (millis() > 5000 && gps.charsProcessed() < 10) {
-//     SerialUSB.println(F("No GPS detected: check wiring."));
-//     while (true)
-//       ;
-//   }
+  if (millis() > 5000 && gps.charsProcessed() < 10) {
+    SerialUSB.println(F("No GPS detected: check wiring."));
+    while (true)
+      ;
+  }
 }

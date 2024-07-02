@@ -1,5 +1,10 @@
 #include "gps.h"
 
+bool sleepStarted;
+long sleepStart;
+
+TinyGPSPlus gps;
+
 void gpsSetup() {
 #ifdef DEVMODE
   SerialUSB.println("ATGM336H GPS Testing Code");
