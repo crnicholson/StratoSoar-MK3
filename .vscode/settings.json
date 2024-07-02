@@ -1,4 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
-    "svg.preview.background": "custom"
+    "svg.preview.background": "custom",
+    "files.associations": {
+        "cmath": "cpp"
+    }
 }
