@@ -1,16 +1,13 @@
-#include <SoftwareSerial.h>
-#include <TinyGPSPlus.h>
-
 #include "settings.h"
 
-#include "utils/gps.h"
+#include "gps.h"
 
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
   digitalWrite(GPS_SLEEP_PIN, HIGH);
 
 #ifdef DEVMODE
-  SerialUSB.begin(baudRate);
+  SerialUSB.begin(BAUD_RATE);
   while (!SerialUSB)
     ;
   SerialUSB.println("StratoSoar MK3.0 Autopilot.");

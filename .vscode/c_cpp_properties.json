@@ -25,6 +25,7 @@
                 "/Users/Charlie/Library/Arduino15/packages/arduino/hardware/samd/1.8.14/cores/arduino/api/deprecated-avr-comp",
                 "/Users/Charlie/Library/Arduino15/packages/arduino/hardware/samd/1.8.14/cores/arduino",
                 "/Users/Charlie/Library/Arduino15/packages/arduino/hardware/samd/1.8.14/variants/arduino_zero",
+                "/Users/Charlie/Documents/Arduino/libraries/TinyGPSPlus-master/src",
                 "/Users/Charlie/Library/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4/arm-none-eabi/include/c++/7.2.1",
                 "/Users/Charlie/Library/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4/arm-none-eabi/include/c++/7.2.1/arm-none-eabi",
                 "/Users/Charlie/Library/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/7-2017q4/arm-none-eabi/include/c++/7.2.1/backward",

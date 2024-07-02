@@ -1,21 +1,23 @@
 #pragma once
 
+#include <TinyGPSPlus.h>
+
 long sleepStart;
 bool sleepStarted;
 
 TinyGPSPlus gps;
-SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
+SoftwareSerial Serial(GPS_RX_PIN, GPS_TX_PIN);
 
-void gpsSetup() {
+void gpSerialetup() {
 #ifdef DEVMODE
   SerialUSB.println("ATGM336H GPS Testing Code");
 #endif
-  ss.begin(9600);
+  Serial.begin(GPS_BAUD_RATE);
   delay(1000);
 #ifdef DEVMODE
   SerialUSB.println("Setting dynamic model to airborne.");
 #endif
-  ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
+  Serial.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
   delay(1000);
 }
 
@@ -64,10 +66,10 @@ void displayInfo() {
   SerialUSB.println();
 }
 
-void gpsSleepTime(long ms) {
+void gpSerialleepTime(long ms) {
   if (!sleepStarted) {
     sleepStart = millis();
-    gpsSleep();
+    gpSerialleep();
     sleepStarted = true;
   } else if (millis() - sleepStart >= ms) {
     gpsWakeup();
@@ -75,7 +77,7 @@ void gpsSleepTime(long ms) {
   }
 }
 
-void gpsSleep() {
+void gpSerialleep() {
   digitalWrite(GPS_SLEEP_PIN, LOW);
 }
 
@@ -83,7 +85,7 @@ void gpsWakeup(bool waitForFix) { // Default is to wait for a fix, as defined in
   digitalWrite(GPS_SLEEP_PIN, HIGH);
   if (waitForFix) {
     while (!gps.location.isValid()) { // Wait for a valid location before continuing with sketch.
-      return 0;
+      ;
     }
   }
 }
