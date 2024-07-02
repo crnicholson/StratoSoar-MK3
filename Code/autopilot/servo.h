@@ -4,5 +4,4 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-int pidMagicLeft();
-int pidMagicRight()
+int pidElevons(int pitch, int yaw);
