@@ -1,6 +1,5 @@
 {
-    "configuration": "cpu=8MHzatmega328",
-    "board": "arduino:avr:pro",
+    "board": "arduino:samd:arduino_zero_native",
     "port": "/dev/tty.usbserial-A50285BI",
-    "sketch": "Code/gps/gps.ino"
+    "sketch": "Code/autopilot/autopilot.ino"
 }
