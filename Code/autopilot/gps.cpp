@@ -1,11 +1,4 @@
-
-
 #include "gps.h"
-
-long sleepStart;
-bool sleepStarted;
-
-TinyGPSPlus gps;
 
 void gpsSetup() {
 #ifdef DEVMODE
