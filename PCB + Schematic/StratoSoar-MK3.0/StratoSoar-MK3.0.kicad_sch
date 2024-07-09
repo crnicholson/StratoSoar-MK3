@@ -13083,16 +13083,6 @@
 	)
 	(wire
 		(pts
-			(xy -24.13 -138.43) (xy -20.32 -138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f7a48004-9d4e-481a-ab50-7c66e92ac019")
-	)
-	(wire
-		(pts
 			(xy 17.78 -135.89) (xy 17.78 -132.08)
 		)
 		(stroke
@@ -29107,6 +29097,28 @@
 			)
 		)
 	)
+	(global_label "R"
+		(shape input)
+		(at 0 -129.54 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "0b294673-1549-4471-9c6d-fbb14ed9f587")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 0 -133.7952 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "A5"
 		(shape input)
 		(at 154.94 -116.84 0)
@@ -29503,28 +29515,6 @@
 			)
 		)
 	)
-	(global_label "rOut"
-		(shape input)
-		(at 0 -129.54 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "253afc44-d846-434c-9079-01216bca2093")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 0 -136.5166 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "SCK"
 		(shape input)
 		(at 154.94 -93.98 0)
@@ -29679,7 +29669,7 @@
 			)
 		)
 	)
-	(global_label "rFET"
+	(global_label "R_FET"
 		(shape input)
 		(at 25.4 -121.92 0)
 		(fields_autoplaced yes)
@@ -29691,7 +29681,7 @@
 		)
 		(uuid "382a7f76-1f78-4f8f-84e8-17ad9c808ba5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 32.3766 -121.92 0)
+			(at 33.828 -121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30691,28 +30681,6 @@
 			)
 		)
 	)
-	(global_label "rOut"
-		(shape input)
-		(at -12.7 -133.35 270)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a6549780-7025-4cc9-94bc-e6deda570383")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at -12.7 -126.3734 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "pBJT"
 		(shape input)
 		(at 1.27 308.61 180)
@@ -30753,28 +30721,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "rIn"
-		(shape input)
-		(at -12.7 -143.51 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "a92ae341-1cf1-4edf-b680-8d528704ed9d")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at -12.7 -149.0352 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 				(hide yes)
 			)
 		)
@@ -31342,28 +31288,6 @@
 		(uuid "d987dcad-1689-4ef9-98c2-635494286b8b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 175.26 -147.1772 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "rBJT"
-		(shape input)
-		(at -24.13 -130.81 270)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "daf90e2c-1722-4fdb-88d9-4c8f78db255e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at -24.13 -123.8334 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -32544,7 +32468,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 21.59 -130.302 90)
 			(effects
 				(font
@@ -39813,7 +39737,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_Tantalum_SMD:CP_EIA-3528-21_Kemet-B"
+		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
 			(at 6.35 -137.16 0)
 			(effects
 				(font
@@ -39833,6 +39757,15 @@
 		)
 		(property "Description" "Polarized capacitor, small symbol"
 			(at 6.35 -137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C139825"
+			(at 6.35 -137.16 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41685,76 +41618,6 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "C10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at -24.13 -134.62 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a6e70ccc-4b5c-4d55-9bbf-6cedbaef1f4d")
-		(property "Reference" "R11"
-			(at -20.32 -135.8901 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10 K"
-			(at -20.32 -133.3501 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at -25.908 -134.62 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at -24.13 -134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at -24.13 -134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "938db48a-ea9c-4359-a0c8-68f5ddf1c1e7")
-		)
-		(pin "2"
-			(uuid "08ed9da7-9ac8-4f0a-b701-732c8239d22d")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "R11")
 					(unit 1)
 				)
 			)
@@ -45234,82 +45097,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_BJT:2N3906")
-		(at -15.24 -138.43 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e71f338e-efd9-477f-b807-3f80bc5abb05")
-		(property "Reference" "Q2"
-			(at -8.89 -139.7001 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MMBT3906"
-			(at -8.89 -137.1601 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at -10.16 -136.525 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/2N3906-D.PDF"
-			(at -15.24 -138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Description" "-0.2A Ic, -40V Vce, Small Signal PNP Transistor, TO-92"
-			(at -15.24 -138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "227d3a88-f1e0-465e-8e6b-2337e8ffea4b")
-		)
-		(pin "2"
-			(uuid "377c5336-04fe-4fa7-b3a5-83d23f3f3104")
-		)
-		(pin "3"
-			(uuid "fded7aef-1533-42e9-a7d8-a455dc8436c3")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "Q2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Switch:SW_SPDT")
 		(at 125.73 17.78 0)
 		(unit 1)
@@ -45874,7 +45661,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 21.59 -120.142 90)
 			(effects
 				(font
