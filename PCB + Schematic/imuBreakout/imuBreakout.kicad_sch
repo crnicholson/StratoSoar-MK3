@@ -2813,6 +2813,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C5224268"
+			(at 218.44 123.19 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "72e90334-ff3c-4d56-a283-2aeab57cbe90")
 		)
@@ -2878,6 +2887,15 @@
 			)
 		)
 		(property "Description" "InvenSense 9-Axis Motion Sensor, Accelerometer, Gyroscope, Compass, I2C/SPI"
+			(at 154.94 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C726001"
 			(at 154.94 105.41 0)
 			(effects
 				(font
@@ -3318,7 +3336,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical"
 			(at 181.61 55.88 0)
 			(effects
 				(font
@@ -3484,6 +3502,15 @@
 		)
 		(property "Description" "50V Vds, 0.22A Id, N-Channel MOSFET, SOT-23"
 			(at 218.44 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5224268"
+			(at 218.44 146.05 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4639,6 +4666,15 @@
 		)
 		(property "Description" "50V Vds, 0.22A Id, N-Channel MOSFET, SOT-23"
 			(at 218.44 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5224268"
+			(at 218.44 100.33 90)
 			(effects
 				(font
 					(size 1.27 1.27)
