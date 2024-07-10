@@ -10578,6 +10578,12 @@
 		(uuid "117674ed-7060-4cc8-bb07-15a83dd3fbd8")
 	)
 	(junction
+		(at 157.48 92.71)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "164bfe51-c0bc-49f8-9455-ad81c1d2e4e2")
+	)
+	(junction
 		(at 355.6 215.9)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -11783,6 +11789,16 @@
 	)
 	(wire
 		(pts
+			(xy 153.67 97.79) (xy 157.48 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b78dbb33-8a29-4772-9958-4624d0828edb")
+	)
+	(wire
+		(pts
 			(xy 85.09 185.42) (xy 85.09 187.96)
 		)
 		(stroke
@@ -12060,6 +12076,16 @@
 			(type default)
 		)
 		(uuid "f1a215b8-57e9-4810-8cf0-6a166a7f3fe9")
+	)
+	(wire
+		(pts
+			(xy 157.48 97.79) (xy 157.48 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3afe6c4-aa5b-4973-b7bd-2136f017e758")
 	)
 	(wire
 		(pts
@@ -28974,7 +29000,7 @@
 			)
 		)
 	)
-	(global_label "GPS_SDA"
+	(global_label "GPS_SCL"
 		(shape input)
 		(at 370.84 86.36 0)
 		(fields_autoplaced yes)
@@ -28986,7 +29012,7 @@
 		)
 		(uuid "acd00405-d813-4d83-b5bd-d16eb35781e9")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 382.1104 86.36 0)
+			(at 382.0499 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30970,6 +30996,72 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "C26")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "GND_15")
+		(lib_id "power:GND")
+		(at 148.59 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2a4aae7e-c86b-4bd8-9854-cf676cbac3e7")
+		(property "Reference" "#PWR034"
+			(at 148.59 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 148.59 102.235 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 148.59 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 148.59 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 148.59 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ffcc3e04-ccc3-4667-83fb-b76c3f21df76")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "#PWR034")
 					(unit 1)
 				)
 			)
@@ -35692,6 +35784,83 @@
 		)
 	)
 	(symbol
+		(lib_id "symbols:C_Small")
+		(at 151.13 97.79 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8b1bc7fc-6a21-449d-9c84-1423f037db51")
+		(property "Reference" "C15"
+			(at 151.1363 91.44 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100 nF"
+			(at 151.1363 93.98 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1525"
+			(at 151.13 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "63cbfc26-afa0-486e-8a3c-80fb0d83f6f2")
+		)
+		(pin "2"
+			(uuid "a8ae1b9f-4d5c-4b07-905d-5aa2cdb303a1")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "C15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Transistor_FET:DMN1019USN-13")
 		(at 347.98 171.45 90)
 		(unit 1)
@@ -36327,7 +36496,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 34.29 172.72 0)
 			(effects
 				(font
@@ -36354,7 +36523,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C52923"
 			(at 34.29 172.72 90)
 			(effects
 				(font
@@ -38231,7 +38400,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 149.86 160.02 0)
 			(effects
 				(font
