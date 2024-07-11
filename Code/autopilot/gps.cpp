@@ -1,7 +1,7 @@
 #include "gps.h"
 
-bool sleepStarted;
 long sleepStart;
+bool sleepStarted;
 
 TinyGPSPlus gps;
 

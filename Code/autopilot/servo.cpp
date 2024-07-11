@@ -12,7 +12,7 @@
 
 int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw;
 
-int pidElevons(int pitch, int yaw) {
+int pidElevons(int pitch, int yaw, int turningAngle) {
   errorPitch = SETPOINT_PITCH - pitch;
   errorYaw = turningAngle;
 
@@ -25,12 +25,20 @@ int pidElevons(int pitch, int yaw) {
   prevErrorYaw = errorYaw;
   integralYaw += errorYaw;
 
-  servoPositionLeft = 90 - outputPitch + outputYaw;
-  servoPositionRight = 90 - outputPitch - outputYaw;
+  int servoPositionLeft = 90 - outputPitch + outputYaw;
+  int servoPositionRight = 90 - outputPitch - outputYaw;
 
   // Map servo positions if needed.
   // servoPositionLeft = map(servoPositionLeft, 0, 180, 750, 2250);
   // servoPositionRight = map(servoPositionRight, 0, 180, 750, 2250);
 
   return servoPositionLeft, servoPositionRight;
+}
+
+void moveLeftServo(int position) {
+  // leftServo.writeMicroseconds(position);
+}
+
+void moveRightServo(int position) {
+  // rightServo.writeMicroseconds(position);
 }

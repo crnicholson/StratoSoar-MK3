@@ -5,11 +5,6 @@
 #include <Arduino.h>
 #include <TinyGPSPlus.h>
 
-extern long sleepStart;
-extern bool sleepStarted;
-
-extern TinyGPSPlus gps;
-
 void gpsSetup();
 float getGPSData();
 float getGPSLocation();
