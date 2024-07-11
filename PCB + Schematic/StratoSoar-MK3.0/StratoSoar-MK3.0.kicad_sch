@@ -27699,6 +27699,18 @@
 		)
 		(uuid "99fb06c6-2449-483b-907b-4b7a763d1199")
 	)
+	(text "DOES THE IMU HAVE BUILT IN I2C PULLUP RESISTORS"
+		(exclude_from_sim no)
+		(at 243.84 128.905 0)
+		(effects
+			(font
+				(size 5 5)
+				(thickness 1)
+				(bold yes)
+			)
+		)
+		(uuid "aa8f0a73-c890-4018-8506-37c1dce9a5c0")
+	)
 	(text "Power"
 		(exclude_from_sim no)
 		(at 224.79 278.765 0)
@@ -27801,16 +27813,6 @@
 			)
 		)
 		(uuid "eb72106b-814b-4a49-9292-2b514edc50e8")
-	)
-	(text "EDIT IMU 10 K RESISTORS"
-		(exclude_from_sim no)
-		(at 226.06 132.715 0)
-		(effects
-			(font
-				(size 5 5)
-			)
-		)
-		(uuid "f49628a3-28a7-45f6-95f8-282c882a1429")
 	)
 	(global_label "SCL"
 		(shape input)

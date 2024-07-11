@@ -1,4 +1,4 @@
-23351168836297576
+23354613702055178
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -11,8 +11,8 @@ ANT_1575AT_JOT-L
 
 1575AT43A0040E 
 0
-2
-2
+4
+3
 1575AT43A0040E
 ANT_1575AT_JOT-M
 
@@ -374,6 +374,13 @@ Battery
 Battery_Panasonic_CR3032-VCN_Vertical_CircularHoles
 Panasonic CR-3032/VCN battery, https://industrial.panasonic.com/cdbs/www-data/pdf2/AAA4000/AAA4000D508.PDF
 battery CR-3032 coin cell vertical
+0
+2
+2
+Battery
+MS621R
+
+
 0
 2
 2
@@ -84384,6 +84391,13 @@ http://www.susumu-usa.com/pdf/Foot_Print_38.pdf, https://www.susumu.co.jp/common
 0
 3
 3
+RF_GPS
+ATGM336H
+
+GPS ATGM336H Cheap
+0
+18
+18
 RF_GPS
 Linx_RXM-GPS
 GPS Module, Linx (https://linxtechnologies.com/wp/wp-content/uploads/rxm-gps-rm.pdf)
