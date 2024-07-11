@@ -1,5 +1,25 @@
+/*
+autopilot.ino, part of StratoSoar MK3, for an autonomous glider.
+Copyright (C) 2024 Charles Nicholson
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include "blink.h"
+#include "bme280.h"
 #include "calc.h"
+#include "eeprom.h"
 #include "gps.h"
 #include "i2c_scan.h"
 #include "imu.h"
@@ -10,12 +30,14 @@
 
 // GPS vars.
 float lat, lon, altitude;
-int year, month, day, hour, minute, second;
-long gpsLast;
+int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
-int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight;
-long distance;
+int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight, distance;
+
+// Environmental vars.
+float temperature, pressure, bmeAltitude;
+int humidity;
 
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
@@ -45,6 +67,7 @@ void setup() {
   Wire.begin();
   imuSetup();
   servoSetup();
+  eepromSetup();
 
 #ifdef USE_GPS
 #ifdef DEVMODE
@@ -67,8 +90,9 @@ void setup() {
   moveLeftServo(90);
   moveRightServo(90);
 #ifdef DEVMODE
-  SerialUSB.println("Everything has initialized, moving on to main sketch.");
+  SerialUSB.println("Everything has initialized, moving on to main sketch in 5 seconds.");
 #endif
+  delay(5000);
 }
 
 void loop() {
@@ -90,9 +114,15 @@ void loop() {
     gpsSleep(); // Put GPS module to sleep.
   }
 #endif
+#ifdef USE_BME
+  temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+#endif
   distance = calculateDistance(lat, lon, TARGET_LAT, TARGET_LON);
   turnAngle = turningAngle(lat, lon, yaw, TARGET_LAT, TARGET_LON);
   servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
   moveLeftServo(servoPositionLeft);
   moveRightServo(servoPositionRight);
+#ifdef USE_EEPROM
+  writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
+#endif
 }

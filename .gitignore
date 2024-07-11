@@ -1,0 +1,8 @@
+.gitattributes
+.vscode
+*.json
+*.DS_Store
+*.kicad_prl
+*.kicad_pcb.lck
+*.kicad_sch.lck
+fp-info-cache

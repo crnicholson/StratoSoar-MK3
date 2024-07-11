@@ -1,5 +1,5 @@
 /*
-i2c_scan.h, part of StratoSoar MK3, for an autonomous glider.
+bme280.cpp, part of StratoSoar MK3, for an autonomous glider.
 Copyright (C) 2024 Charles Nicholson
 
 This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "bme280.h"
 
-#include "settings.h"
-#include <Arduino.h>
-#include <Wire.h>
+// Altitude in meters.
+float bme280Altitude(float referencePressure) {
+  return ((float)-45846.2) * (pow(((float)(BME280pressure()) / (float)referencePressure), 0.190263) - (float)1); // referencePressure is the pressure in hPa at zero altitude; for example, 1013.250.
+}
 
-void i2cScan();
+float getBMEData(float referencePressure) {
+  // Temperature (C), humidity (RH%), pressure (hPa), and altitude (m).
+  return BME280temperature(), BME280humidity(), BME280pressure(), bme280Altitude(referencePressure);
+}

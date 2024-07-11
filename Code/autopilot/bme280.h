@@ -1,5 +1,5 @@
 /*
-i2c_scan.h, part of StratoSoar MK3, for an autonomous glider.
+bme280.h, part of StratoSoar MK3, for an autonomous glider.
 Copyright (C) 2024 Charles Nicholson
 
 This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "settings.h"
 #include <Arduino.h>
+#include <TinyBME280.h>
 #include <Wire.h>
 
-void i2cScan();
+float bme280Altitude(float referencePressure = 1013.250);
+float getBMEData(float referencePressure = 1013.250);
