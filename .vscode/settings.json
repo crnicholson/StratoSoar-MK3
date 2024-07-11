@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "svg.preview.background": "custom",
     "files.associations": {
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "type_traits": "cpp"
     }
 }

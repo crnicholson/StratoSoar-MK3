@@ -49,10 +49,10 @@ float getGPSData() {
     if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
       return gps.location.lat(), gps.location.lng(), gps.altitude.meters(), gps.date.year(), gps.date.month(), gps.date.day(), gps.time.hour(), gps.time.minute(), gps.time.second();
     } else {
-      return lat, lon, alt, year, month, day, hour, minute, second; // Return the previous values if the GPS is not valid.
+      return lat, lon, altitude, year, month, day, hour, minute, second; // Return the previous values if the GPS is not valid.
     }
   } else {
-    return lat, lon, alt, year, month, day, hour, minute, second; // Return the previous values if there is no data available.s
+    return lat, lon, altitude, year, month, day, hour, minute, second; // Return the previous values if there is no data available.s
   }
 }
 

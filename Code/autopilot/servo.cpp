@@ -12,6 +12,13 @@
 
 int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw;
 
+Servo leftServo, rightServo;
+
+void servoSetup() {
+  leftServo.attach(LEFT_SERVO);
+  rightServo.attach(RIGHT_SERVO);
+}
+
 int pidElevons(int pitch, int yaw, int turningAngle) {
   errorPitch = SETPOINT_PITCH - pitch;
   errorYaw = turningAngle;
@@ -35,10 +42,34 @@ int pidElevons(int pitch, int yaw, int turningAngle) {
   return servoPositionLeft, servoPositionRight;
 }
 
-void moveLeftServo(int position) {
-  // leftServo.writeMicroseconds(position);
+void moveLeftServo(int degrees) {
+  digitalWrite(LEFT_FET, HIGH); // Turn servo on.
+  int leftLast = leftServo.read();
+  int leftChange = abs(leftLast - degrees);
+  int leftTime = leftChange * 170 / 60;
+  if (leftTime < 40) {
+    leftTime = leftTime + 40;
+  }
+  if (leftTime < 60) {
+    leftTime = leftTime + 20;
+  }
+  leftServo.write(degrees);
+  delay(leftTime);
+  digitalWrite(LEFT_FET, LOW); // Turn servo off.
 }
 
-void moveRightServo(int position) {
-  // rightServo.writeMicroseconds(position);
+void moveRightServo(int degrees) {
+  digitalWrite(RIGHT_FET, HIGH); // Turn servo on.
+  int rightLast = rightServo.read();
+  int rightChange = abs(rightLast - degrees);
+  int rightTime = rightChange * 170 / 60;
+  if (rightTime < 40) {
+    rightTime = rightTime + 40;
+  }
+  if (rightTime < 60) {
+    rightTime = rightTime + 20;
+  }
+  rightServo.write(degrees);
+  delay(rightTime);
+  digitalWrite(RIGHT_FET, LOW); // Turn servo off.
 }

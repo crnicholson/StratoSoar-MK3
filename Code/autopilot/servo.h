@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-int pidElevons(int pitch, int yaw);
-void moveLeftServo(int servoPositionLeft);
-void moveRightServo(int servoPositionRight);
+void servoSetup();
+int pidElevons(int pitch, int yaw, int turningAngle);
+void moveLeftServo(int degrees);
+void moveRightServo(int degrees);

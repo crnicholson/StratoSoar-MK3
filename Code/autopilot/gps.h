@@ -2,6 +2,7 @@
 
 #include "blink.h"
 #include "settings.h"
+#include "vars.h"
 #include <Arduino.h>
 #include <TinyGPSPlus.h>
 

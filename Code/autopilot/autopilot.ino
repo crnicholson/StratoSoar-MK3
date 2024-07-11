@@ -8,6 +8,15 @@
 #include "settings.h"
 #include "vars.h"
 
+// GPS vars.
+float lat, lon, altitude;
+int year, month, day, hour, minute, second;
+long gpsLast;
+
+// Navigation/IMU vars.
+int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight;
+long distance;
+
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
   pinMode(LED, OUTPUT);
