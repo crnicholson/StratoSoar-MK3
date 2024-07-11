@@ -16,7 +16,7 @@ void shortBlink(int pin) {
 
 void fastBlink(int pin) {
   digitalWrite(pin, HIGH);
-  delay(30);
+  delay(20);
   digitalWrite(pin, LOW);
-  delay(30);
+  delay(10);
 }

@@ -41,14 +41,18 @@ void gpsSetup() {
 }
 
 float getGPSData() {
-  while (Serial.available() > 0) {
-    gps.encode(Serial.read());
-  }
+  if (!Serial.available() == 0) {
+    while (Serial.available() > 0) {
+      gps.encode(Serial.read());
+    }
 
-  if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
-    return gps.location.lat(), gps.location.lng(), gps.altitude.meters(), gps.date.year(), gps.date.month(), gps.date.day(), gps.time.hour(), gps.time.minute(), gps.time.second();
+    if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
+      return gps.location.lat(), gps.location.lng(), gps.altitude.meters(), gps.date.year(), gps.date.month(), gps.date.day(), gps.time.hour(), gps.time.minute(), gps.time.second();
+    } else {
+      return lat, lon, alt, year, month, day, hour, minute, second; // Return the previous values if the GPS is not valid.
+    }
   } else {
-    return 0;
+    return lat, lon, alt, year, month, day, hour, minute, second; // Return the previous values if there is no data available.s
   }
 }
 
@@ -112,10 +116,13 @@ void gpsWakeup(bool wait) { // Default is to wait for a fix, as defined in gps.h
 
 void waitForFix() {
   while (!gps.location.isValid()) {
+    while (Serial.available() > 0) {
+      gps.encode(Serial.read());
+    }
 #ifdef DEVMODE
     SerialUSB.println("Waiting for a GPS fix.");
-    delay(950);
+    delay(980);
 #endif
-    delay(50);
+    delay(20);
   }
 }

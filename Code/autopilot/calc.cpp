@@ -17,9 +17,9 @@ double azimuth(double cLat, double cLon, double tLat, double tLon) {
   return fmod((atan2(dLon, dPhi) + 2 * PI), (2 * PI));
 }
 
-double turningAngle(double cLat, double cLon, double head, double tLat, double tLon) {
+double turningAngle(double cLat, double cLon, double heading, double tLat, double tLon) {
   double a = azimuth(cLat, cLon, tLat, tLon);
-  double h = toRadians(head);
+  double h = toRadians(heading);
   double angle = a - h;
   if (angle < -PI)
     angle += 2 * PI;
