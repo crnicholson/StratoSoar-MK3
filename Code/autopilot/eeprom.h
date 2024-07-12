@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 
 #include "settings.h"
+#include "blink.h"
 #include <Arduino.h>
 #include <SparkFun_External_EEPROM.h> // Click here to get the library: http://librarymanager/All#SparkFun_External_EEPROM
 

@@ -28,6 +28,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "settings.h"
 #include "vars.h"
 
+ICM20948 imu;
+
 // GPS vars.
 float lat, lon, altitude;
 int year, month, day, hour, minute, second, gpsLast;

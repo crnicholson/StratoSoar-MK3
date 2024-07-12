@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "eeprom.h"
 
-int eepromAddress, start, last, size;
+int eepromAddress, start, last, size, writeTime;
 
 ExternalEEPROM eeprom; // Initialize EEPROM.
 
@@ -26,12 +26,12 @@ void eepromSetup() {
 #ifdef USE_EEPROM
   eeprom.setMemoryType(EEPROM_SIZE); // Valid types: 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1025, 2048
 
-  if (eeprom.begin() == false) {
+  if (!eeprom.begin()) {
 #ifdef DEVMODE
     SerialUSB.println("No EEPROM detected. Freezing sketch.");
 #endif
     while (1) {
-      longPulse(ERR_LED, 0);
+      longBlink(ERR_LED);
     }
   }
 
@@ -39,7 +39,7 @@ void eepromSetup() {
 #ifdef DEVMODE
   SerialUSB.println("EEPROM detected!");
   SerialUSB.print("EEPROM size in bytes: ");
-  SerialUSB.println(eepromSize);
+  SerialUSB.println(size);
 #endif
 #ifdef ERASE_EEPROM
 #ifdef DEVMODE
@@ -64,7 +64,7 @@ void eepromSetup() {
 #ifdef DEVMODE
     SerialUSB.println("Warning: EEPROM is not working as expected.");
 #endif
-    longPulse(ERR_LED, 0);
+    longBlink(ERR_LED);
   }
 #endif
 

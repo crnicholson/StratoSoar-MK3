@@ -37,6 +37,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define UPDATE_RATE 1000           // The time in milliseconds between glider respositionings.
 #define BAUD_RATE 115200           // Baud rate of the serial monitor.
 #define SEA_LEVEL_PRESSURE 1013.25 // Sea level pressure in hPa.
+#define DECLINATION 14             // http://www.ngdc.noaa.gov/geomag-web/#declination
 
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.
@@ -55,5 +56,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define TARGET_LON -71.9533  // Target longitude.
 #define TESTING_LAT 41.30338 // Testing latitude.
 #define TESTING_LON -71.8533 // Testing longitude.
+
+// LoRa.
+#define FREQUENCY 433E6     // Frequency of your LoRa module.
+#define SPREADING_FACTOR 10 // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
+#define BANDWIDTH 62.5E3    // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
+#define SYNC_WORD 0xFB      // Only other devices with this sync word can receive your broadcast.
+#define CALL_SIGN "KC1SFR"  // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz. 
 
 #define PI 3.1415926

@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "imu.h"
 
-ICM20948 imu;
+extern ICM20948 imu;
 
 void imuSetup() {
   Wire.begin();
