@@ -21,6 +21,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "AHRSAlgorithms.h"
 #include "ICM20948.h"
 #include "settings.h"
+#include "vars.h"
 #include <Arduino.h>
+#include <Wire.h>
 
 void imuSetup();
+void imuMath();
+void imuInternalMath();

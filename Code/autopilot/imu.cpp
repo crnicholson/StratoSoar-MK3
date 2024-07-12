@@ -21,6 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ICM20948 imu;
 
 void imuSetup() {
+  Wire.begin();
+
   // Reset ICM20948.
   imu.writeByte(ICM20948_ADDRESS, PWR_MGMT_1, READ_FLAG);
   delay(100);
@@ -121,4 +123,42 @@ void imuSetup() {
 #endif
     abort();
   }
+}
+
+void imuMath() {
+  if (imu.readByte(ICM20948_ADDRESS, INT_STATUS_1) & 0x01) {
+    imu.readAccelData(imu.accelCount);
+    imu.ax = (float)imu.accelCount[0] * imu.aRes;
+    imu.ay = (float)imu.accelCount[1] * imu.aRes;
+    imu.az = (float)imu.accelCount[2] * imu.aRes;
+
+    imu.readGyroData(imu.gyroCount);
+    imu.gx = (float)imu.gyroCount[0] * imu.gRes;
+    imu.gy = (float)imu.gyroCount[1] * imu.gRes;
+    imu.gz = (float)imu.gyroCount[2] * imu.gRes;
+
+    imu.readMagData(imu.magCount);
+    imu.mx = (float)imu.magCount[0] * imu.mRes - imu.magBias[0];
+    imu.my = (float)imu.magCount[1] * imu.mRes - imu.magBias[1];
+    imu.mz = (float)imu.magCount[2] * imu.mRes - imu.magBias[2];
+  }
+
+  imu.updateTime();
+  MahonyQuaternionUpdate(imu.ax, imu.ay, imu.az, imu.gx * DEG_TO_RAD, imu.gy * DEG_TO_RAD, imu.gz * DEG_TO_RAD, imu.my, imu.mx, imu.mz, imu.deltat);
+
+  imu.delt_t = millis() - imu.count;
+}
+
+void imuInternalMath() {
+  imu.yaw = atan2(2.0f * (*(getQ() + 1) * *(getQ() + 2) + *getQ() * *(getQ() + 3)), *getQ() * *getQ() + *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) - *(getQ() + 3) * *(getQ() + 3));
+  imu.pitch = -asin(2.0f * (*(getQ() + 1) * *(getQ() + 3) - *getQ() * *(getQ() + 2)));
+  imu.roll = atan2(2.0f * (*getQ() * *(getQ() + 1) + *(getQ() + 2) * *(getQ() + 3)), *getQ() * *getQ() - *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) + *(getQ() + 3) * *(getQ() + 3));
+
+  imu.pitch *= RAD_TO_DEG;
+  imu.yaw *= RAD_TO_DEG;
+
+  imu.yaw -= DECLINATION;
+  imu.roll *= RAD_TO_DEG;
+
+  yaw, pitch, roll = imu.yaw, imu.pitch, imu.roll;
 }

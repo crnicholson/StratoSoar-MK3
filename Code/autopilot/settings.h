@@ -40,7 +40,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.
-#define EEPROM_SIZE 512 // Valid types: 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1025, 2048
+#define EEPROM_SIZE 512    // Valid types: 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1025, 2048
+#define BYTES_PER_CYCLE 19 // Number of bytes written to the EEPROM per cycle.
+#define EEPROM_BUFFER 50   // Buffer in milliseconds for the frequency of EEPROM write cycles.
+#define FLIGHT_TIME 180    // The estimated time in minutes of the flight, used in estimating the write cycle of the EEPROM.
 
 // GPS.
 #define GPS_BAUD_RATE 9600       // Baud rate of the GPS module.

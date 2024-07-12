@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "eeprom.h"
 
-int eepromAddress, startTimer;
+int eepromAddress, start, last, size;
 
 ExternalEEPROM eeprom; // Initialize EEPROM.
 
@@ -35,7 +35,7 @@ void eepromSetup() {
     }
   }
 
-  eepromSize = eeprom.length();
+  size = eeprom.length();
 #ifdef DEVMODE
   SerialUSB.println("EEPROM detected!");
   SerialUSB.print("EEPROM size in bytes: ");
@@ -45,11 +45,11 @@ void eepromSetup() {
 #ifdef DEVMODE
   SerialUSB.println("Erasing EEPROM, should take ~10 seconds.");
 #endif
-  startTimer = millis();
+  start = millis();
   eeprom.erase();
 #ifdef DEVMODE
   SerialUSB.print("Done erasing. Time took in milliseconds: ");
-  SerialUSB.println(mills() - startTimer);
+  SerialUSB.println(mills() - start);
 #endif
 #endif
 
@@ -62,25 +62,28 @@ void eepromSetup() {
 #endif
   if (eeprom.read(0) != 200) {
 #ifdef DEVMODE
-    SerialUSB.println("Warning: EEPROM is not working as expected. Try removing the average write time finder from the code.");
+    SerialUSB.println("Warning: EEPROM is not working as expected.");
 #endif
     longPulse(ERR_LED, 0);
   }
 #endif
 
-  //   writeTime = (FLIGHT_TIME * 60) / (eepromSize / BYTES_PER_CYCLE) + EEPROM_BUFFER;
+  writeTime = (FLIGHT_TIME * 60000) / (size / BYTES_PER_CYCLE) + EEPROM_BUFFER;
 }
 
 void writeDataToEEPROM(float lat, float lon, short altitude, short yaw, short pitch, short roll, byte hour, byte minute, byte second) {
-  writeFloatToEEPROM(eepromAddress, lat);
-  writeFloatToEEPROM(eepromAddress, lon);
-  writeShortToEEPROM(eepromAddress, altitude);
-  writeShortToEEPROM(eepromAddress, yaw);
-  writeShortToEEPROM(eepromAddress, pitch);
-  writeShortToEEPROM(eepromAddress, roll);
-  writeByteToEEPROM(eepromAddress, hour);
-  writeByteToEEPROM(eepromAddress, minute);
-  writeByteToEEPROM(eepromAddress, second);
+  if (writeTime > millis() - last) {
+    last = millis();
+    writeFloatToEEPROM(eepromAddress, lat);
+    writeFloatToEEPROM(eepromAddress, lon);
+    writeShortToEEPROM(eepromAddress, altitude);
+    writeShortToEEPROM(eepromAddress, yaw);
+    writeShortToEEPROM(eepromAddress, pitch);
+    writeShortToEEPROM(eepromAddress, roll);
+    writeByteToEEPROM(eepromAddress, hour);
+    writeByteToEEPROM(eepromAddress, minute);
+    writeByteToEEPROM(eepromAddress, second);
+  }
 }
 
 void writeByteToEEPROM(int address, byte value) {

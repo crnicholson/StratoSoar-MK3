@@ -96,33 +96,37 @@ void setup() {
 }
 
 void loop() {
+  imuMath();
+  if (imu.delt_t > UPDATE_RATE) {
 #ifndef GPS_LOW_POWER
-  if (millis() - gpsLast > GPS_UPDATE_RATE) {
-    gpsLast = millis();
+    if (millis() - gpsLast > GPS_UPDATE_RATE) {
+      gpsLast = millis();
 #ifdef USE_GPS
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+      lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
 #endif
-  }
+    }
 #endif
 #ifdef GPS_LOW_POWER
-  if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
-    gpsLast = millis();
-    gpsWakeup(); // Wakeup GPS module and wait for fix.
+    if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
+      gpsLast = millis();
+      gpsWakeup(); // Wakeup GPS module and wait for fix.
 #ifdef USE_GPS
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+      lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
 #endif
-    gpsSleep(); // Put GPS module to sleep.
-  }
+      gpsSleep(); // Put GPS module to sleep.
+    }
 #endif
 #ifdef USE_BME
-  temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
 #endif
-  distance = calculateDistance(lat, lon, TARGET_LAT, TARGET_LON);
-  turnAngle = turningAngle(lat, lon, yaw, TARGET_LAT, TARGET_LON);
-  servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
-  moveLeftServo(servoPositionLeft);
-  moveRightServo(servoPositionRight);
+    distance = calculateDistance(lat, lon, TARGET_LAT, TARGET_LON);
+    turnAngle = turningAngle(lat, lon, yaw, TARGET_LAT, TARGET_LON);
+    servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
+    moveLeftServo(servoPositionLeft);
+    moveRightServo(servoPositionRight);
 #ifdef USE_EEPROM
-  writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
+    writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
 #endif
+    imu.count = millis();
+  }
 }
