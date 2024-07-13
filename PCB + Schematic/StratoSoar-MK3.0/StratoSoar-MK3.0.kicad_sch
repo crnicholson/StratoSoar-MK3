@@ -28971,7 +28971,7 @@
 	)
 	(global_label "D3"
 		(shape input)
-		(at 387.35 189.23 0)
+		(at 387.35 196.85 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -28981,7 +28981,7 @@
 		)
 		(uuid "acd56d82-e469-418c-993c-a61c2cc40c55")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 392.8147 189.23 0)
+			(at 392.8147 196.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -29015,7 +29015,7 @@
 	)
 	(global_label "MISO"
 		(shape input)
-		(at 387.35 196.85 0)
+		(at 387.35 189.23 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -29025,7 +29025,7 @@
 		)
 		(uuid "b01e8445-b460-49e8-9c72-0b546ecda976")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 394.9314 196.85 0)
+			(at 394.9314 189.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30406,7 +30406,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1a68b742-1db8-4e89-8f2b-69eab75b7568")
-		(property "Reference" "Q9"
+		(property "Reference" "#Q9"
 			(at 97.79 93.98 90)
 			(effects
 				(font
@@ -30473,7 +30473,7 @@
 		(instances
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "Q9")
+					(reference "#Q9")
 					(unit 1)
 				)
 			)
@@ -33657,7 +33657,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "63f84d07-cf8a-4dcd-adc0-2fc0b5a5ecde")
-		(property "Reference" "R20"
+		(property "Reference" "#R20"
 			(at 88.9 82.5499 0)
 			(effects
 				(font
@@ -33720,7 +33720,7 @@
 		(instances
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "R20")
+					(reference "#R20")
 					(unit 1)
 				)
 			)
@@ -35967,7 +35967,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8d0275f3-6639-44b8-9d93-0c21aaa9bea7")
-		(property "Reference" "R22"
+		(property "Reference" "#R22"
 			(at 110.49 83.8199 0)
 			(effects
 				(font
@@ -36030,7 +36030,7 @@
 		(instances
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "R22")
+					(reference "#R22")
 					(unit 1)
 				)
 			)
