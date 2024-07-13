@@ -1,5 +1,5 @@
 .gitattributes
-.vscode
+*.vscode
 *.json
 *.DS_Store
 *.kicad_prl

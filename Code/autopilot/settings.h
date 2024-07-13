@@ -17,11 +17,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 // Enables.
-#define DEVMODE // Toggle serial monitor.
-#define USE_GPS
+#define DEVMODE       // Toggle serial monitor.
 #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
+#define USE_GPS
 #define USE_BME
 #define USE_EEPROM
+#define USE_LORA
 
 // Pins.
 #define LED 13
@@ -31,7 +32,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define RIGHT_SERVO 9
 #define LEFT_FET 8
 #define RIGHT_FET 7
+#define LORA_RESET_PIN 6
+#define DIO0_PIN 5
+// #define BUTTON 4 // Reserved for future use.
+// #define RESERVED 1 // Reserved for Serial.
+// #define RESERVED 0 // Reserved for Serial.
+#define SS_PIN 38
 #define VOLTMETER_PIN A0
+
+// Pins broken out.
+// #define SDA     // Physical pin 31
+// #define SCL     // Physical pin 32
+// #define MOSI    // Physical pin 19
+// #define MISO    // Physical pin 21
+// #define SCK     // Physical pin 20
+// #define GPIO 3  // Physical pin 14
+// #define GPIO 2  // Physical pin 23
+// #define GPIO A1 // Physical pin 7
 
 // Other.
 #define UPDATE_RATE 1000           // The time in milliseconds between glider respositionings.
@@ -62,6 +79,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define SPREADING_FACTOR 10 // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
 #define BANDWIDTH 62.5E3    // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
 #define SYNC_WORD 0xFB      // Only other devices with this sync word can receive your broadcast.
-#define CALL_SIGN "KC1SFR"  // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz. 
+#define CALL_SIGN "XXXXXX"  // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz.
 
 #define PI 3.1415926

@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <Arduino.h>
+
 // GPS vars.
 extern float lat, lon, altitude;
 extern int year, month, day, hour, minute, second, gpsLast;
@@ -28,3 +30,12 @@ extern int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight, d
 // Environmental vars.
 extern float temperature, pressure, bmeAltitude;
 extern int humidity;
+
+struct data {
+  float lat, lon, altitude, temperature, pressure, humidity;
+  short yaw, pitch, roll;
+  byte hour, minute, second;
+  char callSign[7] = CALL_SIGN;
+};
+
+extern struct data packet;

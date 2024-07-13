@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "gps.h"
 #include "i2c_scan.h"
 #include "imu.h"
+#include "lora.h"
 #include "misc.h"
 #include "servo.h"
 #include "settings.h"
@@ -41,12 +42,16 @@ int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight, distance
 float temperature, pressure, bmeAltitude;
 int humidity;
 
+struct data packet;
+
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
   pinMode(LED, OUTPUT);
   pinMode(ERR_LED, OUTPUT);
   pinMode(LEFT_FET, OUTPUT);
   pinMode(RIGHT_FET, OUTPUT);
+  pinMode(LORA_RESET_PIN, OUTPUT);
+  pinMode(DIO0_PIN, OUTPUT);
   pinMode(VOLTMETER_PIN, INPUT);
   digitalWrite(GPS_SLEEP_PIN, HIGH); // GPS on for default.
   digitalWrite(LED, LOW);
@@ -69,8 +74,12 @@ void setup() {
   Wire.begin();
   imuSetup();
   servoSetup();
+#ifdef USE_EEPROM
   eepromSetup();
-
+#endif
+#ifdef USE_LORA
+  loraSetup();
+#endif
 #ifdef USE_GPS
 #ifdef DEVMODE
   SerialUSB.println("Setting up GPS and waiting for a fix. This may take a while.");
@@ -78,6 +87,7 @@ void setup() {
   gpsSetup();
   waitForFix();
 #endif
+
 #ifndef USE_GPS
   lat = TESTING_LAT, lon = TESTING_LON;
 #endif
@@ -100,23 +110,21 @@ void setup() {
 void loop() {
   imuMath();
   if (imu.delt_t > UPDATE_RATE) {
+#ifdef USE_GPS
 #ifndef GPS_LOW_POWER
     if (millis() - gpsLast > GPS_UPDATE_RATE) {
       gpsLast = millis();
-#ifdef USE_GPS
       lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
-#endif
     }
 #endif
 #ifdef GPS_LOW_POWER
     if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
       gpsLast = millis();
       gpsWakeup(); // Wakeup GPS module and wait for fix.
-#ifdef USE_GPS
       lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
-#endif
       gpsSleep(); // Put GPS module to sleep.
     }
+#endif
 #endif
 #ifdef USE_BME
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
@@ -128,6 +136,21 @@ void loop() {
     moveRightServo(servoPositionRight);
 #ifdef USE_EEPROM
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
+#endif
+#ifdef USE_LORA
+    packet.lat = lat;
+    packet.lon = lon;
+    packet.altitude = altitude;
+    packet.temperature = temperature;
+    packet.pressure = pressure;
+    packet.humidity = humidity;
+    packet.yaw = yaw;
+    packet.pitch = pitch;
+    packet.roll = roll;
+    packet.hour = hour;
+    packet.minute = minute;
+    packet.second = second;
+    sendData(packet);
 #endif
     imu.count = millis();
   }

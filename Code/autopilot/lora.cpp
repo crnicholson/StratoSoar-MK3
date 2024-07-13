@@ -1,6 +1,8 @@
 #include "lora.h"
 
 void loraSetup() {
+  LoRa.setPins(SS_PIN, LORA_RESET_PIN, DIO0_PIN);
+
   if (!LoRa.begin(FREQUENCY)) {
 #ifdef DEVMODE
     SerialUSB.println("Starting LoRa failed!");
@@ -14,14 +16,18 @@ void loraSetup() {
   LoRa.setSpreadingFactor(SPREADING_FACTOR); // Defined in settings.h.
   LoRa.setSignalBandwidth(BANDWIDTH);        // Defined in settings.h.
   LoRa.crc();                                // Checksum for packet error detection.
+
+#ifndef CALL_SIGN
+#error "CALL_SIGN not defined in settings.h. Please add one."
+#endif
 }
 
-void sendData() {
+void sendData(struct data &newPacket) {
   while (LoRa.beginPacket() == 0) {
     delay(10);
   }
 
   LoRa.beginPacket();
-  LoRa.write((byte *)&data, sizeof(data));
-  LoRa.endPacket(true);
+  LoRa.write((byte *)&newPacket, sizeof(newPacket));
+  LoRa.endPacket(true); // Use async send.
 }
