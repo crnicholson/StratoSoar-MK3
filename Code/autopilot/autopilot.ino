@@ -16,6 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+// To-do:
+// - Add LoRa reciever code
+// - Add correct flying wing dynamics
+// - Use threading for the imu
+// - Add a fast update period
+// - Find a way to land
+// - Add two way communications for changing landing location
+// - Finish the flying wing maker Python script
+
 #include "blink.h"
 #include "bme280.h"
 #include "calc.h"

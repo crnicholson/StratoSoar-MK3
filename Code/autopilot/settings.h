@@ -34,7 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define RIGHT_FET 7
 #define LORA_RESET_PIN 6
 #define DIO0_PIN 5
-// #define BUTTON 4 // Reserved for future use.
+// #define BUTTON 4   // Reserved for future use.
 // #define RESERVED 1 // Reserved for Serial.
 // #define RESERVED 0 // Reserved for Serial.
 #define SS_PIN 38
