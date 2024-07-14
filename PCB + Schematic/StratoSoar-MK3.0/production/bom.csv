@@ -1,5 +1,6 @@
 ﻿Designator,Footprint,Quantity,Value,LCSC Part #
 AE1,ANT_1575AT_JOT-L,1,1575AT43A0040001E,
+AE2,PinHeader_1x01_P2.54mm_Vertical,1,Antenna,
 BT1,MS621R,1,MS621R,
 "C1, C17, C18",0603,3,100 nF,C14663
 "C10, C11, C13, C2, C3, C4, C8",0402,7,100 nF,C1525
@@ -19,11 +20,8 @@ J2,PinHeader_1x04_P2.54mm_Vertical,1,Power,
 J3,PinHeader_1x02_P2.54mm_Vertical,1,Button,
 J4,USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,1,USB-C,C136423
 J5,PinHeader_2x05_P1.27mm_Vertical_SMD,1,J Link,C2881910
-J6,PinHeader_1x01_P2.54mm_Vertical,1,Antenna,
 J7,PinHeader_1x02_P2.54mm_Vertical,1,Battery,
 "J8, J9",PinHeader_1x03_P2.54mm_Vertical,2,Rudder,
-JP1,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,1,LED_EN,
-JP2,SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm,1,ERR_LED_EN,
 L1,0402,1,33 nH,C90178
 "Q1, Q2",SOT-23,2,BSS138,C5224268
 "Q3, Q4",SC-59_Handsoldering,2,DMN1019USN-13,C145103

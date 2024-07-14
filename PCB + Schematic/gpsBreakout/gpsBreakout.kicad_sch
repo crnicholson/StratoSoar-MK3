@@ -3565,7 +3565,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "footprints:C_0603_1608Metric"
 			(at 209.55 86.36 0)
 			(effects
 				(font
@@ -3644,7 +3644,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "1575AT43A0040E:ANT_1575AT_JOT-L"
+		(property "Footprint" "footprints:ANT_1575AT_JOT-L"
 			(at 227.33 84.455 0)
 			(effects
 				(font
@@ -3779,7 +3779,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_0402_1005Metric"
+		(property "Footprint" "footprints:L_0402_1005Metric"
 			(at 214.63 55.88 0)
 			(effects
 				(font
@@ -3922,7 +3922,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
+		(property "Footprint" "footprints:LED_0603_1608Metric"
 			(at 185.42 66.04 90)
 			(effects
 				(font
@@ -3999,7 +3999,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical"
+		(property "Footprint" "footprints:PinHeader_1x10_P2.54mm_Vertical"
 			(at 176.53 132.08 0)
 			(effects
 				(font
@@ -4091,7 +4091,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_0402_1005Metric"
+		(property "Footprint" "footprints:L_0402_1005Metric"
 			(at 241.3 97.79 0)
 			(effects
 				(font
@@ -4170,7 +4170,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "footprints:C_0402_1005Metric"
 			(at 214.63 50.8 0)
 			(effects
 				(font
@@ -4708,7 +4708,7 @@
 				)
 			)
 		)
-		(property "Footprint" "RF_GPS:ATGM336H"
+		(property "Footprint" "footprints:ATGM336H"
 			(at 142.24 85.09 0)
 			(effects
 				(font
@@ -4821,7 +4821,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "footprints:C_0603_1608Metric"
 			(at 134.62 68.58 0)
 			(effects
 				(font
@@ -4900,7 +4900,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+		(property "Footprint" "footprints:SOT-23-5"
 			(at 189.23 86.36 0)
 			(effects
 				(font
@@ -4979,7 +4979,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "footprints:C_0603_1608Metric"
 			(at 256.54 58.42 0)
 			(effects
 				(font
@@ -5189,7 +5189,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "1575AT43A0040E:ANT_1575AT_JOT-L"
+		(property "Footprint" "footprints:ANT_1575AT_JOT-L"
 			(at 209.55 41.275 0)
 			(effects
 				(font
@@ -5324,7 +5324,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Battery:MS621R"
+		(property "Footprint" "footprints:MS621R"
 			(at 109.22 94.996 90)
 			(effects
 				(font
@@ -5392,7 +5392,7 @@
 				)
 			)
 		)
-		(property "Footprint" "AT2659:DFN150X100X80-6N"
+		(property "Footprint" "footprints:DFN150X100X80-6N"
 			(at 246.38 44.45 0)
 			(effects
 				(font
@@ -5549,7 +5549,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm"
+		(property "Footprint" "footprints:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm"
 			(at 252.73 76.2 0)
 			(effects
 				(font
@@ -5751,7 +5751,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+		(property "Footprint" "footprints:R_0402_1005Metric"
 			(at 190.5 66.04 0)
 			(effects
 				(font
