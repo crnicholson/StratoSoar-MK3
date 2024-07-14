@@ -4513,10 +4513,11 @@
 			)
 		)
 		(symbol "Jumper:SolderJumper_2_Open"
+			(pin_numbers hide)
 			(pin_names
 				(offset 0) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
+			(exclude_from_sim yes)
+			(in_bom no)
 			(on_board yes)
 			(property "Reference" "JP"
 				(at 0 2.032 0)
@@ -10424,7 +10425,7 @@
 		(uuid "1dd2c8f5-b038-422c-b80f-b26c04b20b3a")
 	)
 	(junction
-		(at 137.16 260.35)
+		(at 137.16 252.73)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1e2581bc-2d8f-429b-88be-a6b1d32446fd")
@@ -10731,7 +10732,7 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 260.35) (xy 137.16 262.89)
+			(xy 137.16 252.73) (xy 137.16 255.27)
 		)
 		(stroke
 			(width 0)
@@ -10978,6 +10979,16 @@
 			(type default)
 		)
 		(uuid "32516a67-4e65-4195-ac5d-5a9d396609ab")
+	)
+	(wire
+		(pts
+			(xy 227.33 228.6) (xy 233.68 228.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34e3d5e1-8f30-4925-9483-74deb19b3fe2")
 	)
 	(wire
 		(pts
@@ -11901,7 +11912,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 260.35) (xy 137.16 260.35)
+			(xy 133.35 252.73) (xy 137.16 252.73)
 		)
 		(stroke
 			(width 0)
@@ -12083,7 +12094,7 @@
 	)
 	(rectangle
 		(start 118.11 208.28)
-		(end 161.29 246.38)
+		(end 161.29 238.76)
 		(stroke
 			(width 0)
 			(type default)
@@ -12130,7 +12141,7 @@
 		(uuid 7e199893-f5ef-4b67-9010-24824cd469df)
 	)
 	(rectangle
-		(start 222.25 229.87)
+		(start 222.25 218.44)
 		(end 254 247.65)
 		(stroke
 			(width 0)
@@ -12178,8 +12189,8 @@
 		(uuid b768d451-5f33-4e3c-8e59-9ea1451fec2d)
 	)
 	(rectangle
-		(start 129.54 248.92)
-		(end 161.29 276.86)
+		(start 129.54 241.3)
+		(end 161.29 269.24)
 		(stroke
 			(width 0)
 			(type default)
@@ -27463,7 +27474,7 @@
 	)
 	(text "J Link"
 		(exclude_from_sim no)
-		(at 134.62 274.955 0)
+		(at 134.62 267.335 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -27536,7 +27547,7 @@
 	)
 	(text "Indicator LEDs"
 		(exclude_from_sim no)
-		(at 127.635 243.84 0)
+		(at 127.635 236.22 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -27893,7 +27904,7 @@
 	)
 	(global_label "SWCLK"
 		(shape input)
-		(at 149.86 260.35 0)
+		(at 149.86 252.73 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -27903,7 +27914,7 @@
 		)
 		(uuid "1be92b79-f040-4546-8793-214f7d8a2031")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 159.0742 260.35 0)
+			(at 159.0742 252.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27981,7 +27992,7 @@
 	)
 	(global_label "SWDIO"
 		(shape input)
-		(at 149.86 257.81 0)
+		(at 149.86 250.19 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -27991,7 +28002,7 @@
 		)
 		(uuid "249a4967-dc74-426a-9cfb-618073539615")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 158.7114 257.81 0)
+			(at 158.7114 250.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -28047,7 +28058,7 @@
 	)
 	(global_label "RESET"
 		(shape input)
-		(at 149.86 267.97 0)
+		(at 149.86 260.35 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -28057,7 +28068,7 @@
 		)
 		(uuid "30e973ea-cf2d-45ab-898b-5b43fec32dd1")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 158.5903 267.97 0)
+			(at 158.5903 260.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30053,7 +30064,7 @@
 	(symbol
 		(lib_name "GND_15")
 		(lib_id "power:GND")
-		(at 125.73 234.95 0)
+		(at 125.73 227.33 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -30062,7 +30073,7 @@
 		(fields_autoplaced yes)
 		(uuid "0e486c36-ef90-40e5-9ef4-f7e96623269c")
 		(property "Reference" "#PWR025"
-			(at 125.73 241.3 0)
+			(at 125.73 233.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30071,7 +30082,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 125.73 240.03 0)
+			(at 125.73 232.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30079,7 +30090,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 125.73 234.95 0)
+			(at 125.73 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30088,7 +30099,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 125.73 234.95 0)
+			(at 125.73 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30097,7 +30108,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 125.73 234.95 0)
+			(at 125.73 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30261,76 +30272,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 125.73 220.98 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "11e6e373-5106-4cb4-a371-a242f3e28070")
-		(property "Reference" "JP2"
-			(at 129.54 219.7099 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "ERR_LED_EN"
-			(at 129.54 222.2499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 125.73 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 125.73 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 125.73 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a71c85f8-ca89-4a1f-b40c-0d8339171193")
-		)
-		(pin "2"
-			(uuid "c280129c-94da-491f-93b8-1319a60b4b3c")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "JP2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:VCC")
 		(at 257.81 262.89 0)
 		(unit 1)
@@ -30482,7 +30423,7 @@
 	(symbol
 		(lib_name "GND_3")
 		(lib_id "power:GND")
-		(at 133.35 260.35 0)
+		(at 133.35 252.73 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -30491,7 +30432,7 @@
 		(fields_autoplaced yes)
 		(uuid "1bd7a8d4-9d18-49c5-87da-67549783934e")
 		(property "Reference" "#PWR020"
-			(at 133.35 266.7 0)
+			(at 133.35 259.08 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30500,7 +30441,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 133.35 265.43 0)
+			(at 133.35 257.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30508,7 +30449,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 133.35 260.35 0)
+			(at 133.35 252.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30517,7 +30458,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 133.35 260.35 0)
+			(at 133.35 252.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -30526,7 +30467,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 133.35 260.35 0)
+			(at 133.35 252.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33286,7 +33227,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 148.59 227.33 180)
+		(at 148.59 219.71 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -33295,7 +33236,7 @@
 		(fields_autoplaced yes)
 		(uuid "61baca45-39cb-48d3-87c6-f95d7d4319ea")
 		(property "Reference" "R10"
-			(at 147.32 226.0599 0)
+			(at 147.32 218.4399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33304,7 +33245,7 @@
 			)
 		)
 		(property "Value" "1 K"
-			(at 147.32 228.5999 0)
+			(at 147.32 220.9799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33313,7 +33254,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 148.59 227.33 0)
+			(at 148.59 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33322,7 +33263,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 148.59 227.33 0)
+			(at 148.59 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33331,7 +33272,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 148.59 227.33 0)
+			(at 148.59 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33340,7 +33281,7 @@
 			)
 		)
 		(property "LCSC" "C11702"
-			(at 148.59 227.33 0)
+			(at 148.59 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33728,7 +33669,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 125.73 227.33 180)
+		(at 125.73 219.71 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -33737,7 +33678,7 @@
 		(fields_autoplaced yes)
 		(uuid "6509f81a-2dca-4386-9c1b-b5db7ab0d81c")
 		(property "Reference" "R14"
-			(at 124.46 226.0599 0)
+			(at 124.46 218.4399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33746,7 +33687,7 @@
 			)
 		)
 		(property "Value" "1 K"
-			(at 124.46 228.5999 0)
+			(at 124.46 220.9799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33755,7 +33696,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 125.73 227.33 0)
+			(at 125.73 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33764,7 +33705,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 125.73 227.33 0)
+			(at 125.73 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33773,7 +33714,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 125.73 227.33 0)
+			(at 125.73 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -33782,7 +33723,7 @@
 			)
 		)
 		(property "LCSC" "C11702"
-			(at 125.73 227.33 0)
+			(at 125.73 219.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -34336,6 +34277,74 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "#PWR014")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:SolderJumper_2_Open")
+		(at 237.49 228.6 0)
+		(unit 1)
+		(exclude_from_sim yes)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6d1e5426-8395-4cc0-8545-db4a925e56fb")
+		(property "Reference" "JP1"
+			(at 237.49 222.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ALWAYS_ON"
+			(at 237.49 224.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 237.49 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 237.49 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 2-pole, open"
+			(at 237.49 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "907f1914-0670-4e23-8632-23323b77ddc5")
+		)
+		(pin "1"
+			(uuid "b1461959-b3b6-4fe9-8640-fe51df757466")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "JP1")
 					(unit 1)
 				)
 			)
@@ -35464,7 +35473,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x05_Odd_Even")
-		(at 142.24 262.89 0)
+		(at 142.24 255.27 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -35472,7 +35481,7 @@
 		(dnp no)
 		(uuid "8758719e-3bc8-4ce2-957f-af3d756c856e")
 		(property "Reference" "J5"
-			(at 143.51 255.27 0)
+			(at 143.51 247.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35480,7 +35489,7 @@
 			)
 		)
 		(property "Value" "J Link"
-			(at 143.51 270.51 0)
+			(at 143.51 262.89 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35488,7 +35497,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_2x05_P1.27mm_Vertical_SMD"
-			(at 142.24 262.89 0)
+			(at 142.24 255.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35497,7 +35506,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 142.24 262.89 0)
+			(at 142.24 255.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35506,7 +35515,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 142.24 262.89 0)
+			(at 142.24 255.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -35515,7 +35524,7 @@
 			)
 		)
 		(property "LCSC" "C2881910"
-			(at 142.24 262.89 0)
+			(at 142.24 255.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38072,18 +38081,17 @@
 		)
 	)
 	(symbol
-		(lib_name "+3.3V_4")
-		(lib_id "power:+3.3V")
-		(at 137.16 257.81 0)
+		(lib_id "power:VCC")
+		(at 227.33 228.6 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "b9569e30-98ca-4db0-823d-62d66d0aaf36")
-		(property "Reference" "#PWR019"
-			(at 137.16 261.62 0)
+		(uuid "b4d8b0e8-acd1-4b86-8762-172bd8fe3114")
+		(property "Reference" "#PWR049"
+			(at 227.33 232.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38091,8 +38099,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 137.16 252.73 0)
+		(property "Value" "VCC"
+			(at 227.33 223.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38100,7 +38108,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 137.16 257.81 0)
+			(at 227.33 228.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38109,7 +38117,74 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 137.16 257.81 0)
+			(at 227.33 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VCC\""
+			(at 227.33 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "15457164-0f27-433f-88b6-f7a62746cedf")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "#PWR049")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "+3.3V_4")
+		(lib_id "power:+3.3V")
+		(at 137.16 250.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b9569e30-98ca-4db0-823d-62d66d0aaf36")
+		(property "Reference" "#PWR019"
+			(at 137.16 254 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 137.16 245.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 137.16 250.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 137.16 250.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38118,7 +38193,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 137.16 257.81 0)
+			(at 137.16 250.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38726,7 +38801,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED_Small")
-		(at 125.73 232.41 90)
+		(at 125.73 224.79 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -38735,7 +38810,7 @@
 		(fields_autoplaced yes)
 		(uuid "c2d52844-f86b-4fd0-984c-3a7884762aea")
 		(property "Reference" "D3"
-			(at 128.27 231.0764 90)
+			(at 128.27 223.4564 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38744,7 +38819,7 @@
 			)
 		)
 		(property "Value" "ERR_RED"
-			(at 128.27 233.6164 90)
+			(at 128.27 225.9964 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38753,7 +38828,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 125.73 232.41 90)
+			(at 125.73 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38762,7 +38837,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 125.73 232.41 90)
+			(at 125.73 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38771,7 +38846,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode, small symbol"
-			(at 125.73 232.41 0)
+			(at 125.73 224.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -38780,7 +38855,7 @@
 			)
 		)
 		(property "LCSC" "C2286"
-			(at 125.73 232.41 90)
+			(at 125.73 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -39124,7 +39199,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c728df93-ac17-4c99-8b66-4f9d692b83d8")
-		(property "Reference" "J6"
+		(property "Reference" "AE2"
 			(at 303.53 26.67 0)
 			(effects
 				(font
@@ -39173,7 +39248,7 @@
 		(instances
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "J6")
+					(reference "AE2")
 					(unit 1)
 				)
 			)
@@ -39810,6 +39885,74 @@
 		)
 	)
 	(symbol
+		(lib_name "+BATT_2")
+		(lib_id "power:+BATT")
+		(at 241.3 228.6 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dac2dff5-99be-4c15-83ad-039f022bd76d")
+		(property "Reference" "#PWR081"
+			(at 237.49 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+BATT"
+			(at 245.11 228.5999 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 241.3 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 241.3 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+BATT\""
+			(at 241.3 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4cf40301-40c3-4744-9395-648a8bc75b41")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "#PWR081")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "symbols:R_Small")
 		(at 368.3 68.58 90)
 		(unit 1)
@@ -40309,7 +40452,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED_Small")
-		(at 148.59 232.41 90)
+		(at 148.59 224.79 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -40318,7 +40461,7 @@
 		(fields_autoplaced yes)
 		(uuid "e67e19b7-91c3-456d-b3aa-c595cc2af76e")
 		(property "Reference" "D2"
-			(at 151.13 231.0764 90)
+			(at 151.13 223.4564 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40327,7 +40470,7 @@
 			)
 		)
 		(property "Value" "YELLOW"
-			(at 151.13 233.6164 90)
+			(at 151.13 225.9964 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40336,7 +40479,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 148.59 232.41 90)
+			(at 148.59 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40345,7 +40488,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 148.59 232.41 90)
+			(at 148.59 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40354,7 +40497,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode, small symbol"
-			(at 148.59 232.41 0)
+			(at 148.59 224.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40363,7 +40506,7 @@
 			)
 		)
 		(property "LCSC" "C72038"
-			(at 148.59 232.41 90)
+			(at 148.59 224.79 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -40770,76 +40913,6 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "H3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:SolderJumper_2_Open")
-		(at 148.59 220.98 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ec849c73-6777-4fea-a487-3c75ea6956cd")
-		(property "Reference" "JP1"
-			(at 152.4 219.7099 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "LED_EN"
-			(at 152.4 222.2499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 148.59 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 148.59 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Solder Jumper, 2-pole, open"
-			(at 148.59 220.98 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a22a4a06-e954-4bb6-b8da-8f8f87227d7b")
-		)
-		(pin "2"
-			(uuid "d42b31ff-77cb-4d6d-b27c-f65ff6c0a9b6")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "JP1")
 					(unit 1)
 				)
 			)
@@ -41765,7 +41838,7 @@
 	(symbol
 		(lib_name "GND_15")
 		(lib_id "power:GND")
-		(at 148.59 234.95 0)
+		(at 148.59 227.33 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -41774,7 +41847,7 @@
 		(fields_autoplaced yes)
 		(uuid "fe783680-575a-46eb-80b6-de2769e09128")
 		(property "Reference" "#PWR026"
-			(at 148.59 241.3 0)
+			(at 148.59 233.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41783,7 +41856,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 148.59 240.03 0)
+			(at 148.59 232.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41791,7 +41864,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 148.59 234.95 0)
+			(at 148.59 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41800,7 +41873,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 148.59 234.95 0)
+			(at 148.59 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41809,7 +41882,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 148.59 234.95 0)
+			(at 148.59 227.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
