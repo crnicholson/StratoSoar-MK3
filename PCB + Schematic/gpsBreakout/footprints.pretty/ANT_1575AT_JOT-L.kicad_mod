@@ -28,7 +28,7 @@
 			)
 		)
 	)
-	(property "Footprint" "1575AT43A0040E:ANT_1575AT_JOT-L"
+	(property "Footprint" "ANT_1575AT_JOT-L"
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
@@ -281,8 +281,8 @@
 	)
 	(pad "1" thru_hole circle
 		(at -3.683 0)
-		(size 1.1 1.1)
-		(drill 0.6)
+		(size 1.7 1.7)
+		(drill 1.1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "8690f283-7dc8-4956-b536-055e8da00e6e")
@@ -294,9 +294,9 @@
 		(uuid "41e0f312-97d3-4bdc-9fba-5a5b8c5354e1")
 	)
 	(pad "2" thru_hole circle
-		(at -3.683 -2.159)
-		(size 1.5 1.5)
-		(drill 0.9)
+		(at -3.683 -2.286)
+		(size 1.7 1.7)
+		(drill 1.1)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
 		(uuid "5a922314-a83a-49d4-be2f-3b2c1a24472a")
@@ -306,33 +306,5 @@
 		(size 0.9652 2.159)
 		(layers "F.Cu" "F.Paste" "F.Mask")
 		(uuid "e84cb806-fd17-4c3c-9b8e-31f2237e7df5")
-	)
-	(zone
-		(net 0)
-		(net_name "")
-		(layer "F.Cu")
-		(uuid "78aa0ff6-c2c0-4cea-8a20-240889c01ee8")
-		(hatch full 0.508)
-		(connect_pads
-			(clearance 0)
-		)
-		(min_thickness 0.254)
-		(filled_areas_thickness no)
-		(keepout
-			(tracks not_allowed)
-			(vias not_allowed)
-			(pads allowed)
-			(copperpour not_allowed)
-			(footprints allowed)
-		)
-		(fill
-			(thermal_gap 0.508)
-			(thermal_bridge_width 0.508)
-		)
-		(polygon
-			(pts
-				(xy 150.5585 80.6069) (xy 156.0195 80.6069) (xy 156.0195 82.7151) (xy 150.5585 82.7151)
-			)
-		)
 	)
 )
