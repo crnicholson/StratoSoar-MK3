@@ -10413,12 +10413,6 @@
 		(uuid "187c344e-8e28-4632-82f6-cad8c4eac90c")
 	)
 	(junction
-		(at 59.69 90.17)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1c6728fd-d968-4db9-8929-8e945723201a")
-	)
-	(junction
 		(at 257.81 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -10501,6 +10495,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8cd3a10a-88b1-494c-bf0b-514fec11f556")
+	)
+	(junction
+		(at 59.69 90.17)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "930735bd-d44a-4b7c-9d1a-ed5f6c2ff022")
 	)
 	(junction
 		(at 340.36 69.85)
@@ -32959,6 +32959,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Small")
+		(at 34.29 162.56 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "58db3efa-ae0e-421e-b1dc-f8eef4d12140")
+		(property "Reference" "C12"
+			(at 34.2963 156.21 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100 nF"
+			(at 34.2963 158.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 34.29 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 34.29 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 34.29 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1525"
+			(at 34.29 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ef2bd414-deff-43f6-8394-b6bf7e56dc80")
+		)
+		(pin "1"
+			(uuid "d7d4cb44-62d2-4447-bc35-c2415c8a913b")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "C12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 76.2 153.67 0)
 		(unit 1)
@@ -34007,7 +34084,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "AT24C512C-SSHD-T"
+		(property "Value" "AT24C512C-SSHM-T"
 			(at 135.5441 79.8068 0)
 			(effects
 				(font
@@ -34043,7 +34120,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C615466"
+		(property "LCSC" "C54668"
 			(at 133.35 87.63 0)
 			(effects
 				(font
@@ -34080,6 +34157,85 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "symbols:C_Small")
+		(at 59.69 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6ad6a6ad-fb3a-44ea-9b8a-aaf56346252f")
+		(property "Reference" "C9"
+			(at 62.23 91.4462 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1 uF"
+			(at 62.23 93.9862 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 59.69 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 59.69 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 59.69 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C15849"
+			(at 59.69 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "32356b7f-e802-4af6-97f7-aa606e7e05f9")
+		)
+		(pin "2"
+			(uuid "ea999bd9-8d31-40ff-8d96-880ad37c3c9d")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "C9")
 					(unit 1)
 				)
 			)
@@ -34786,7 +34942,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "AT24CS32-STUM"
+		(property "Value" "BL24C32F-RRRC"
 			(at 341.63 87.6299 0)
 			(effects
 				(font
@@ -34814,6 +34970,15 @@
 			)
 		)
 		(property "Description" "I2C Serial EEPROM, 32Kb (4096x8) with Unique Serial Number, SOT-23-5"
+			(at 350.52 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C5185883"
 			(at 350.52 86.36 0)
 			(effects
 				(font
@@ -34907,85 +35072,6 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "#PWR029")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "symbols:C_Small")
-		(at 59.69 92.71 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "776685fe-70bb-4306-a9e9-25790200aa2e")
-		(property "Reference" "C9"
-			(at 62.23 91.4462 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1 uF"
-			(at 62.23 93.9862 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 59.69 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 59.69 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 59.69 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C15849"
-			(at 59.69 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "e49faa76-322a-4ee4-9f00-98eff6c77263")
-		)
-		(pin "2"
-			(uuid "beab8ad8-04ff-4b23-a4ce-029f1b0eb95a")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "C9")
 					(unit 1)
 				)
 			)
@@ -35257,83 +35343,6 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "#PWR033")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 34.29 162.56 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "827bf48b-d52a-4523-9e54-e9fb0f541a3d")
-		(property "Reference" "C12"
-			(at 34.2963 156.21 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100 nF"
-			(at 34.2963 158.75 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 34.29 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 34.29 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 34.29 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C14663"
-			(at 34.29 162.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "9e65b26e-b278-444c-b12d-858ca053677e")
-		)
-		(pin "1"
-			(uuid "99dd71e1-1a79-4e18-8a19-47043dfd709c")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "C12")
 					(unit 1)
 				)
 			)
@@ -37068,6 +37077,83 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Small")
+		(at 46.99 167.64 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9bcfcb8c-6b51-4899-a575-4dc18d8e95f7")
+		(property "Reference" "C16"
+			(at 46.9963 161.29 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100 nF"
+			(at 46.9963 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 46.99 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 46.99 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 46.99 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1525"
+			(at 46.99 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7af4b298-2a8d-48c1-aeb0-14a7f5114ba9")
+		)
+		(pin "1"
+			(uuid "a6f0d714-5f92-4bcc-a90b-4d7e09a997f1")
+		)
+		(instances
+			(project "StratoSoar-MK3.0"
+				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
+					(reference "C16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "symbols:R_Small")
 		(at 86.36 38.1 0)
 		(unit 1)
@@ -37174,7 +37260,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 36.83 92.71 0)
 			(effects
 				(font
@@ -38398,7 +38484,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C14663"
+		(property "LCSC" "C1525"
 			(at 55.88 173.99 0)
 			(effects
 				(font
@@ -40005,7 +40091,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C25077"
+		(property "LCSC" "C11702"
 			(at 368.3 68.58 90)
 			(effects
 				(font
@@ -40582,7 +40668,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C5117921"
+		(property "LCSC" "C90770"
 			(at 340.36 39.37 0)
 			(effects
 				(font
@@ -41607,83 +41693,6 @@
 			(project "StratoSoar-MK3.0"
 				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
 					(reference "#PWR030")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 46.99 167.64 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fa9f6098-7948-49be-a39a-015aca66ad8d")
-		(property "Reference" "C16"
-			(at 46.9963 161.29 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100 nF"
-			(at 46.9963 163.83 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 46.99 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 46.99 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 46.99 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" "C14663"
-			(at 46.99 167.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "4d5dd5b9-9cd4-4fa7-8f51-8d434714c97d")
-		)
-		(pin "1"
-			(uuid "aa67bc7c-d25f-42c6-9c4c-3d4dc4d62610")
-		)
-		(instances
-			(project "StratoSoar-MK3.0"
-				(path "/a5ed86dc-e941-4edd-8d1d-eae06db8d6f6"
-					(reference "C16")
 					(unit 1)
 				)
 			)

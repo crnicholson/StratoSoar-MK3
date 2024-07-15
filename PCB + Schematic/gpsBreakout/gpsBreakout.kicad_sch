@@ -3317,6 +3317,28 @@
 			)
 		)
 	)
+	(global_label "SCL"
+		(shape input)
+		(at 226.06 128.27 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a47c17ed-26d7-47dc-8def-ef883132a2a8")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 226.06 134.7628 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "PPS"
 		(shape input)
 		(at 181.61 129.54 0)
@@ -3537,6 +3559,28 @@
 			)
 		)
 	)
+	(global_label "SDA"
+		(shape input)
+		(at 215.9 128.27 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "fa84735b-9e73-4c3e-a283-3d385cfce91b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 215.9 134.8233 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(symbol
 		(lib_id "symbols:C_Small")
 		(at 209.55 86.36 0)
@@ -3746,6 +3790,85 @@
 			(project "gpsBreakout"
 				(path "/f6412663-1207-425b-b708-3727894d909a"
 					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "symbols:R_Small")
+		(at 226.06 125.73 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1eb73eb4-9c0c-4286-a85b-222bcbfa70ce")
+		(property "Reference" "R3"
+			(at 228.6 124.4599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1.8 K"
+			(at 228.6 126.9999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 226.06 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 226.06 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 226.06 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4177"
+			(at 226.06 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "043fcc5c-cc7a-480d-8835-372ef6a44c98")
+		)
+		(pin "1"
+			(uuid "a9519509-a2b9-4097-8685-72a8e30ee7e7")
+		)
+		(instances
+			(project "gpsBreakout"
+				(path "/f6412663-1207-425b-b708-3727894d909a"
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -4216,6 +4339,85 @@
 			(project "gpsBreakout"
 				(path "/f6412663-1207-425b-b708-3727894d909a"
 					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "symbols:R_Small")
+		(at 215.9 125.73 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "42b577bd-f3f0-4dde-a407-5ee9fb1520c5")
+		(property "Reference" "R2"
+			(at 218.44 124.4599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1.8 K"
+			(at 218.44 126.9999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 215.9 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 215.9 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, small symbol"
+			(at 215.9 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C4177"
+			(at 215.9 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "eab0da04-2006-49da-bc5f-ec27367a7a48")
+		)
+		(pin "1"
+			(uuid "e209e2c6-65c8-4de4-a1d0-e342111877c5")
+		)
+		(instances
+			(project "gpsBreakout"
+				(path "/f6412663-1207-425b-b708-3727894d909a"
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -5298,6 +5500,72 @@
 		)
 	)
 	(symbol
+		(lib_id "symbols:+3.3V")
+		(at 226.06 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c535ca3c-0da2-4e2e-99f3-60da1a619d6c")
+		(property "Reference" "#PWR018"
+			(at 226.06 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 226.06 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 226.06 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 226.06 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 226.06 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7a7be382-8e9f-4545-b841-0b5899f5778c")
+		)
+		(instances
+			(project "gpsBreakout"
+				(path "/f6412663-1207-425b-b708-3727894d909a"
+					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "symbols:Battery_Cell")
 		(at 109.22 96.52 0)
 		(unit 1)
@@ -5797,6 +6065,72 @@
 			(project "gpsBreakout"
 				(path "/f6412663-1207-425b-b708-3727894d909a"
 					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "symbols:+3.3V")
+		(at 215.9 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ff0def14-37d1-417c-a524-5774d3a93a24")
+		(property "Reference" "#PWR014"
+			(at 215.9 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 215.9 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 215.9 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 215.9 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 215.9 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a4ce2ddb-714b-470f-a9e2-d626e772ec60")
+		)
+		(instances
+			(project "gpsBreakout"
+				(path "/f6412663-1207-425b-b708-3727894d909a"
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
