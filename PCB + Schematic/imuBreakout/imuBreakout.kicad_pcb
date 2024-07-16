@@ -160,7 +160,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C52923"
 			(at 0 0 -90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -830,7 +830,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C52923"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -5530,6 +5530,18 @@
 			(font
 				(size 0.75 0.75)
 				(thickness 0.12)
+			)
+			(justify left bottom mirror)
+		)
+	)
+	(gr_text "JLCJLCJLCJLC"
+		(at 151.003 84.455 90)
+		(layer "B.SilkS")
+		(uuid "5c7a6f81-0e5e-4900-a49e-92fe0be3a891")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
 			)
 			(justify left bottom mirror)
 		)

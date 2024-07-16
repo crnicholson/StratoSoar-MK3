@@ -3736,7 +3736,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C52923"
 			(at 205.74 73.66 0)
 			(effects
 				(font
@@ -4527,7 +4527,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C15849"
+		(property "LCSC" "C52923"
 			(at 228.6 73.66 0)
 			(effects
 				(font

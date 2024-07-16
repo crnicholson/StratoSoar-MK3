@@ -3976,7 +3976,7 @@
 		(descr "Through hole straight pin header, 1x11, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x11 2.54mm single row")
 		(property "Reference" "J2"
-			(at 0 2.794 180)
+			(at 0 2.286 180)
 			(layer "B.SilkS")
 			(uuid "b09c919b-0bec-4170-bd6e-1c5c27e5ea07")
 			(effects
@@ -4463,7 +4463,7 @@
 	)
 	(gr_line
 		(start 139.7 71.882)
-		(end 139.7 104.4448)
+		(end 139.7 104.394)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -4502,13 +4502,13 @@
 		(uuid "7d07ff28-6330-4ed3-bdfe-66c52f30a89e")
 	)
 	(gr_text "Made with support \nof Hack Club and NEWBS"
-		(at 145.2372 103.886 270)
+		(at 145.923 103.886 270)
 		(layer "B.SilkS")
 		(uuid "1787714d-a5cc-48a2-a052-e311920ec0b4")
 		(effects
 			(font
-				(size 1 1)
-				(thickness 0.15)
+				(size 0.9 0.9)
+				(thickness 0.14)
 			)
 			(justify left bottom mirror)
 		)
@@ -4526,7 +4526,7 @@
 		)
 	)
 	(gr_text "ATGM336H Breakout\n"
-		(at 149.7584 103.7336 270)
+		(at 149.606 103.7336 270)
 		(layer "B.SilkS")
 		(uuid "cc955d62-5a9c-4c61-b686-5f99631bd71c")
 		(effects
@@ -4538,7 +4538,7 @@
 		)
 	)
 	(gr_text "JP1: 1 = passive, 3 = active"
-		(at 148.5392 103.7336 270)
+		(at 158.877 73.152 0)
 		(layer "B.SilkS")
 		(uuid "e114dd2f-2f27-4a04-b060-017ca52517ff")
 		(effects
@@ -4550,7 +4550,7 @@
 		)
 	)
 	(gr_text "JLCJLCJLCJLC\n"
-		(at 157.8356 83.058 270)
+		(at 159.004 74.549 0)
 		(layer "B.SilkS")
 		(uuid "e94186a8-8a0b-4a90-8819-f57731711dba")
 		(effects
@@ -4562,7 +4562,7 @@
 		)
 	)
 	(gr_text "ACTIVE\n"
-		(at 155.194 78.74 90)
+		(at 155.194 78.867 90)
 		(layer "F.SilkS")
 		(uuid "1a1aad05-195c-4469-832a-e79101f1580e")
 		(effects
@@ -4609,6 +4609,18 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "NC"
+		(at 156.464 75.692 0)
+		(layer "F.SilkS")
+		(uuid "358d0fda-422d-4cab-a3ed-0ef929057ff9")
+		(effects
+			(font
+				(size 0.75 0.75)
+				(thickness 0.12)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "SCL"
 		(at 139.8016 91.059 -90)
 		(layer "F.SilkS")
@@ -4634,7 +4646,7 @@
 		)
 	)
 	(gr_text "PASSIVE"
-		(at 147.193 79.502 90)
+		(at 147.193 79.629 90)
 		(layer "F.SilkS")
 		(uuid "5ca38e50-159a-40b6-a2fa-cdbf74109786")
 		(effects
@@ -4665,6 +4677,18 @@
 			(font
 				(size 0.75 0.75)
 				(thickness 0.11)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "ATGM336H\nBreakout"
+		(at 139.827 74.295 0)
+		(layer "F.SilkS")
+		(uuid "855fa67b-6ed6-48e7-87cd-9b04400137d2")
+		(effects
+			(font
+				(size 0.75 0.75)
+				(thickness 0.12)
 			)
 			(justify left bottom)
 		)
@@ -4729,8 +4753,20 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "NC"
+		(at 148.463 75.692 0)
+		(layer "F.SilkS")
+		(uuid "bcd7cb35-e348-4161-bfd3-1e2aa55fe8c7")
+		(effects
+			(font
+				(size 0.75 0.75)
+				(thickness 0.12)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "RF"
-		(at 156.591 82.296 0)
+		(at 156.464 82.296 0)
 		(layer "F.SilkS")
 		(uuid "c229598f-364c-4e57-98d4-af111bb52a47")
 		(effects
