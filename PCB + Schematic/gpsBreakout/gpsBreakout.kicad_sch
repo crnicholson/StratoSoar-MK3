@@ -3734,76 +3734,6 @@
 		)
 	)
 	(symbol
-		(lib_id "symbols:Antenna_Chip")
-		(at 229.87 88.9 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1447adf9-bee2-44b2-a554-667979fa7695")
-		(property "Reference" "AE1"
-			(at 234.95 85.0899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1575AT43A0040001E"
-			(at 234.95 87.6299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "footprints:ANT_1575AT_JOT-L"
-			(at 227.33 84.455 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 227.33 84.455 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Ceramic chip antenna with pin for PCB trace"
-			(at 229.87 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7b012fdd-c59c-4afc-8fd7-c5197f18242a")
-		)
-		(pin "2"
-			(uuid "4ea416be-85b5-4f6b-988e-0e341c634cd7")
-		)
-		(instances
-			(project "gpsBreakout"
-				(path "/f6412663-1207-425b-b708-3727894d909a"
-					(reference "AE1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "symbols:+3.3V")
 		(at 194.31 139.7 0)
 		(unit 1)
@@ -4002,7 +3932,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C90136"
+		(property "LCSC" "C84403"
 			(at 214.63 55.88 0)
 			(effects
 				(font
@@ -4753,6 +4683,76 @@
 		)
 	)
 	(symbol
+		(lib_id "symbols:Antenna_Chip")
+		(at 229.87 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "72b56654-2cca-4119-8129-4988e77f3da2")
+		(property "Reference" "AE1"
+			(at 234.95 85.0899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GPS1003"
+			(at 234.95 87.6299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "RF_Antenna:GPS1003"
+			(at 227.33 84.455 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 227.33 84.455 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Ceramic chip antenna with pin for PCB trace"
+			(at 229.87 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7330bdc7-f127-45f5-92c1-bc0e6a841919")
+		)
+		(pin "2"
+			(uuid "af499794-abba-46a1-8ef5-4f47e7f7a12d")
+		)
+		(instances
+			(project "gpsBreakout"
+				(path "/f6412663-1207-425b-b708-3727894d909a"
+					(reference "AE1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "symbols:GND")
 		(at 132.08 68.58 0)
 		(unit 1)
@@ -4871,7 +4871,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C5117921"
+		(property "LCSC" "C90770"
 			(at 142.24 85.09 0)
 			(effects
 				(font
@@ -5402,7 +5402,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1575AT43A0040001E"
+		(property "Value" "GPS1003"
 			(at 217.17 44.4499 0)
 			(effects
 				(font
@@ -5411,7 +5411,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "footprints:ANT_1575AT_JOT-L"
+		(property "Footprint" "RF_Antenna:GPS1003"
 			(at 209.55 41.275 0)
 			(effects
 				(font

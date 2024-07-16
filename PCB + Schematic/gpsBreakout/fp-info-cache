@@ -1,4 +1,4 @@
-23376970029461721
+23378691189781517
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -84279,6 +84279,13 @@ antenna rfid coilcraft
 0
 2
 2
+RF_Antenna
+GPS1003
+
+
+0
+0
+0
 RF_Antenna
 Johanson_2450AT18x100
 Johanson 2450AT43F0100 SMD antenna 2400-2500Mhz, -0.5dBi, https://www.johansontechnology.com/datasheets/2450AT18A100/2450AT18A100.pdf
