@@ -53,22 +53,27 @@ print("Width", width, "mm")
 
 turtle = svg_turtle.SvgTurtle(800, 600)
 
-turtle.mode("logo")
+# turtle.mode("logo")
+
+# turtle.penup()
+# turtle.goto(0, offset)
+# turtle.pendown()
+# turtle.setheading(sweep)
+# turtle.forward(le)
+
+# turtle.penup()
+# turtle.goto(0, offset+tipChord)
+# turtle.pendown()
+# turtle.setheading(0)
+# turtle.forward(tipChord)
 
 turtle.penup()
-turtle.goto(0, offset)
+turtle.goto(0, 0)
 turtle.pendown()
-turtle.setheading(sweep)
-turtle.forward(le)
-
-turtle.penup()
-turtle.goto(0, offset+tipChord)
-turtle.pendown()
-turtle.setheading(0)
-turtle.forward(tipChord)
+# turtle.setheading(sweep)
+turtle.forward(100)
 
 svg_output = turtle.to_svg()
-print(svg_output)
 
 with open("flying_wing.svg", "w") as file:
     file.write(svg_output)
