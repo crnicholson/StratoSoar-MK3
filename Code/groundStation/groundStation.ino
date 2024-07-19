@@ -21,7 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add support for ESP32 for BLE communication
 // - Add GPS and compass to point towards the target - this could be done with an iPhone app
 // - Add OLED to display glider position
-// - Add bidirectoional communication for changing the landing location, also relay the landing location to the station.
+// - Add bidirectoional communication for changing the landing location
+// - Add way to abort the mission
 
 // Note: This system operates at 433 mHz, so a ham radio license is needed in the US. Please check local regulations before use.
 
@@ -107,6 +108,8 @@ void loop() {
       Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
       Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
       Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.tLat, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.tLon, sizeof(float));
       Serial.write((uint8_t *)&receivedData.temperature, sizeof(float));
       Serial.write((uint8_t *)&receivedData.pressure, sizeof(float));
       Serial.write((uint8_t *)&receivedData.humidity, sizeof(long));
@@ -141,4 +144,70 @@ void shortBlink(int pin) {
   delay(100);
   digitalWrite(pin, LOW);
   delay(100);
+}
+
+void displayData() {
+  Serial.print("Lat: ");
+  Serial.print(receivedData.lat, 6);
+
+  Serial.print(" Lon: ");
+  Serial.print(receivedData.lon, 6);
+
+  Serial.print(" Alt: ");
+  Serial.print(receivedData.altitude, 2);
+
+  Serial.print(" Target lat: ");
+  Serial.print(receivedData.tLat, 6);
+
+  Serial.print(" Target lon: ");
+  Serial.print(receivedData.tLon, 6);
+
+  Serial.print(" Temp: ");
+  Serial.print(receivedData.temperature, 2);
+
+  Serial.print(" Pressure: ");
+  Serial.print(receivedData.pressure, 2);
+
+  Serial.print(" Humidity: ");
+  Serial.print(receivedData.humidity);
+
+  Serial.print(" Volts: ");
+  Serial.print(receivedData.volts, 2);
+
+  Serial.print(" Yaw: ");
+  Serial.print(receivedData.yaw);
+
+  Serial.print(" Pitch: ");
+  Serial.print(receivedData.pitch);
+
+  Serial.print(" Roll: ");
+  Serial.print(receivedData.roll);
+
+  Serial.print(" Time: ");
+  Serial.print(receivedData.hour);
+  Serial.print(":");
+  Serial.print(receivedData.minute);
+  Serial.print(":");
+  Serial.print(receivedData.second);
+
+  Serial.print(" TX count: ");
+  Serial.print(receivedData.txCount);
+
+  Serial.print(" RX count: ");
+  Serial.print(rxCount);
+
+  Serial.print(" Uploader lat: ");
+  Serial.print(U_LAT, 6);
+
+  Serial.print(" Uploader lon: ");
+  Serial.print(U_LON, 6);
+
+  Serial.print(" Uploader alt: ");
+  Serial.print(U_ALT, 2);
+
+  Serial.print(" RSSI: ");
+  Serial.print(rssi);
+
+  Serial.print(" SNR: ");
+  Serial.println(snr);
 }

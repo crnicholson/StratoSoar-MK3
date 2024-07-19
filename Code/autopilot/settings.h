@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define USE_BME
 #define USE_EEPROM
 #define USE_LORA
-#define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range. 
+#define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
 
 // Pins.
 #define LED 13
@@ -76,10 +76,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define TESTING_LON -71.8533 // Testing longitude.
 
 // LoRa.
-#define FREQUENCY 433E6     // Frequency of your LoRa module.
-#define SPREADING_FACTOR 10 // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
-#define BANDWIDTH 62.5E3    // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
-#define SYNC_WORD 0xFB      // Only other devices with this sync word can receive your broadcast.
-#define CALL_SIGN "XXXXXX"  // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz.
+#define FREQUENCY 433E6       // Frequency of your LoRa module.
+#define SPREADING_FACTOR 10   // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
+#define BANDWIDTH 62.5E3      // Choose this based on this https://forum.arduino.cc/t/what-are-the-best-settings-for-a-lora-radio/449528.
+#define SYNC_WORD 0xFB        // Only other devices with this sync word can receive your broadcast.
+#define CALL_SIGN "XXXXXX"    // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz.
+#define LORA_UPDATE_RATE 5000 // The milliseconds between LoRa updates.
 
 #define PI 3.1415926

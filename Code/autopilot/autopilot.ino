@@ -50,6 +50,8 @@ int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight, distance
 float temperature, pressure, bmeAltitude;
 int humidity;
 
+int lastLoRa;
+
 struct data packet;
 
 void setup() {
@@ -146,23 +148,26 @@ void loop() {
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
 #endif
 #ifdef USE_LORA
-    packet.lat = lat;
-    packet.lon = lon;
-    packet.tLat = TARGET_LAT;
-    packet.tLon = TARGET_LON;
-    packet.altitude = altitude;
-    packet.temperature = temperature;
-    packet.pressure = pressure;
-    packet.humidity = humidity;
-    packet.yaw = yaw;
-    packet.pitch = pitch;
-    packet.roll = roll;
-    packet.hour = hour;
-    packet.minute = minute;
-    packet.second = second;
-    packet.txCount++;
-    sendData(packet);
+    if (millis() - lastLoRa > LORA_UPDATE_RATE) {
+      packet.lat = lat;
+      packet.lon = lon;
+      packet.tLat = TARGET_LAT;
+      packet.tLon = TARGET_LON;
+      packet.altitude = altitude;
+      packet.temperature = temperature;
+      packet.pressure = pressure;
+      packet.humidity = humidity;
+      packet.yaw = yaw;
+      packet.pitch = pitch;
+      packet.roll = roll;
+      packet.hour = hour;
+      packet.minute = minute;
+      packet.second = second;
+      packet.txCount++;
+      sendData(packet);
+      lastLoRa = millis();
 #endif
+    }
     imu.count = millis();
   }
 }

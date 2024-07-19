@@ -40,3 +40,5 @@ struct data {
 };
 
 extern struct data packet;
+
+extern int lastLoRa;
