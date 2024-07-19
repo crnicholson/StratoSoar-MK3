@@ -16,12 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// Enables. 
-#define DEVMODE // Toggle serial monitor.
+// Enables.
+#define DEVMODE   // Toggle serial monitor.
+#define FAST_LORA // Ignore other LoRA settings and use a fast LoRa setup.
 
 // Pins.
 #define LED 3 // SCK uses pin 13.
-
 #define SS_PIN 10
-#define  RESET_PIN 
-DIO0_PIN
+#define RESET_PIN 9
+#define DIO0_PIN 8
+
+#define BAUD_RATE 115200 // Baud rate of the serial monitor and the serial sender.
+
+// Uploader location. 
+#define U_LAT 42.00 
+#define U_LON -71.00
+#define U_ALT 1000

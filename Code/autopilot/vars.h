@@ -32,9 +32,10 @@ extern float temperature, pressure, bmeAltitude;
 extern int humidity;
 
 struct data {
-  float lat, lon, altitude, temperature, pressure, humidity;
+  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts;
   short yaw, pitch, roll;
   byte hour, minute, second;
+  short txCount;
   char callSign[7] = CALL_SIGN;
 };
 

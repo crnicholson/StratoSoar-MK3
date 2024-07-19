@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define USE_BME
 #define USE_EEPROM
 #define USE_LORA
+#define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range. 
 
 // Pins.
 #define LED 13

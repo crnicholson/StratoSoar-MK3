@@ -6,16 +6,16 @@ import datetime
 baud_rate = 115200
 serial_port = "/dev/cu.usbserial-A50285BI"  # Replace this with your serial port (e.g., 'COM3' for Windows).
 
-# Uploader position. 
+# Uploader position.
 u_lon = 42.30
 u_lat = -71.30
 u_alt = 0
 
-call_sign = "KC1SFR" # Change this to your ham radio call sign. 
-comment = "StratoSoar MK3 high altitude glider." # Put your comment here. 
-antenna = "Wire monopole" # Your antenna, probably don't change. 
-radio = "SX1278 LoRa module" # The type of LoRa module.
-freq = "433.000" # Frequency in MHz of the received telemetry.
+call_sign = "KC1SFR"  # Change this to your ham radio call sign.
+comment = "StratoSoar MK3 high altitude glider."  # Put your comment here.
+antenna = "Wire monopole"  # Your antenna, probably don't change.
+radio = "SX1278 LoRa module"  # The type of LoRa module.
+freq = "433.000"  # Frequency in MHz of the received telemetry.
 
 ser = serial.Serial(serial_port, baud_rate)
 
@@ -30,11 +30,8 @@ while True:
         snr = struct.unpack("i", ser.read(4))[0]
         ser.reset_input_buffer()
 
-        # Example double receiver (64 bits):
-        # double = struct.unpack('d', ser.read(8))[0]
-
-        current_utc_time = datetime.datetime.now(datetime.UTC)
-        current_utc_time_string = current_utc_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        utc_time = datetime.datetime.now(datetime.UTC)
+        utc_time = utc_time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         uploader = Uploader(call_sign)
 
@@ -47,17 +44,28 @@ while True:
 
         uploader.add_telemetry(
             call_sign,  # Callsign
-            current_utc_time_string,  # Time
+            utc_time,  # Time
             lat,
             lon,
             alt,
             frame=tx_count,  # Frame counter (e.g. packet number)
+            batt=volts,  # Battery voltage (V)
+            temp=temp,  # Temperature (C)
+            pressure=pressure,  # Pressure (hPa)
             vel_h=speed,  # Horizontal Velocity (m/s)
             snr=snr,  # Signal-to-Noise Ratio of the received telemetry, in dB.
             frequency=freq,  # Frequency of the received telemetry, in MHz.
             rssi=rssi,  # Received Signal Strength, in dBm
             modulation="LoRa",
-            extra_fields={"Comment": comment},
+            extra_fields={
+                "Comment": comment,
+                "Target lat:": t_lat,
+                "Target lon:": t_lon,
+                "Yaw:": yaw,
+                "Pitch:": pitch,
+                "Roll:": roll,
+                "RX count:": rx_count
+            },
         )
 
         # Display received data

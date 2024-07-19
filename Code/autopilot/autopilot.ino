@@ -23,7 +23,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add a fast update period
 // - Find a way to land
 // - Add two way communications for changing landing location
-// - Finish the flying wing maker Python script
 
 #include "blink.h"
 #include "bme280.h"
@@ -149,6 +148,8 @@ void loop() {
 #ifdef USE_LORA
     packet.lat = lat;
     packet.lon = lon;
+    packet.tLat = TARGET_LAT;
+    packet.tLon = TARGET_LON;
     packet.altitude = altitude;
     packet.temperature = temperature;
     packet.pressure = pressure;
@@ -159,6 +160,7 @@ void loop() {
     packet.hour = hour;
     packet.minute = minute;
     packet.second = second;
+    packet.txCount++;
     sendData(packet);
 #endif
     imu.count = millis();

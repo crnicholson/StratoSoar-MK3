@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add support for ESP32 for BLE communication
 // - Add GPS and compass to point towards the target - this could be done with an iPhone app
 // - Add OLED to display glider position
+// - Add bidirectoional communication for changing the landing location, also relay the landing location to the station.
 
 // Note: This system operates at 433 mHz, so a ham radio license is needed in the US. Please check local regulations before use.
 
@@ -31,16 +32,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <SPI.h>
 
 struct receive {
-  float lat;
-  float lon;
-  short volts;
-  short alt;
-  byte speed;
-  byte seconds;
-  byte minutes;
-  byte hours;
+  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts;
+  short yaw, pitch, roll;
+  byte hour, minute, second;
   short txCount;
-  char text[7];
+  char callSign[7];
 } receivedData;
 
 int rxCount;
@@ -53,8 +49,9 @@ void setup() {
 
 #ifdef DEVMODE
   Serial.begin(BAUD_RATE);
-  while (!Serial)
+  while (!Serial) {
     longBlink(LED);
+  }
   Serial.println("StratoSoar MK3 telemetry receiver.");
 #endif
 
@@ -64,14 +61,24 @@ void setup() {
 #ifdef DEVMODE
     Serial.println("Starting LoRa failed!");
 #endif
-    while (1)
+    while (1) {
       longBlink(LED);
+    }
   }
 
-  LoRa.setSyncWord(SYNC_WORD);
-  LoRa.setSpreadingFactor(SPREADING_FACTOR);
-  LoRa.setSignalBandwidth(BANDWIDTH);
-  LoRa.crc(); // Checksum.
+#ifndef FAST_LORA
+  LoRa.setSyncWord(SYNC_WORD);               // Defined in settings.h.
+  LoRa.setSpreadingFactor(SPREADING_FACTOR); // Defined in settings.h.
+  LoRa.setSignalBandwidth(BANDWIDTH);        // Defined in settings.h.
+  LoRa.crc();                                // Checksum for packet error detection.
+#endif
+
+#ifdef FAST_LORA
+  LoRa.setSyncWord(SYNC_WORD); // Defined in settings.h.
+  LoRa.setSpreadingFactor(7);
+  LoRa.setSignalBandwidth(250000);
+  LoRa.crc(); // Checksum for packet error detection.
+#endif
 
 #ifdef DEVMODE
   Serial.println("LoRa initialized, starting in 1 second.");
@@ -85,11 +92,11 @@ void loop() {
   if (packetSize > 0) {
     shortBlink(LED);
     LoRa.readBytes((byte *)&receivedData, sizeof(receivedData)); // Receive packet and put it into a struct.
-    float voltage = receivedData.volts / 100;
     rxCount++;
 
     // Check if the packet is a valid packet.
     if (sizeof(receivedData) == packetSize) {
+      shortBlink(LED);
 #ifdef DEVMODE
       displayData();
 #endif
@@ -98,17 +105,29 @@ void loop() {
       snr = LoRa.packetSnr();
 
       Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
-      Serial.write((uint8_t *)&receivedData.lng, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.alt, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.speed, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.txCnt, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.temperature, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.pressure, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.humidity, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.volts, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.yaw, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.pitch, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.roll, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.hour, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.minute, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.second, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.txCount, sizeof(long));
+      Serial.write((uint8_t *)&rxCount, sizeof(long));
+      Serial.write((uint8_t *)&U_LAT, sizeof(float));
+      Serial.write((uint8_t *)&U_LON, sizeof(float));
+      Serial.write((uint8_t *)&U_ALT, sizeof(float));
       Serial.write((uint8_t *)&rssi, sizeof(long));
       Serial.write((uint8_t *)&snr, sizeof(long));
 #endif
     }
   }
 }
-
 
 void longBlink(int pin) {
   digitalWrite(pin, HIGH);
