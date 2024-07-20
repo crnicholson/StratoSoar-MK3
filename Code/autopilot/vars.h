@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Arduino.h>
 
 // GPS vars.
-extern float lat, lon, altitude;
+extern float lat, lon, altitude, targetLat, targetLon, prevTLat, prevTLon;
 extern int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
@@ -36,9 +36,12 @@ struct data {
   short yaw, pitch, roll;
   byte hour, minute, second;
   short txCount;
+  byte abort;
   char callSign[7] = CALL_SIGN;
 };
 
 extern struct data packet;
 
-extern int lastLoRa;
+// Other vars.
+extern int lastLoRa, abortCounter;
+extern byte abort;

@@ -37,12 +37,14 @@ struct receive {
   short yaw, pitch, roll;
   byte hour, minute, second;
   short txCount;
-  char callSign[7];
+  byte abort;
+  char callSign[7] = CALL_SIGN;
 } receivedData;
 
 int rxCount;
 long snr;
 long rssi;
+float newTLat, newTLon;
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -120,6 +122,7 @@ void loop() {
       Serial.write((uint8_t *)&receivedData.hour, sizeof(long));
       Serial.write((uint8_t *)&receivedData.minute, sizeof(long));
       Serial.write((uint8_t *)&receivedData.second, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.abort, sizeof(long));
       Serial.write((uint8_t *)&receivedData.txCount, sizeof(long));
       Serial.write((uint8_t *)&rxCount, sizeof(long));
       Serial.write((uint8_t *)&U_LAT, sizeof(float));
@@ -129,6 +132,17 @@ void loop() {
       Serial.write((uint8_t *)&snr, sizeof(long));
 #endif
     }
+  }
+  if (Serial.available() > 0) {
+    Serial.read((byte *)&newTLat, sizeof(float));
+    Serial.read((byte *)&newTLon, sizeof(float));
+    if newTLon
+      != 0 && newTLat != 0 && newTLon != receivedData.tLon &&newTLat != receivedData.tLat {
+        LoRa.beginPacket();
+        LoRa.write((byte *)&newTLat, sizeof(float));
+        LoRa.write((byte *)&newTLon, sizeof(float));
+        LoRa.endPacket(true); // Send in async mode.
+      }
   }
 }
 

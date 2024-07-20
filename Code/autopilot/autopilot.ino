@@ -17,12 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 // To-do:
-// - Add LoRa reciever code
 // - Add correct flying wing dynamics
 // - Use threading for the imu
 // - Add a fast update period
 // - Find a way to land
-// - Add two way communications for changing landing location
+// - Test bi directional communication
 
 #include "blink.h"
 #include "bme280.h"
@@ -40,7 +39,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ICM20948 imu;
 
 // GPS vars.
-float lat, lon, altitude;
+float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON;
 int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
@@ -50,7 +49,9 @@ int yaw, pitch, roll, turnAngle, servoPositionLeft, servoPositionRight, distance
 float temperature, pressure, bmeAltitude;
 int humidity;
 
-int lastLoRa;
+// Other vars.
+int lastLoRa, abortCounter;
+byte abort;
 
 struct data packet;
 
@@ -139,11 +140,18 @@ void loop() {
 #ifdef USE_BME
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
 #endif
-    distance = calculateDistance(lat, lon, TARGET_LAT, TARGET_LON);
-    turnAngle = turningAngle(lat, lon, yaw, TARGET_LAT, TARGET_LON);
-    servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
-    moveLeftServo(servoPositionLeft);
-    moveRightServo(servoPositionRight);
+    distance = calculateDistance(lat, lon, targetLat, targetLon);
+    turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+    if (!abort) {
+      servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
+      moveLeftServo(servoPositionLeft);
+      moveRightServo(servoPositionRight);
+    }
+    if (abort) {
+      // This should send the glider into a spiral for landing.
+      moveLeftServo(0);
+      moveRightServo(12);
+    }
 #ifdef USE_EEPROM
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
 #endif
@@ -151,12 +159,13 @@ void loop() {
     if (millis() - lastLoRa > LORA_UPDATE_RATE) {
       packet.lat = lat;
       packet.lon = lon;
-      packet.tLat = TARGET_LAT;
-      packet.tLon = TARGET_LON;
+      packet.tLat = targetLat;
+      packet.tLon = targetLon;
       packet.altitude = altitude;
       packet.temperature = temperature;
       packet.pressure = pressure;
       packet.humidity = humidity;
+      packet.volts = readVoltage();
       packet.yaw = yaw;
       packet.pitch = pitch;
       packet.roll = roll;
@@ -164,10 +173,31 @@ void loop() {
       packet.minute = minute;
       packet.second = second;
       packet.txCount++;
+      packet.abort = abort;
       sendData(packet);
       lastLoRa = millis();
-#endif
     }
+    if (LoRa.parsePacket() > 0) {
+      prevTLat = targetLat;
+      prevTLon = targetLon;
+      LoRa.readBytes((byte *)&targetLat, sizeof(float));
+      LoRa.readBytes((byte *)&targetLon, sizeof(float));
+      abort = LoRa.read();
+      if (abort == 1) {
+        abortCounter++;
+      } else {
+        abortCounter = 0; // Reset abort counter.
+      }
+      abort = 0;
+      if (abortCounter >= 1) {
+        abort = 1
+      }
+      if (targetLat == 0 || targetLon == 0) {
+        targetLat = prevTLat;
+        targetLon = prevTLon;
+      }
+    }
+#endif
     imu.count = millis();
   }
 }

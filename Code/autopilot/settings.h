@@ -70,8 +70,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define GPS_LOW_POWER_RATE 15000 // The time in milliseconds stating the frequency of new GPS data in low power mode.
 
 // Coordinates.
-#define TARGET_LAT 41.40338  // Target latitude.
-#define TARGET_LON -71.9533  // Target longitude.
+#define TARGET_LAT 41.40338  // Target latitude, this could get changed by the ground station.
+#define TARGET_LON -71.9533  // Target longitude, this could get changed by the ground station.
 #define TESTING_LAT 41.30338 // Testing latitude.
 #define TESTING_LON -71.8533 // Testing longitude.
 

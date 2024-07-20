@@ -3,10 +3,11 @@ import serial
 import struct
 import datetime
 import time
+from inputimeout import inputimeout
 
 baud_rate = 115200
 serial_port = "/dev/cu.usbserial-A50285BI"  # Replace this with your serial port (e.g., 'COM3' for Windows).
-lora_update_rate = 5000 # Update rate in milliseconds of the sender.
+lora_update_rate = 5000  # Update rate in milliseconds of the sender.
 
 # Uploader position, commented out because the data is sent from the ground station sketch.
 # u_lon = 42.30
@@ -38,7 +39,7 @@ while True:
         hour = struct.unpack("i", ser.read(4))[0]
         minute = struct.unpack("i", ser.read(4))[0]
         second = struct.unpack("i", ser.read(4))[0]
-        tc_count = struct.unpack("i", ser.read(4))[0]
+        tx_count = struct.unpack("i", ser.read(4))[0]
         rx_count = struct.unpack("i", ser.read(4))[0]
         u_lat = struct.unpack("f", ser.read(4))[0]
         u_lon = struct.unpack("f", ser.read(4))[0]
@@ -70,7 +71,6 @@ while True:
             batt=volts,  # Battery voltage (V)
             temp=temp,  # Temperature (C)
             pressure=pressure,  # Pressure (hPa)
-            vel_h=speed,  # Horizontal Velocity (m/s)
             snr=snr,  # Signal-to-Noise Ratio of the received telemetry, in dB.
             frequency=freq,  # Frequency of the received telemetry, in MHz.
             rssi=rssi,  # Received Signal Strength, in dBm
@@ -113,14 +113,38 @@ while True:
         """
         )
     else:
+        start = int(round(time.time() * 1000))
+        prev_t_lat = t_lat
+        prev_t_lon = t_lon
+        print(
+            f"Put in new target lat and lon, you have {lora_update_rate} milliseconds."
+        )
+        print(f"Current target lat: {t_lat}, lon: {t_lon}")
+        t_lat = float(
+            inputimeout(
+                prompt="Enter new target lat, at least 4 decimal places:",
+                timeout=(lora_update_rate - 250) / 1000,
+            )
+        )
         millis = int(round(time.time() * 1000))
-        while millis < lora_update_rate + millis:
-            print(f"Put in new target lat and lon, you have {lora_update_rate} milliseconds.")
-            print(f"Current target lat: {t_lat}, lon: {t_lon}")
-            print("Enter new target lat:")
-            t_lat = float(input())
-            print("Enter new target lon:")
-            t_lon = float(input())
-            
-            # IDK if this is the right way to do this, I should prob add a timeout to the input. 
-            
+        t_lon = float(
+            inputimeout(
+                prompt="Enter new target lon, at least 4 decimal places:",
+                timeout=((lora_update_rate - 250) - (millis - start)) / 1000,
+            )
+        )
+        str_t_lat = str(t_lat)
+        str_t_lon = str(t_lon)
+        if len(str_t_lat.split(".")[1]) < 4:
+            print("Latitude must have at least 4 decimal places.")
+        if len(str_t_lon.split(".")[1]) < 4:
+            print("Latitude must have at least 4 decimal places.")
+        elif prev_t_lat != t_lat or prev_t_lon != t_lon:
+            print(f"New target lat: {t_lat}, lon: {t_lon}")
+            ser.write(struct.pack("f", t_lat))
+            ser.write(struct.pack("f", t_lon))
+            ser.flush()
+        else:
+            print("No valid input, keeping previous target lat and lon.")
+            t_lat = prev_t_lat
+            t_lon = prev_t_lon
