@@ -8762,6 +8762,132 @@
 			)
 		)
 	)
+	(footprint "RF_Antenna:GPS1003"
+		(layer "F.Cu")
+		(uuid "67464abc-7ecc-42a7-b5e4-5944333d453b")
+		(at 161.8155 70.0905 90)
+		(property "Reference" "REF**"
+			(at 0 2.421 90)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "ad2277a9-0ed8-478e-a941-5e9c2dc48a74")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "GPS1003"
+			(at 0 3.921 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "ec29f17f-0f51-419b-ac75-5f90eaa5d5fb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Footprint" "RF_Antenna:GPS1003"
+			(at 0 2.921 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d12fdee5-7a88-40a2-bfec-7d8c0d11c373")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "952b0fc3-325a-4dad-8a67-97d64d1ab95f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "162f8057-1ce3-4c80-bc3a-730bbd8996cc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C239243"
+			(at 0 0 90)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "ccc3fde8-5e58-49d3-a052-df0f017fcb4d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr smd)
+		(fp_text user "${REFERENCE}"
+			(at 0 5.421 90)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "e6fcfc3d-010f-4490-a6bd-209be9f0c2f6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at -0.127 0 90)
+			(size 1.8 1.8)
+			(drill 1.1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(uuid "b839ea26-d154-4259-b32c-5fe07e3c4cb5")
+		)
+		(pad "1" smd roundrect
+			(at 0 0 90)
+			(size 2 3)
+			(layers "F.Cu" "F.Paste" "F.Mask")
+			(roundrect_rratio 0.25)
+			(thermal_bridge_angle 45)
+			(uuid "4102e6a8-99a3-4b11-84be-9351bd6d6bb2")
+		)
+		(pad "2" thru_hole circle
+			(at -0.127 -2.667 90)
+			(size 1.8 1.8)
+			(drill 1.1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(uuid "51287149-31b7-4228-96ce-e537098b5ead")
+		)
+		(pad "3" smd roundrect
+			(at 10.16 0 90)
+			(size 2 3)
+			(layers "F.Cu" "F.Paste" "F.Mask")
+			(roundrect_rratio 0.25)
+			(thermal_bridge_angle 45)
+			(uuid "8ebd9ef4-cd6a-4f9f-ae72-02dec7f83f93")
+		)
+	)
 	(footprint "Capacitor_SMD:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "683cd483-1955-4db7-b45f-110cb98b677c")
