@@ -1,0 +1,12 @@
+﻿Designator,Footprint,Quantity,Value,LCSC Part #
+BT1,BatteryHolder_Keystone_2462_2xAA,1,3V,
+D1,LED_D3.0mm,1,RED,
+J1,PinHeader_1x08_P2.54mm_Vertical,1,Left,
+J2,PinHeader_1x08_P2.54mm_Vertical,1,Right,
+J3,PinHeader_1x05_P2.54mm_Vertical,1,GPS,
+J4,PinHeader_1x10_P2.54mm_Vertical,1,MPU-9250,
+J7,PinHeader_1x04_P2.54mm_Vertical,1,OLED,
+"R1, R2",R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,2,1.8 K,
+R3,R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,1,1 K,
+SW1,SW_Slide_SPDT,1,SW_SPDT,
+U1,MODULE_ESP32_DEVKIT_V1,1,ESP32-DEVKIT-V1,

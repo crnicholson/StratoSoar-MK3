@@ -8,12 +8,15 @@ sweep = 25  # Sweep angle of the leading edge.
 elevonChord = 20  # mm of the chord for the elevons.
 electronicsWeight = 26  # Estimated weight of the electronics in grams. (Controller = 10 grams, battery = 10 grams, servos = 6 grams).
 
+# Following densities are wrong:
 # Density of E flute cardboard (1.5 mm) is 1.61 g/dm^2.
 # Desnity of D flute cardboard (2 mm) is
 # Desnity of C flute cardboard (4 mm) is 5.15 g/dm^2.
 # Desnity of B flute cardboard (3 mm) is 4.95 g/dm^2.
 # Desnity of A flute cardboard (5 mm) is
-materialDensity = 1.61  # Denisty of the material in g/dm^2.
+
+# The density of the 2 mm cardboard I have been using is 4.83 grams per dm^2.
+materialDensity = 4.83  # Denisty of the material in g/dm^2.
 
 sa = (weight / wcl) ** (1 / 1.5)
 
