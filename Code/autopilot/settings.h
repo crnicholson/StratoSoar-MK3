@@ -24,6 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define USE_EEPROM
 #define USE_LORA
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
+#define WAYPOINTS
 
 // Pins.
 #define LED 13
@@ -56,6 +57,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define BAUD_RATE 115200           // Baud rate of the serial monitor.
 #define SEA_LEVEL_PRESSURE 1013.25 // Sea level pressure in hPa.
 #define DECLINATION 14             // http://www.ngdc.noaa.gov/geomag-web/#declination
+#define LAND_ALTITUDE 200          // Under this many meters in altitude, the glider will start it's landing sequence.
+#define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.

@@ -18,9 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // To-do:
 // - Add correct flying wing dynamics
-// - Use threading for the imu
 // - Add a fast update period
-// - Find a way to land
+// - Add drop detection.
 // - Test bi directional communication
 
 #include "blink.h"
@@ -35,6 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "servo.h"
 #include "settings.h"
 #include "vars.h"
+#include <Scheduler.h>
 
 ICM20948 imu;
 
@@ -51,7 +51,7 @@ int humidity;
 
 // Other vars.
 int lastLoRa, abortCounter;
-byte abort;
+bool abort, altitudeLock;
 
 struct data packet;
 
@@ -112,22 +112,27 @@ void setup() {
   moveRightServo(0);
   moveLeftServo(90);
   moveRightServo(90);
+
 #ifdef DEVMODE
   SerialUSB.println("Everything has initialized, moving on to main sketch in 5 seconds.");
 #endif
+
   delay(5000);
 }
 
 void loop() {
-  imuMath();
+  // If IMU timer matches with the update rate.
   if (imu.delt_t > UPDATE_RATE) {
+
 #ifdef USE_GPS
+    // If not using GPS low power, just get data and do nothing else.
 #ifndef GPS_LOW_POWER
     if (millis() - gpsLast > GPS_UPDATE_RATE) {
       gpsLast = millis();
       lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
     }
 #endif
+    // If using GPS low power mode, get data and put GPS to sleep.
 #ifdef GPS_LOW_POWER
     if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
       gpsLast = millis();
@@ -137,24 +142,40 @@ void loop() {
     }
 #endif
 #endif
+
+    // Getting sensor values.
 #ifdef USE_BME
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
 #endif
+
+    // Calculations.
     distance = calculateDistance(lat, lon, targetLat, targetLon);
     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+
+    // Landing.
+    if (altitude > LOCK_ALTITUDE) {
+      altitudeLock = true;
+    }
+    if (altitude < LAND_ALTITUDE && altitudeLock) {
+      abort = true;
+    }
+    if (abort) {
+      land(); // This should send the glider into a spiral for landing.
+    }
+
+    // Steering.
     if (!abort) {
       servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
       moveLeftServo(servoPositionLeft);
       moveRightServo(servoPositionRight);
     }
-    if (abort) {
-      // This should send the glider into a spiral for landing.
-      moveLeftServo(0);
-      moveRightServo(12);
-    }
+
+    // EEPROM.
 #ifdef USE_EEPROM
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
 #endif
+
+    // LoRA communication.
 #ifdef USE_LORA
     if (millis() - lastLoRa > LORA_UPDATE_RATE) {
       packet.lat = lat;
@@ -183,14 +204,16 @@ void loop() {
       LoRa.readBytes((byte *)&targetLat, sizeof(float));
       LoRa.readBytes((byte *)&targetLon, sizeof(float));
       abort = LoRa.read();
+
+      // Make sure abort was not sent by accident, need two in a row for it to work.
       if (abort == 1) {
         abortCounter++;
       } else {
         abortCounter = 0; // Reset abort counter.
       }
-      abort = 0;
+      abort = false;
       if (abortCounter >= 1) {
-        abort = 1
+        abort = true
       }
       if (targetLat == 0 || targetLon == 0) {
         targetLat = prevTLat;
@@ -198,6 +221,12 @@ void loop() {
       }
     }
 #endif
+
+    // Updating time for IMU.
     imu.count = millis();
   }
+}
+
+void loop2() { // We're doing threading on an Arduino! (This is a really cool library).
+  imuMath();
 }

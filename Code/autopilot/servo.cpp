@@ -91,3 +91,8 @@ void moveRightServo(int degrees) {
   delay(rightTime);
   digitalWrite(RIGHT_FET, LOW); // Turn servo off.
 }
+
+void land(int left, int right) {
+  moveLeftServo(left);
+  moveRightServo(right);
+}

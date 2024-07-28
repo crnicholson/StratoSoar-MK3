@@ -44,4 +44,4 @@ extern struct data packet;
 
 // Other vars.
 extern int lastLoRa, abortCounter;
-extern byte abort;
+extern bool abort, altitudeLock;
