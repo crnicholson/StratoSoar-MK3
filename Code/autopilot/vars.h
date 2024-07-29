@@ -36,7 +36,7 @@ struct data {
   short yaw, pitch, roll;
   byte hour, minute, second;
   short txCount;
-  byte abort;
+  byte abortFlight;
   char callSign[7] = CALL_SIGN;
 };
 
@@ -44,4 +44,4 @@ extern struct data packet;
 
 // Other vars.
 extern int lastLoRa, abortCounter;
-extern bool abort, altitudeLock;
+extern bool abortFlight, altitudeLock;

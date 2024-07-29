@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 // Enables.
@@ -24,7 +24,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define USE_EEPROM
 #define USE_LORA
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
-#define WAYPOINTS
+#define USE_WAYPOINTS
 
 // Pins.
 #define LED 13
@@ -59,6 +59,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define DECLINATION 14             // http://www.ngdc.noaa.gov/geomag-web/#declination
 #define LAND_ALTITUDE 200          // Under this many meters in altitude, the glider will start it's landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
+#define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
 
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.
@@ -72,7 +73,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define GPS_UPDATE_RATE 5000     // The time in milliseconds stating the frequency of new GPS data.
 #define GPS_LOW_POWER_RATE 15000 // The time in milliseconds stating the frequency of new GPS data in low power mode.
 
-// Coordinates.
+// Coordinates. Coordinates for the waypoint system are set in "waypoint.cpp".
 #define TARGET_LAT 41.40338  // Target latitude, this could get changed by the ground station.
 #define TARGET_LON -71.9533  // Target longitude, this could get changed by the ground station.
 #define TESTING_LAT 41.30338 // Testing latitude.

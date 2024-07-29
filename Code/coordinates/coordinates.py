@@ -23,5 +23,5 @@ for location in locations:
         if float(coordinate) != 0.0:
             finalCoordinates.append(float(coordinate))
 
-print("\nCopy and paste this into coordinates.h. Make sure to replace [] with {}.\n")
+print("\nCopy and paste this into waypoints.cpp. Make sure to replace [] with {}.\n")
 print(finalCoordinates)

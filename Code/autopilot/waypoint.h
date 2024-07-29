@@ -1,11 +1,10 @@
 #pragma once
 
-#include "coordinates.h"
 #include "settings.h"
+#include "vars.h"
 #include <Arduino.h>
 
-void waypointSetup() {
-}
-
-void adjustForWaypoint() {
-}
+void waypointsSetup();
+float returnNextWaypoint();
+int getCurrentWaypoinx();
+void updateWaypoint();

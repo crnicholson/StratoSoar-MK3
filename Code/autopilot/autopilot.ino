@@ -34,6 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "servo.h"
 #include "settings.h"
 #include "vars.h"
+#include "waypoint.h"
 #include <Scheduler.h>
 
 ICM20948 imu;
@@ -51,7 +52,7 @@ int humidity;
 
 // Other vars.
 int lastLoRa, abortCounter;
-bool abort, altitudeLock;
+bool abortFlight, altitudeLock;
 
 struct data packet;
 
@@ -97,6 +98,9 @@ void setup() {
 #endif
   gpsSetup();
   waitForFix();
+#endif
+#ifdef USE_WAYPOINTS
+  waypointsSetup();
 #endif
 
 #ifndef USE_GPS
@@ -152,19 +156,23 @@ void loop() {
     distance = calculateDistance(lat, lon, targetLat, targetLon);
     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
+#ifdef USE_WAYPOINTS
+    updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
+#endif
+
     // Landing.
     if (altitude > LOCK_ALTITUDE) {
       altitudeLock = true;
     }
     if (altitude < LAND_ALTITUDE && altitudeLock) {
-      abort = true;
+      abortFlight = true;
     }
-    if (abort) {
-      land(); // This should send the glider into a spiral for landing.
+    if (abortFlight) {
+      land(90, 110); // This should send the glider into a spiral for landing.
     }
 
     // Steering.
-    if (!abort) {
+    if (!abortFlight) {
       servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
       moveLeftServo(servoPositionLeft);
       moveRightServo(servoPositionRight);
@@ -194,26 +202,26 @@ void loop() {
       packet.minute = minute;
       packet.second = second;
       packet.txCount++;
-      packet.abort = abort;
+      packet.abortFlight = abortFlight;
       sendData(packet);
       lastLoRa = millis();
     }
     if (LoRa.parsePacket() > 0) {
-      prevTLat = targetLat;
-      prevTLon = targetLon;
+      float prevTLat = targetLat;
+      float prevTLon = targetLon;
       LoRa.readBytes((byte *)&targetLat, sizeof(float));
       LoRa.readBytes((byte *)&targetLon, sizeof(float));
-      abort = LoRa.read();
+      abortFlight = LoRa.read();
 
-      // Make sure abort was not sent by accident, need two in a row for it to work.
-      if (abort == 1) {
+      // Make sure abortFlight was not sent by accident, need two in a row for it to work.
+      if (abortFlight == 1) {
         abortCounter++;
       } else {
-        abortCounter = 0; // Reset abort counter.
+        abortCounter = 0; // Reset abortFlight counter.
       }
-      abort = false;
+      abortFlight = false;
       if (abortCounter >= 1) {
-        abort = true
+        abortFlight = true;
       }
       if (targetLat == 0 || targetLon == 0) {
         targetLat = prevTLat;
