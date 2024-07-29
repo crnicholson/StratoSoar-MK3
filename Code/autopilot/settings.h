@@ -61,6 +61,22 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 #define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
 
+// Glider pitch control.
+#define PITCH -5          // Pitch the glider should be flying at during the flight.
+#define STARTING_PITCH -6 // The pitch the glider starts at before finding the best pitch.
+#define PITCH_RANGE 4     // This many degrees will be added to the value of PITCH as the high value.
+#define PITCH_STEPS 1     // This is the number of degrees stepped upwards when finding the optimum pitch angle per cycle.
+#define STEP_TIME 10      // Time in seconds spent on each step.
+
+// PID settings.
+#define KP_LEFT 1
+#define KI_LEFT 0
+#define KD_LEFT 0
+
+#define KP_RIGHT 1
+#define KI_RIGHT 0
+#define KD_RIGHT 0
+
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.
 #define EEPROM_SIZE 512    // Valid types: 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1025, 2048

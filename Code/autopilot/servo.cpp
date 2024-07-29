@@ -18,14 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "servo.h"
 
-#define KP_LEFT 1
-#define KI_LEFT 0
-#define KD_LEFT 0
-
-#define KP_RIGHT 1
-#define KI_RIGHT 0
-#define KD_RIGHT 0
-
 #define SETPOINT_PITCH 0
 
 int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw;
@@ -50,8 +42,8 @@ int pidElevons(int pitch, int yaw, int turningAngle) {
   prevErrorYaw = errorYaw;
   integralYaw += errorYaw;
 
-  int servoPositionLeft = 90 - outputPitch + outputYaw;
-  int servoPositionRight = 90 - outputPitch - outputYaw;
+  int servoPositionLeft = 90 - outputPitch + outputYaw + PITCH;
+  int servoPositionRight = 90 - outputPitch - outputYaw + PITCH;
 
   // Map servo positions if needed.
   // servoPositionLeft = map(servoPositionLeft, 0, 180, 750, 2250);
@@ -95,4 +87,54 @@ void moveRightServo(int degrees) {
 void land(int left, int right) {
   moveLeftServo(left);
   moveRightServo(right);
+}
+
+// This program will return the best pitch to fly at for most distance, found experimentally.
+float findBestPitch() {
+  float results[] = {};
+  float bestPitch = 0.0;
+  float lastRate = 0.0;
+  int x = 0;
+  int y = 0;
+  while (x < PITCH_RANGE) {
+    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    float prevLat = lat;
+    float prevLon = lon;
+    float prevAlt = altitude;
+    moveLeftServo(x + STARTING_PITCH);
+    moveRightServo(x + STARTING_PITCH);
+    long beforeTest = millis();
+    while (beforeTest + STEP_TIME < millis()) {
+      longBlink(LED); // Just blink the LED.
+    }
+    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    float distance = calculateDistance(prevLat, prevLon, lat, lon);
+    float glideRate = distance / altitude;
+
+    results[y] = x + STARTING_PITCH;
+    y++;
+    results[y] = glideRate;
+    y++;
+
+    if (glideRate > lastRate) {
+      bestPitch = STARTING_PITCH + x;
+    }
+
+    x++;
+  }
+#ifdef DEVMODE
+  SerialUSB.println(results);
+#endif
+  return bestPitch;
+}
+
+#define GRAMS 100
+#define SEA_LEVEL_AIR_DENSITY 1.225; // kg/m^3
+#define C_L 1                        // We can estimate this to be 1.
+#define SA 100                       // Plan form surface area of the wing in square decimeters.
+
+float calculateStallSpeed(float altitude) {
+  float w = GRAMS * 0.009806652;
+  float rho = SEA_LEVEL_AIR_DENSITY * exp(-altitude / 8000.0); // Approximation
+  return sqrt((2 * w) / (rho * SA * 100 * C_L));
 }

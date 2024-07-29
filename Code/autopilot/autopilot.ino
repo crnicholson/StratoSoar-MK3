@@ -21,6 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add a fast update period
 // - Add drop detection.
 // - Test bi directional communication
+// - Add a ground altitude for the landing location 
+// - Compile with different enables
 
 #include "blink.h"
 #include "bme280.h"

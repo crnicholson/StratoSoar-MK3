@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include "calc.h"
+#include "gps.h"
 #include "settings.h"
 #include "vars.h"
 #include <Arduino.h>
@@ -28,3 +30,4 @@ int pidElevons(int pitch, int yaw, int turningAngle);
 void moveLeftServo(int degrees);
 void moveRightServo(int degrees);
 void land(int left, int right);
+float findBestPitch();
