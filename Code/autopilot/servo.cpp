@@ -42,8 +42,8 @@ int pidElevons(int pitch, int yaw, int turningAngle) {
   prevErrorYaw = errorYaw;
   integralYaw += errorYaw;
 
-  int servoPositionLeft = 90 - outputPitch + outputYaw + PITCH;
-  int servoPositionRight = 90 - outputPitch - outputYaw + PITCH;
+  int servoPositionLeft = 90 - outputPitch + outputYaw + desiredPitch;
+  int servoPositionRight = 90 - outputPitch - outputYaw + desiredPitch;
 
   // Map servo positions if needed.
   // servoPositionLeft = map(servoPositionLeft, 0, 180, 750, 2250);
@@ -123,15 +123,15 @@ float findBestPitch() {
     x++;
   }
 #ifdef DEVMODE
-  SerialUSB.println(results);
+  // SerialUSB.println(results);
 #endif
   return bestPitch;
 }
 
 #define GRAMS 100
-#define SEA_LEVEL_AIR_DENSITY 1.225; // kg/m^3
-#define C_L 1                        // We can estimate this to be 1.
-#define SA 100                       // Plan form surface area of the wing in square decimeters.
+#define SEA_LEVEL_AIR_DENSITY 1.225 // kg/m^3
+#define C_L 1                       // We can estimate this to be 1.
+#define SA 100                      // Plan form surface area of the wing in square decimeters.
 
 float calculateStallSpeed(float altitude) {
   float w = GRAMS * 0.009806652;

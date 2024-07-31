@@ -19,12 +19,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // Enables.
 #define DEVMODE       // Toggle serial monitor.
 #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
-#define USE_GPS
+// #define USE_GPS
 #define USE_BME
 #define USE_EEPROM
 #define USE_LORA
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
 #define USE_WAYPOINTS
+#define FIND_PITCH // Use a program to find the best pitch of the glider. BME and GPS must be enabled.
+#define DROP_START // Don't start the program until the glider has detected a drop in altitude.
 
 // Pins.
 #define LED 13
@@ -57,16 +59,16 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define BAUD_RATE 115200           // Baud rate of the serial monitor.
 #define SEA_LEVEL_PRESSURE 1013.25 // Sea level pressure in hPa.
 #define DECLINATION 14             // http://www.ngdc.noaa.gov/geomag-web/#declination
-#define LAND_ALTITUDE 200          // Under this many meters in altitude, the glider will start it's landing sequence.
+#define LAND_ALTITUDE 100          // This many meters from the gorund the glider will start its landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 #define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
 
 // Glider pitch control.
-#define PITCH -5          // Pitch the glider should be flying at during the flight.
-#define STARTING_PITCH -6 // The pitch the glider starts at before finding the best pitch.
-#define PITCH_RANGE 4     // This many degrees will be added to the value of PITCH as the high value.
-#define PITCH_STEPS 1     // This is the number of degrees stepped upwards when finding the optimum pitch angle per cycle.
-#define STEP_TIME 10      // Time in seconds spent on each step.
+#define DESIRED_PITCH -5.0 // Pitch the glider should be flying at during the flight.
+#define STARTING_PITCH -6  // The pitch the glider starts at before finding the best pitch.
+#define PITCH_RANGE 4      // This many degrees will be added to the value of PITCH as the high value.
+#define PITCH_STEPS 1      // This is the number of degrees stepped upwards when finding the optimum pitch angle per cycle.
+#define STEP_TIME 10       // Time in seconds spent on each step.
 
 // PID settings.
 #define KP_LEFT 1
@@ -92,6 +94,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // Coordinates. Coordinates for the waypoint system are set in "waypoint.cpp".
 #define TARGET_LAT 41.40338  // Target latitude, this could get changed by the ground station.
 #define TARGET_LON -71.9533  // Target longitude, this could get changed by the ground station.
+#define TARGET_ALT 100       // Altitude of the target location.
 #define TESTING_LAT 41.30338 // Testing latitude.
 #define TESTING_LON -71.8533 // Testing longitude.
 

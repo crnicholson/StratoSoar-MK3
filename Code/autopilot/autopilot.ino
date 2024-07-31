@@ -18,10 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // To-do:
 // - Add correct flying wing dynamics
-// - Add a fast update period
-// - Add drop detection.
 // - Test bi directional communication
-// - Add a ground altitude for the landing location 
 // - Compile with different enables
 
 #include "blink.h"
@@ -55,6 +52,7 @@ int humidity;
 // Other vars.
 int lastLoRa, abortCounter;
 bool abortFlight, altitudeLock;
+float desiredPitch = DESIRED_PITCH;
 
 struct data packet;
 
@@ -119,6 +117,33 @@ void setup() {
   moveLeftServo(90);
   moveRightServo(90);
 
+#ifdef FIND_PITCH
+#ifndef USE_BME
+#error "Please enable BME to find the optimum pitch."
+#ifdef DEVMODE
+  SerialUSB.println("Please enable BME to find the optimum pitch.");
+#endif
+  while (1) {
+    longBlink(ERR_LED);
+  }
+#endif
+#ifndef USE_GPS
+#error "Please enable GPS to find the optimum pitch."
+#ifdef DEVMODE
+  SerialUSB.println("Please enable GPS to find the optimum pitch.");
+#endif
+  while (1) {
+    longBlink(ERR_LED);
+  }
+#endif
+#ifdef DEVMODE
+  SerialUSB.print("Starting the optimum pitch finder program. Please drop the glider for ");
+  SerialUSB.print(PITCH_RANGE * PITCH_STEPS * STEP_TIME);
+  SerialUSB.println(" plus an additional 15 seconds for the glider to get up to speed.");
+#endif
+  desiredPitch = findBestPitch();
+#endif
+
 #ifdef DEVMODE
   SerialUSB.println("Everything has initialized, moving on to main sketch in 5 seconds.");
 #endif
@@ -127,6 +152,32 @@ void setup() {
 }
 
 void loop() {
+#ifdef DROP_START
+  int altitudeCounter = 0;
+  float lastAltitude = 0;
+  while (bmeAltitude < LOCK_ALTITUDE) {
+    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+#ifdef DEVMODE
+    SerialUSB.println("Waiting to drop until the lock altitude is reached.");
+#endif
+    delay(1000);
+  }
+  while (altitudeCounter < 2) {
+    lastAltitude = bmeAltitude;
+    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+    if (bmeAltitude < lastAltitude) {
+      altitudeCounter++;
+    }
+#ifdef DEVMODE
+    SerialUSB.println("Waiting until the altitude is dropping for two times in a row.");
+#endif
+    delay(1000);
+  }
+  moveLeftServo(desiredPitch);
+  moveRightServo(desiredPitch);
+  delay(15000); // Give enough time for the glider to stabilize in flight before starting steering shenanigans.
+#endif
+
   // If IMU timer matches with the update rate.
   if (imu.delt_t > UPDATE_RATE) {
 
@@ -166,7 +217,7 @@ void loop() {
     if (altitude > LOCK_ALTITUDE) {
       altitudeLock = true;
     }
-    if (altitude < LAND_ALTITUDE && altitudeLock) {
+    if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
       abortFlight = true;
     }
     if (abortFlight) {

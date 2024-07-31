@@ -45,3 +45,4 @@ extern struct data packet;
 // Other vars.
 extern int lastLoRa, abortCounter;
 extern bool abortFlight, altitudeLock;
+extern float desiredPitch;

@@ -4,5 +4,6 @@
     "files.associations": {
         "cmath": "cpp",
         "type_traits": "cpp"
-    }
+    },
+     "arduino.logLevel" : "verbose"
 }
