@@ -62,6 +62,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define LAND_ALTITUDE 100          // This many meters from the gorund the glider will start its landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 #define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
+#define LOW_VOLTAGE 3.4            // Below this voltage the glider will reduce the frequency of position updates and servo updates.
+#define TOO_LOW_VOLTAGE 3.2        // Below this voltage the glider will simply spiral down with even fewer updates.
 
 // Glider pitch control.
 #define DESIRED_PITCH -5.0 // Pitch the glider should be flying at during the flight.

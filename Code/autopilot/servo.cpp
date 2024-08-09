@@ -89,6 +89,8 @@ void land(int left, int right) {
   moveRightServo(right);
 }
 
+// Experimental stuff below.
+
 // This program will return the best pitch to fly at for most distance, found experimentally.
 float findBestPitch() {
   float results[] = {};
@@ -137,4 +139,52 @@ float calculateStallSpeed(float altitude) {
   float w = GRAMS * 0.009806652;
   float rho = SEA_LEVEL_AIR_DENSITY * exp(-altitude / 8000.0); // Approximation
   return sqrt((2 * w) / (rho * SA * 100 * C_L));
+}
+
+#define potPin A0
+#define motorPin 9
+#define motorFeedbackPin A1
+
+#define KP 2.0
+#define KI 0.5
+#define KD 1.0
+
+double previousError, integral;
+unsigned long lastTime;
+
+void experiementalServo(int setpoint) {
+  double input, output;
+  int potValue = analogRead(potPin);
+
+  setpoint = map(potValue, 0, 1023, 0, 180);
+
+  int motorFeedbackValue = analogRead(motorFeedbackPin);
+  input = map(motorFeedbackValue, 0, 1023, 0, 180);
+
+  unsigned long currentTime = millis();
+  double timeChange = (double)(currentTime - lastTime);
+
+  double error = setpoint - input;
+  integral += (error * timeChange);
+  double derivative = (error - previousError) / timeChange;
+
+  output = (KP * error) + (KI * integral) + (KD * derivative);
+
+  output = constrain(output, 0, 255);
+
+  analogWrite(motorPin, output);
+
+  previousError = error;
+  lastTime = currentTime;
+
+#ifdef DEVMODE
+  SerialUSB.print("Setpoint: ");
+  SerialUSB.print(setpoint);
+  SerialUSB.print(" | Input: ");
+  SerialUSB.print(input);
+  SerialUSB.print(" | Output: ");
+  SerialUSB.println(output);
+#endif
+
+  delay(50);
 }

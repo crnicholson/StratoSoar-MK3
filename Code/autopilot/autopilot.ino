@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add correct flying wing dynamics
 // - Test bi directional communication
 // - Compile with different enables
+// - Add a minimum temeperature for the cutdown mechanism
 
 #include "blink.h"
 #include "bme280.h"
@@ -50,8 +51,8 @@ float temperature, pressure, bmeAltitude;
 int humidity;
 
 // Other vars.
-int lastLoRa, abortCounter;
-bool abortFlight, altitudeLock;
+int lastLoRa, abortCounter, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE;
+bool abortFlight, loraAbortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
 float desiredPitch = DESIRED_PITCH;
 
 struct data packet;
@@ -158,7 +159,7 @@ void loop() {
   while (bmeAltitude < LOCK_ALTITUDE) {
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
 #ifdef DEVMODE
-    SerialUSB.println("Waiting to drop until the lock altitude is reached.");
+    SerialUSB.println("Waiting to initiate flight until the lock altitude is reached.");
 #endif
     delay(1000);
   }
@@ -173,13 +174,16 @@ void loop() {
 #endif
     delay(1000);
   }
-  moveLeftServo(desiredPitch);
-  moveRightServo(desiredPitch);
-  delay(15000); // Give enough time for the glider to stabilize in flight before starting steering shenanigans.
+  moveLeftServo(90);
+  moveRightServo(90);
+  delay(1000);
+  moveLeftServo(95);
+  moveRightServo(95);
+  delay(5000); // Give enough time for the glider to stabilize in flight before starting steering shenanigans.
 #endif
 
   // If IMU timer matches with the update rate.
-  if (imu.delt_t > UPDATE_RATE) {
+  if (imu.delt_t > updateRate) {
 
 #ifdef USE_GPS
     // If not using GPS low power, just get data and do nothing else.
@@ -209,8 +213,23 @@ void loop() {
     distance = calculateDistance(lat, lon, targetLat, targetLon);
     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
+    lastVoltage = voltage;
+    voltage = readVoltage();
+    if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
+      lowVoltage = true;
+      updateRae = 5000;       // Move the servos less frequently.
+      loraUpdateRate = 30000; // Reduce the LoRa update rate.
+    }
+    if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
+      ultralowVoltage = true;
+      loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
+      abortFlight = true;     // Land the glider.
+    }
+
 #ifdef USE_WAYPOINTS
-    updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
+    if (!lowVoltage) {
+      updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
+    }
 #endif
 
     // Landing.
@@ -236,9 +255,9 @@ void loop() {
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
 #endif
 
-    // LoRA communication.
+    // LoRa communication.
 #ifdef USE_LORA
-    if (millis() - lastLoRa > LORA_UPDATE_RATE) {
+    if (millis() - lastLoRa > loraUpdateRate) {
       packet.lat = lat;
       packet.lon = lon;
       packet.tLat = targetLat;
@@ -247,7 +266,7 @@ void loop() {
       packet.temperature = temperature;
       packet.pressure = pressure;
       packet.humidity = humidity;
-      packet.volts = readVoltage();
+      packet.volts = voltage;
       packet.yaw = yaw;
       packet.pitch = pitch;
       packet.roll = roll;
@@ -264,15 +283,15 @@ void loop() {
       float prevTLon = targetLon;
       LoRa.readBytes((byte *)&targetLat, sizeof(float));
       LoRa.readBytes((byte *)&targetLon, sizeof(float));
-      abortFlight = LoRa.read();
+      loraAbortFlight = LoRa.read();
 
       // Make sure abortFlight was not sent by accident, need two in a row for it to work.
-      if (abortFlight == 1) {
+      if (loraAbortFlight) {
         abortCounter++;
       } else {
         abortCounter = 0; // Reset abortFlight counter.
       }
-      abortFlight = false;
+      loraAbortFlight = false;
       if (abortCounter >= 1) {
         abortFlight = true;
       }
