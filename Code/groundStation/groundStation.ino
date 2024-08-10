@@ -100,13 +100,12 @@ void loop() {
     // Check if the packet is a valid packet.
     if (sizeof(receivedData) == packetSize) {
       shortBlink(LED);
+      rssi = LoRa.packetRssi();
+      snr = LoRa.packetSnr();
 #ifdef DEVMODE
       displayData();
 #endif
 #ifndef DEVMODE
-      rssi = LoRa.packetRssi();
-      snr = LoRa.packetSnr();
-
       Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
       Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
       Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
@@ -224,4 +223,86 @@ void displayData() {
 
   Serial.print(" SNR: ");
   Serial.println(snr);
+}
+
+void hammingRecieve() {
+  int packetSize = LoRa.parsePacket(); // Parse packet.
+  if (packetSize > 0) {
+    shortBlink(LED);
+
+    byte encodedData[2 * sizeof(receivedData)];
+    LoRa.readBytes(encodedData, sizeof(encodedData));
+
+    byte *decodedData = (byte *)&receivedData;
+
+    for (size_t i = 0; i < sizeof(receivedData); ++i) {
+      // Decode each byte using Hamming(7,4) code.
+      byte highNibble = hammingDecode(encodedData[2 * i]);
+      byte lowNibble = hammingDecode(encodedData[2 * i + 1]);
+
+      decodedData[i] = (highNibble << 4) | lowNibble;
+    }
+
+    rxCount++;
+
+    if (sizeof(receivedData) * 2 == packetSize) {
+      shortBlink(LED);
+      rssi = LoRa.packetRssi();
+      snr = LoRa.packetSnr();
+#ifdef DEVMODE
+      displayData();
+#endif
+#ifndef DEVMODE
+      Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
+      Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.tLat, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.tLon, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.temperature, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.pressure, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.humidity, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.volts, sizeof(float));
+      Serial.write((uint8_t *)&receivedData.yaw, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.pitch, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.roll, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.hour, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.minute, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.second, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.abort, sizeof(long));
+      Serial.write((uint8_t *)&receivedData.txCount, sizeof(long));
+      Serial.write((uint8_t *)&rxCount, sizeof(long));
+      Serial.write((uint8_t *)&U_LAT, sizeof(float));
+      Serial.write((uint8_t *)&U_LON, sizeof(float));
+      Serial.write((uint8_t *)&U_ALT, sizeof(float));
+      Serial.write((uint8_t *)&rssi, sizeof(long));
+      Serial.write((uint8_t *)&snr, sizeof(long));
+#endif
+    }
+  }
+}
+
+// Function to decode Hamming(7,4) code and correct single-bit errors.
+byte hammingDecode(byte encoded) {
+  byte p1 = (encoded >> 6) & 0x1;
+  byte p2 = (encoded >> 5) & 0x1;
+  byte p3 = (encoded >> 4) & 0x1;
+  byte d1 = (encoded >> 3) & 0x1;
+  byte d2 = (encoded >> 2) & 0x1;
+  byte d3 = (encoded >> 1) & 0x1;
+  byte d4 = (encoded >> 0) & 0x1;
+
+  // Calculate syndrome bits.
+  byte s1 = p1 ^ d1 ^ d2 ^ d4;
+  byte s2 = p2 ^ d1 ^ d3 ^ d4;
+  byte s3 = p3 ^ d2 ^ d3 ^ d4;
+
+  // Determine error position.
+  byte errorPos = (s3 << 2) | (s2 << 1) | s1;
+
+  // Correct the error if needed.
+  if (errorPos > 0 && errorPos <= 7) {
+    encoded ^= (1 << (7 - errorPos));
+  }
+
+  return (d1 << 3) | (d2 << 2) | (d3 << 1) | d4;
 }
