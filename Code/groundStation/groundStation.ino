@@ -41,9 +41,9 @@ struct receive {
   char callSign[7] = CALL_SIGN;
 } receivedData;
 
-int rxCount;
-long snr;
-long rssi;
+long rxCount;
+byte abort;
+long snr, rssi;
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -153,7 +153,7 @@ void loop() {
         WiFiClient client;
         HTTPClient http;
 
-        http.begin(client, serverName + "/add-data");
+        http.begin(client, serverName + "/change-glider-data");
         http.addHeader("Content-Type", "application/json");
 
         JsonDocument doc;
@@ -174,11 +174,13 @@ void loop() {
           if (!error) {
             float newTLat = responseDoc["tLat"];
             float newTLon = responseDoc["tLon"];
+            abort = responseDoc["abort"];
 
-            if (newTLon != 0 && newTLat != 0 && newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
+            if (newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
               LoRa.beginPacket();
               LoRa.write((byte *)&newTLat, sizeof(float));
               LoRa.write((byte *)&newTLon, sizeof(float));
+              LoRa.write(abort);
               LoRa.endPacket(true); // Send in async mode.
             }
           } else {

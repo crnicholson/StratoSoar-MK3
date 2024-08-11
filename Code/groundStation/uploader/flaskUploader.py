@@ -5,6 +5,7 @@ import os
 import datetime
 from sondehub.amateur import Uploader
 import threading
+import decimal
 
 cwd = os.getcwd()
 
@@ -22,8 +23,54 @@ freq = "433.000"  # Frequency in MHz of the received telemetry.
 new_t_lat = 0  # 0 by default means glider uses programmed target location.
 new_t_lon = 0
 abort = 0  # 0 is don't abort, 1 is abort.
+abortCounter = 0
+t_lat = 0
+t_lon = 0
 
 
+def input_handler():
+    while True:
+        try:
+            command = input("Enter command (set_lat_lon/abort): ").strip()
+            if command == "set_lat_lon":
+                print(
+                    "Please enter a latitude and longitude with at least 4 decimal places. You can always come back later and change it."
+                )
+                new_t_lat = float(input("Enter new target latitude: "))
+                new_t_lon = float(input("Enter new target longitude: "))
+                if new_t_lat == 0 or new_t_lon == 0:
+                    print(
+                        "Latitude or longitude equal 0. Glider will use current target location."
+                    )
+                    new_t_lat = t_lat
+                    new_t_lon = t_lon
+                str_lat = decimal.Decimal(str((new_t_lat)))
+                if abs(str_lat.as_tuple().exponent) < 4:
+                    print(
+                        "Latitude must have at least 4 decimal places. The old target latitude will be used."
+                    )
+                    new_t_lat = t_lat
+                str_lon = decimal.Decimal(str((new_t_lon)))
+                if abs(str_lon.as_tuple().exponent) < 4:
+                    print(
+                        "Longitude must have at least 4 decimal places. The old target longitude will be used."
+                    )
+                    new_t_lon = t_lon
+
+                print(f"Target location updated to ({new_t_lat}, {new_t_lon}).")
+            elif command == "abort":
+                if abortCounter < 1:
+                    print("Remeber to run the abort command twice to abort.")
+                abortCounter += 1
+                if abortCounter > 1:
+                    print("Abort signal sending on next ground station request.")
+                    abort = 1
+            else:
+                print("Invalid command, please set_lat_lon/abort next time.")
+        except ValueError:
+            print(
+                "Invalid input. Please enter numerical values for latitude and longitude."
+            )
 
 
 @app.route("/upload-station-data", methods=["POST"])
@@ -48,9 +95,9 @@ def upload_station_data():
         receivedAbort = received["abort"]
         tx_count = received["txCount"]
         rx_count = received["rxCount"]
-        u_lat = received["U_LAT"]
-        u_lon = received["U_LON"]
-        u_alt = received["U_ALT"]
+        u_lat = received["u_lat"]
+        u_lon = received["u_lon"]
+        u_alt = received["u_alt"]
         rssi = received["rssi"]
         snr = received["snr"]
 
@@ -140,12 +187,18 @@ def upload_station_data():
 def change_target():
     received = request.get_json()
     if received["callsign"] == call_sign:
+        if new_t_lat == 0 or new_t_lon == 0:
+            print(
+                "Latitude or longitude equal 0. Glider will use current target location."
+            )
+            new_t_lat = t_lat
+            new_t_lon = t_lon
         return jsonify({"tLat": new_t_lat, "tLon": new_t_lon, "abort": abort}), 200
     return "Wrong callsign.", 400
 
 
 if __name__ == "__main__":
-    input_thread = threading.Thread()
+    input_thread = threading.Thread(target=input_handler)
     input_thread.daemon = True
     input_thread.start()
 
