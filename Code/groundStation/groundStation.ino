@@ -44,7 +44,6 @@ struct receive {
 int rxCount;
 long snr;
 long rssi;
-float newTLat, newTLon;
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -90,6 +89,8 @@ void setup() {
   delay(1000);
 }
 
+shortBlink(LED);
+
 void loop() {
   int packetSize = LoRa.parsePacket(); // Parse packet.
   if (packetSize > 0) {
@@ -105,43 +106,103 @@ void loop() {
 #ifdef DEVMODE
       displayData();
 #endif
-#ifndef DEVMODE
-      Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
-      Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.tLat, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.tLon, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.temperature, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.pressure, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.humidity, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.volts, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.yaw, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.pitch, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.roll, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.hour, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.minute, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.second, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.abort, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.txCount, sizeof(long));
-      Serial.write((uint8_t *)&rxCount, sizeof(long));
-      Serial.write((uint8_t *)&U_LAT, sizeof(float));
-      Serial.write((uint8_t *)&U_LON, sizeof(float));
-      Serial.write((uint8_t *)&U_ALT, sizeof(float));
-      Serial.write((uint8_t *)&rssi, sizeof(long));
-      Serial.write((uint8_t *)&snr, sizeof(long));
+      if (WiFi.status() == WL_CONNECTED) {
+        WiFiClient client;
+        HTTPClient http;
+
+        http.begin(client, serverName + "/add-data");
+        http.addHeader("Content-Type", "application/json");
+
+        JsonDocument doc;
+        doc["lat"] = receivedData.lat;
+        doc["lon"] = receivedData.lon;
+        doc["altitude"] = receivedData.altitude;
+        doc["tLat"] = receivedData.tLat;
+        doc["tLon"] = receivedData.tLon;
+        doc["temperature"] = receivedData.temperature;
+        doc["pressure"] = receivedData.pressure;
+        doc["humidity"] = receivedData.humidity;
+        doc["volts"] = receivedData.volts;
+        doc["yaw"] = receivedData.yaw;
+        doc["pitch"] = receivedData.pitch;
+        doc["roll"] = receivedData.roll;
+        doc["hour"] = receivedData.hour;
+        doc["minute"] = receivedData.minute;
+        doc["second"] = receivedData.second;
+        doc["abort"] = receivedData.abort;
+        doc["txCount"] = receivedData.txCount;
+        doc["rxCount"] = rxCount;
+        doc["U_LAT"] = U_LAT; // Uploader location!
+        doc["U_LON"] = U_LON;
+        doc["U_ALT"] = U_ALT;
+        doc["rssi"] = rssi;
+        doc["snr"] = snr;
+        doc["callsign"] = receivedData.callSign;
+
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        int httpResponseCode = http.POST(requestBody);
+        http.end(); // Free resources.
+
+#ifdef DEVMODE
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
 #endif
-    }
-  }
-  if (Serial.available() > 0) {
-    Serial.read((byte *)&newTLat, sizeof(float));
-    Serial.read((byte *)&newTLon, sizeof(float));
-    if newTLon
-      != 0 && newTLat != 0 && newTLon != receivedData.tLon &&newTLat != receivedData.tLat {
-        LoRa.beginPacket();
-        LoRa.write((byte *)&newTLat, sizeof(float));
-        LoRa.write((byte *)&newTLon, sizeof(float));
-        LoRa.endPacket(true); // Send in async mode.
+
+        WiFiClient client;
+        HTTPClient http;
+
+        http.begin(client, serverName + "/add-data");
+        http.addHeader("Content-Type", "application/json");
+
+        JsonDocument doc;
+        doc["callsign"] = receivedData.callSign;
+
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        int httpResponseCode = http.POST(requestBody);
+
+        if (httpResponseCode > 0) {
+          String response = http.getString();
+          Serial.println("HTTP Response code: " + String(httpResponseCode));
+
+          StaticJsonDocument responseDoc;
+          DeserializationError error = deserializeJson(responseDoc, response);
+
+          if (!error) {
+            float newTLat = responseDoc["tLat"];
+            float newTLon = responseDoc["tLon"];
+
+            if (newTLon != 0 && newTLat != 0 && newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
+              LoRa.beginPacket();
+              LoRa.write((byte *)&newTLat, sizeof(float));
+              LoRa.write((byte *)&newTLon, sizeof(float));
+              LoRa.endPacket(true); // Send in async mode.
+            }
+          } else {
+#ifdef DEVMODE
+            Serial.println("Failed to parse JSON response");
+#endif
+          }
+        } else {
+#ifdef DEVMODE
+          Serial.println("Error on HTTP request");
+#endif
+        }
+
+        http.end(); // Free resources.
+
+      } else {
+#ifdef DEVMODE
+        Serial.println("WiFi Disconnected.");
+#endif
+        while (1) {
+          longBlink(LED);
+        }
       }
+    }
   }
 }
 
