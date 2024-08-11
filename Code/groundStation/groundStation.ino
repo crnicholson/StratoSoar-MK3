@@ -92,120 +92,7 @@ void setup() {
 shortBlink(LED);
 
 void loop() {
-  int packetSize = LoRa.parsePacket(); // Parse packet.
-  if (packetSize > 0) {
-    shortBlink(LED);
-    LoRa.readBytes((byte *)&receivedData, sizeof(receivedData)); // Receive packet and put it into a struct.
-    rxCount++;
-
-    // Check if the packet is a valid packet.
-    if (sizeof(receivedData) == packetSize) {
-      shortBlink(LED);
-      rssi = LoRa.packetRssi();
-      snr = LoRa.packetSnr();
-#ifdef DEVMODE
-      displayData();
-#endif
-      if (WiFi.status() == WL_CONNECTED) {
-        WiFiClient client;
-        HTTPClient http;
-
-        http.begin(client, serverName + "/add-data");
-        http.addHeader("Content-Type", "application/json");
-
-        JsonDocument doc;
-        doc["lat"] = receivedData.lat;
-        doc["lon"] = receivedData.lon;
-        doc["altitude"] = receivedData.altitude;
-        doc["tLat"] = receivedData.tLat;
-        doc["tLon"] = receivedData.tLon;
-        doc["temperature"] = receivedData.temperature;
-        doc["pressure"] = receivedData.pressure;
-        doc["humidity"] = receivedData.humidity;
-        doc["volts"] = receivedData.volts;
-        doc["yaw"] = receivedData.yaw;
-        doc["pitch"] = receivedData.pitch;
-        doc["roll"] = receivedData.roll;
-        doc["hour"] = receivedData.hour;
-        doc["minute"] = receivedData.minute;
-        doc["second"] = receivedData.second;
-        doc["abort"] = receivedData.abort;
-        doc["txCount"] = receivedData.txCount;
-        doc["rxCount"] = rxCount;
-        doc["uLat"] = U_LAT; // Uploader location!
-        doc["uLon"] = U_LON;
-        doc["uAlt"] = U_ALT;
-        doc["rssi"] = rssi;
-        doc["snr"] = snr;
-        doc["callsign"] = receivedData.callSign;
-
-        String requestBody;
-        serializeJson(doc, requestBody);
-
-        int httpResponseCode = http.POST(requestBody);
-        http.end(); // Free resources.
-
-#ifdef DEVMODE
-        Serial.print("HTTP Response code: ");
-        Serial.println(httpResponseCode);
-#endif
-
-        WiFiClient client;
-        HTTPClient http;
-
-        http.begin(client, serverName + "/change-glider-data");
-        http.addHeader("Content-Type", "application/json");
-
-        JsonDocument doc;
-        doc["callsign"] = receivedData.callSign;
-
-        String requestBody;
-        serializeJson(doc, requestBody);
-
-        int httpResponseCode = http.POST(requestBody);
-
-        if (httpResponseCode > 0) {
-          String response = http.getString();
-          Serial.println("HTTP Response code: " + String(httpResponseCode));
-
-          StaticJsonDocument responseDoc;
-          DeserializationError error = deserializeJson(responseDoc, response);
-
-          if (!error) {
-            float newTLat = responseDoc["tLat"];
-            float newTLon = responseDoc["tLon"];
-            abort = responseDoc["abort"];
-
-            if (newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
-              LoRa.beginPacket();
-              LoRa.write((byte *)&newTLat, sizeof(float));
-              LoRa.write((byte *)&newTLon, sizeof(float));
-              LoRa.write(abort);
-              LoRa.endPacket(true); // Send in async mode.
-            }
-          } else {
-#ifdef DEVMODE
-            Serial.println("Failed to parse JSON response");
-#endif
-          }
-        } else {
-#ifdef DEVMODE
-          Serial.println("Error on HTTP request");
-#endif
-        }
-
-        http.end(); // Free resources.
-
-      } else {
-#ifdef DEVMODE
-        Serial.println("WiFi Disconnected.");
-#endif
-        while (1) {
-          longBlink(LED);
-        }
-      }
-    }
-  }
+  hammingRecieve();
 }
 
 void longBlink(int pin) {
@@ -315,31 +202,113 @@ void hammingRecieve() {
 #ifdef DEVMODE
       displayData();
 #endif
-#ifndef DEVMODE
-      Serial.write((uint8_t *)&receivedData.lat, sizeof(float)); // Send data over serial to the Python SondeHub uploader.
-      Serial.write((uint8_t *)&receivedData.lon, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.altitude, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.tLat, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.tLon, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.temperature, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.pressure, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.humidity, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.volts, sizeof(float));
-      Serial.write((uint8_t *)&receivedData.yaw, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.pitch, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.roll, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.hour, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.minute, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.second, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.abort, sizeof(long));
-      Serial.write((uint8_t *)&receivedData.txCount, sizeof(long));
-      Serial.write((uint8_t *)&rxCount, sizeof(long));
-      Serial.write((uint8_t *)&U_LAT, sizeof(float));
-      Serial.write((uint8_t *)&U_LON, sizeof(float));
-      Serial.write((uint8_t *)&U_ALT, sizeof(float));
-      Serial.write((uint8_t *)&rssi, sizeof(long));
-      Serial.write((uint8_t *)&snr, sizeof(long));
+      if (WiFi.status() == WL_CONNECTED) {
+        WiFiClient client;
+        HTTPClient http;
+
+        http.begin(client, serverName + "/add-data");
+        http.addHeader("Content-Type", "application/json");
+
+        JsonDocument doc;
+        doc["lat"] = receivedData.lat;
+        doc["lon"] = receivedData.lon;
+        doc["altitude"] = receivedData.altitude;
+        doc["tLat"] = receivedData.tLat;
+        doc["tLon"] = receivedData.tLon;
+        doc["temperature"] = receivedData.temperature;
+        doc["pressure"] = receivedData.pressure;
+        doc["humidity"] = receivedData.humidity;
+        doc["volts"] = receivedData.volts;
+        doc["yaw"] = receivedData.yaw;
+        doc["pitch"] = receivedData.pitch;
+        doc["roll"] = receivedData.roll;
+        doc["hour"] = receivedData.hour;
+        doc["minute"] = receivedData.minute;
+        doc["second"] = receivedData.second;
+        doc["abort"] = receivedData.abort;
+        doc["txCount"] = receivedData.txCount;
+        doc["rxCount"] = rxCount;
+        doc["uLat"] = U_LAT; // Uploader location!
+        doc["uLon"] = U_LON;
+        doc["uAlt"] = U_ALT;
+        doc["rssi"] = rssi;
+        doc["snr"] = snr;
+        doc["callsign"] = receivedData.callSign;
+
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        int httpResponseCode = http.POST(requestBody);
+        http.end(); // Free resources.
+
+#ifdef DEVMODE
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
 #endif
+
+        WiFiClient client;
+        HTTPClient http;
+
+        http.begin(client, serverName + "/change-glider-data");
+        http.addHeader("Content-Type", "application/json");
+
+        JsonDocument doc;
+        doc["callsign"] = receivedData.callSign;
+
+        String requestBody;
+        serializeJson(doc, requestBody);
+
+        int httpResponseCode = http.POST(requestBody);
+
+        if (httpResponseCode > 0) {
+          String response = http.getString();
+          Serial.println("HTTP Response code: " + String(httpResponseCode));
+
+          StaticJsonDocument responseDoc;
+          DeserializationError error = deserializeJson(responseDoc, response);
+
+          if (!error) {
+            float newTLat = responseDoc["tLat"];
+            float newTLon = responseDoc["tLon"];
+            abort = byte(responseDoc["abort"]);
+
+            // This makes sure that if abort is true, the packet will be sent. There's chance that it will not be sent if the lat and lon did not change.
+            if (abort) {
+              LoRa.beginPacket();
+              LoRa.write((byte *)&newTLat, sizeof(float));
+              LoRa.write((byte *)&newTLon, sizeof(float));
+              LoRa.write(abort);
+              LoRa.endPacket(true); // Send in async mode.
+            } else {
+              if (newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
+                LoRa.beginPacket();
+                LoRa.write((byte *)&newTLat, sizeof(float));
+                LoRa.write((byte *)&newTLon, sizeof(float));
+                LoRa.write(abort);
+                LoRa.endPacket(true); // Send in async mode.
+              }
+            }
+          } else {
+#ifdef DEVMODE
+            Serial.println("Failed to parse JSON response");
+#endif
+          }
+        } else {
+#ifdef DEVMODE
+          Serial.println("Error on HTTP request");
+#endif
+        }
+
+        http.end(); // Free resources.
+
+      } else {
+#ifdef DEVMODE
+        Serial.println("WiFi Disconnected.");
+#endif
+        while (1) {
+          longBlink(LED);
+        }
+      }
     }
   }
 }

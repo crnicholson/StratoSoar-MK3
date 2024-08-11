@@ -26,7 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define RESET_PIN 9
 #define DIO0_PIN 8
 
-#define BAUD_RATE 115200 // Baud rate of the serial monitor and the serial sender.
+#define BAUD_RATE 115200 // Baud rate of the serial monitor.
 
 // Uploader location. 
 #define U_LAT 42.00 

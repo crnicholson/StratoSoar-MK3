@@ -11,3 +11,5 @@ void loraSetup();
 void sendData(struct data &newPacket);
 void sendHammingData(struct data &newPacket);
 byte hammingEncode(byte data);
+void hammingReceive();
+byte hammingDecode(byte data);

@@ -51,8 +51,8 @@ float temperature, pressure, bmeAltitude;
 int humidity;
 
 // Other vars.
-int lastLoRa, abortCounter, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE;
-bool abortFlight, loraAbortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
+int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE;
+bool abortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
 float desiredPitch = DESIRED_PITCH;
 
 struct data packet;
@@ -217,7 +217,7 @@ void loop() {
     voltage = readVoltage();
     if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
       lowVoltage = true;
-      updateRae = 5000;       // Move the servos less frequently.
+      updateRate = 5000;      // Move the servos less frequently.
       loraUpdateRate = 30000; // Reduce the LoRa update rate.
     }
     if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
@@ -275,31 +275,10 @@ void loop() {
       packet.second = second;
       packet.txCount++;
       packet.abortFlight = abortFlight;
-      sendData(packet);
+      sendHammingData(packet);
       lastLoRa = millis();
     }
-    if (LoRa.parsePacket() > 0) {
-      float prevTLat = targetLat;
-      float prevTLon = targetLon;
-      LoRa.readBytes((byte *)&targetLat, sizeof(float));
-      LoRa.readBytes((byte *)&targetLon, sizeof(float));
-      loraAbortFlight = LoRa.read();
-
-      // Make sure abortFlight was not sent by accident, need two in a row for it to work.
-      if (loraAbortFlight) {
-        abortCounter++;
-      } else {
-        abortCounter = 0; // Reset abortFlight counter.
-      }
-      loraAbortFlight = false;
-      if (abortCounter >= 1) {
-        abortFlight = true;
-      }
-      if (targetLat == 0 || targetLon == 0) {
-        targetLat = prevTLat;
-        targetLon = prevTLon;
-      }
-    }
+    hammingReceive();
 #endif
 
     // Updating time for IMU.
