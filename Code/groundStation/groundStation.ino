@@ -132,9 +132,9 @@ void loop() {
         doc["abort"] = receivedData.abort;
         doc["txCount"] = receivedData.txCount;
         doc["rxCount"] = rxCount;
-        doc["U_LAT"] = U_LAT; // Uploader location!
-        doc["U_LON"] = U_LON;
-        doc["U_ALT"] = U_ALT;
+        doc["uLat"] = U_LAT; // Uploader location!
+        doc["uLon"] = U_LON;
+        doc["uAlt"] = U_ALT;
         doc["rssi"] = rssi;
         doc["snr"] = snr;
         doc["callsign"] = receivedData.callSign;
