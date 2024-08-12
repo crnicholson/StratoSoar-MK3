@@ -21,8 +21,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Add support for ESP32 for BLE communication
 // - Add GPS and compass to point towards the target - this could be done with an iPhone app
 // - Add OLED to display glider position
-// - Add bidirectoional communication for changing the landing location
-// - Add way to abort the mission
 
 // Note: This system operates at 433 mHz, so a ham radio license is needed in the US. Please check local regulations before use.
 
@@ -30,6 +28,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "settings.h"
 #include <LoRa.h>
+#include <SD.h>
 #include <SPI.h>
 
 struct receive {
@@ -42,7 +41,7 @@ struct receive {
 } receivedData;
 
 long rxCount;
-byte abort;
+bool abortFlight;
 long snr, rssi;
 
 void setup() {
@@ -82,6 +81,38 @@ void setup() {
   LoRa.crc(); // Checksum for packet error detection.
 #endif
 
+#ifdef USE_SD
+  // Initialize the SD card
+  if (!SD.begin(chipSelect)) {
+#ifdef DEVMODE
+    Serial.println("SD card initialization failed!");
+#endif
+    while (1) {
+      longBlink(LED);
+    }
+  }
+
+#ifdef DEVMODE
+  Serial.println("SD card is ready.");
+#endif
+
+  // Create or open the file.
+  File dataFile = SD.open("data.csv", FILE_WRITE);
+
+  // If the file opened successfully, write the header.
+  if (dataFile) {
+    dataFile.println("lat,lon,altitude,tLat,tLon,temperature,pressure,humidity,volts,yaw,pitch,roll,hour,minute,second,abort,txCount,rxCount,uLat,uLon,uAlt,rssi,snr,callsign");
+    dataFile.close();
+  } else {
+#ifdef DEVMODE
+    Serial.println("Error opening file for writing.");
+#endif
+    while (1) {
+      longBlink(LED);
+    }
+  }
+#endif
+
 #ifdef DEVMODE
   Serial.println("LoRa initialized, starting in 1 second.");
 #endif
@@ -93,6 +124,9 @@ shortBlink(LED);
 
 void loop() {
   hammingRecieve();
+#ifdef USE_SD
+  writeToCard();
+#endif
 }
 
 void longBlink(int pin) {
@@ -209,6 +243,7 @@ void hammingRecieve() {
         http.begin(client, serverName + "/add-data");
         http.addHeader("Content-Type", "application/json");
 
+        // This makes a POST request to server that adds to SondeHub.
         JsonDocument doc;
         doc["lat"] = receivedData.lat;
         doc["lon"] = receivedData.lon;
@@ -270,23 +305,28 @@ void hammingRecieve() {
           if (!error) {
             float newTLat = responseDoc["tLat"];
             float newTLon = responseDoc["tLon"];
-            abort = byte(responseDoc["abort"]);
+            abortFlight = bool(responseDoc["abort"]);
 
-            // This makes sure that if abort is true, the packet will be sent. There's chance that it will not be sent if the lat and lon did not change.
-            if (abort) {
-              LoRa.beginPacket();
-              LoRa.write((byte *)&newTLat, sizeof(float));
-              LoRa.write((byte *)&newTLon, sizeof(float));
-              LoRa.write(abort);
-              LoRa.endPacket(true); // Send in async mode.
-            } else {
-              if (newTLon != receivedData.tLon && newTLat != receivedData.tLat) {
-                LoRa.beginPacket();
-                LoRa.write((byte *)&newTLat, sizeof(float));
-                LoRa.write((byte *)&newTLon, sizeof(float));
-                LoRa.write(abort);
-                LoRa.endPacket(true); // Send in async mode.
+            // This makes sure that if abort is true, the packet will be sent. There's a chance that it will not be sent if the lat and lon did not change.
+            if (abort || (newTLon != receivedData.tLon && newTLat != receivedData.tLat)) {
+              byte *dataToSend = new byte[9]; // 9 bytes: 4 for newTLat, 4 for newTLon, 1 for abort.
+              memcpy(dataToSend, (byte *)&newTLat, sizeof(float));
+              memcpy(dataToSend + sizeof(float), (byte *)&newTLon, sizeof(float));
+              dataToSend[8] = abortFlight;
+
+              byte encodedData[18]; // Each byte is encoded into 2 bytes
+
+              for (size_t i = 0; i < 9; ++i) {
+                encodedData[2 * i] = hammingEncode(dataToSend[i] >> 4);       // Encode high nibble
+                encodedData[2 * i + 1] = hammingEncode(dataToSend[i] & 0x0F); // Encode low nibble
               }
+
+              delete[] dataToSend; // Free the allocated memory
+
+              // Send the encoded data
+              LoRa.beginPacket();
+              LoRa.write(encodedData, sizeof(encodedData));
+              LoRa.endPacket(true); // Send in async mode.
             }
           } else {
 #ifdef DEVMODE
@@ -337,4 +377,72 @@ byte hammingDecode(byte encoded) {
   }
 
   return (d1 << 3) | (d2 << 2) | (d3 << 1) | d4;
+}
+
+byte hammingEncode(byte data) {
+  byte p1 = (data >> 2) & 0x1 ^ (data >> 1) & 0x1 ^ (data >> 0) & 0x1;
+  byte p2 = (data >> 3) & 0x1 ^ (data >> 1) & 0x1 ^ (data >> 0) & 0x1;
+  byte p3 = (data >> 3) & 0x1 ^ (data >> 2) & 0x1 ^ (data >> 0) & 0x1;
+
+  byte hamming = (p1 << 6) | (p2 << 5) | (p3 << 4) | (data & 0xF);
+  return hamming;
+}
+
+void writeToCard() {
+  File dataFile = SD.open("data.csv", FILE_WRITE);
+
+  if (dataFile) {
+    dataFile.print(receivedData.lat);
+    dataFile.print(",");
+    dataFile.print(receivedData.lon);
+    dataFile.print(",");
+    dataFile.print(receivedData.altitude);
+    dataFile.print(",");
+    dataFile.print(receivedData.tLat);
+    dataFile.print(",");
+    dataFile.print(receivedData.tLon);
+    dataFile.print(",");
+    dataFile.print(receivedData.temperature);
+    dataFile.print(",");
+    dataFile.print(receivedData.pressure);
+    dataFile.print(",");
+    dataFile.print(receivedData.humidity);
+    dataFile.print(",");
+    dataFile.print(receivedData.volts);
+    dataFile.print(",");
+    dataFile.print(receivedData.yaw);
+    dataFile.print(",");
+    dataFile.print(receivedData.pitch);
+    dataFile.print(",");
+    dataFile.print(receivedData.roll);
+    dataFile.print(",");
+    dataFile.print(receivedData.hour);
+    dataFile.print(",");
+    dataFile.print(receivedData.minute);
+    dataFile.print(",");
+    dataFile.print(receivedData.second);
+    dataFile.print(",");
+    dataFile.print(receivedData.abort);
+    dataFile.print(",");
+    dataFile.print(receivedData.txCount);
+    dataFile.print(",");
+    dataFile.print(rxCount);
+    dataFile.print(",");
+    dataFile.print(U_LAT);
+    dataFile.print(",");
+    dataFile.print(U_LON);
+    dataFile.print(",");
+    dataFile.print(U_ALT);
+    dataFile.print(",");
+    dataFile.print(rssi);
+    dataFile.print(",");
+    dataFile.print(snr);
+    dataFile.print(",");
+    dataFile.println(receivedData.callSign);
+
+    dataFile.close(); // Close the file.
+    Serial.println("Data written to SD card.");
+  } else {
+    Serial.println("Error opening file for writing.");
+  }
 }

@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // Enables.
 #define DEVMODE   // Toggle serial monitor.
 #define FAST_LORA // Ignore other LoRA settings and use a fast LoRa setup.
+#define USE_SD    // Toggle the use of an SD card for data logging.
 
 // Pins.
 #define LED 3 // SCK uses pin 13.
@@ -28,7 +29,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #define BAUD_RATE 115200 // Baud rate of the serial monitor.
 
-// Uploader location. 
-#define U_LAT 42.00 
+// Uploader location.
+#define U_LAT 42.00
 #define U_LON -71.00
 #define U_ALT 1000
