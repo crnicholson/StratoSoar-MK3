@@ -21,6 +21,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Test bi directional communication
 // - Compile with different enables
 // - Add a minimum temeperature for the cutdown mechanism
+// - Add the GPS to one of the non blocking loops for updates every second
+// - Add a flare on landing
+// - Add an SD card that takes data written to the EEPROM and writes it to the SD card at certain intervals
+// - Take photos at certain areas
+// - Add better turning with beizer for the waypoints
 
 #include "blink.h"
 #include "bme280.h"
