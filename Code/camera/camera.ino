@@ -1,17 +1,19 @@
 #include <Arduino_OV767X.h>
 #include <SD.h>
 #include <SPI.h>
-
-// To-do:
-// - Add control from other sketches
-// - Add low power mode
+#include <esp_sleep.h>
 
 File videoFile;
 
-#define CS 5   // CS pin for SD card.
-#define LED 13 // Pin where LED is attached.
+int fileIndex;
+
+#define CS 7          // CS pin for SD card.
+#define LED 13        // Pin where LED is attached.
+#define SLEEP_PIN A2  // Pin where the sleep pin is attached.
+#define WAKEUP_PIN A3 // Pin where the wakeup pin is attached.
 
 #define DEVMODE // Toggle serial monitor.
+#define FOREVER // Toggle infinite recording until the sleep pin is high.
 
 #define BAUD_RATE 115200 // Baud rate of the serial monitor.
 
@@ -35,6 +37,11 @@ File videoFile;
 //       - D0 connected to 10
 
 void setup() {
+  pinMode(LED, OUTPUT);               // Configure LED pin.
+  pinMode(SLEEP_PIN, INPUT_PULLDOWN); // Configure sleep pin.
+
+  longBlink(LED);
+
 #ifdef DEVMODE
   Serial.begin(BAUD_RATE);
   while (!Serial) {
@@ -74,7 +81,10 @@ void setup() {
 }
 
 void loop() {
-  videoFile = SD.open("/video.bin", FILE_WRITE); // Create a new file on the SD card.
+  shortBlink(LED);
+
+  char fileName = "/video" + String(fileInfex) + ".bin";
+  videoFile = SD.open(fileName, FILE_WRITE); // Create a new file on the SD card.
 
   if (!videoFile) {
 #ifdef DEVMODE
@@ -89,18 +99,85 @@ void loop() {
   Serial.println("Capturing video...");
 #endif
 
-  for (int frame = 0; frame < 450; frame++) { // Capture 15 seconds of video at 15 fps.
+#ifndef FOREVER
+  for (int frame = 0; frame < 450; frame++) { // Capture 15 seconds of video at 15 fps
     Camera.readFrame();
     int numPixels = Camera.width() * Camera.height();
 
     for (int i = 0; i < numPixels; i++) {
-      unsigned short p = Camera.readPixel(); // Read pixel directly from camera buffer.
-      videoFile.write((uint8_t *)&p, 2);     // Write the pixel data to the SD card.
+      unsigned short p = Camera.readPixel(); // Read pixel directly from camera buffer
+      videoFile.write((uint8_t *)&p, 2);     // Write the pixel data to the SD card
     }
   }
+#endif
+#ifdef FOREVER
+  while (!digitalRead(SLEEP_PIN)) { // Record until sleep is activated!
+    Camera.readFrame();
+    int numPixels = Camera.width() * Camera.height();
+
+    for (int i = 0; i < numPixels; i++) {
+      unsigned short p = Camera.readPixel(); // Read pixel directly from camera buffer
+      videoFile.write((uint8_t *)&p, 2);     // Write the pixel data to the SD card
+    }
+  }
+#endif
 
   videoFile.close();
 #ifdef DEVMODE
-  Serial.println("Video capture complete.");
+  Serial.println("Video capture complete, now sleeping.");
 #endif
+  enterLowPowerMode(); // Don't wakeup until the WAKEUP_PIN is high.
+}
+
+void longBlink(int pin) {
+  digitalWrite(pin, HIGH);
+  delay(1000);
+  digitalWrite(pin, LOW);
+  delay(1000);
+}
+
+void shortBlink(int pin) {
+  digitalWrite(pin, HIGH);
+  delay(100);
+  digitalWrite(pin, LOW);
+  delay(100);
+}
+
+void generateFileName() {
+  indexFile = SD.open("index.txt");
+  if (indexFile) {
+    fileIndex = int(indexFile.read());
+    indexFile.close();
+#ifdef DEVMODE
+    Serial.print("File index: ");
+    Serial.println(fileIndex);
+#endif
+  } else {
+#ifdef DEVMODE
+    Serial.println("Error opening the file index file.");
+#endif
+    while (1) {
+      longBlink(LED);
+    }
+  }
+  indexFile = SD.open("index.txt", FILE_WRITE);
+  if (indexFile) {
+    indexFile.write(fileIndex + 1);
+    indexFile.close();
+  } else {
+#ifdef DEVMODE
+    Serial.println("Error opening the file index file.");
+#endif
+    while (1) {
+      longBlink(LED);
+    }
+  }
+}
+
+void enterLowPowerMode() {
+#ifdef DEVMODE
+  Serial.println("Entering low-power mode...");
+#endif
+  esp_sleep_enable_ext0_wakeup(WAKEUP_PIN, HIGH); // Wake up when sleep pin is HIGH.
+  esp_deep_sleep_start();
 }
