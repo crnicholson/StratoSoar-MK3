@@ -9,25 +9,28 @@
 #define BAUD_RATE 115200 // Baud rate of the serial monitor.
 
 // Pins.
-#define SIOD 21 // SDA.
-#define SIOC 22 // SCL.
+#define SIOD 8 // SDA.
+#define SIOC 9 // SCL.
 
-#define VSYNC 34
-#define HREF 35
+#define VSYNC 17
+#define HREF 18
 
-#define XCLK 32
-#define PCLK 33
+#define XCLK 47
+#define PCLK 48
 
-#define D0 27
-#define D1 17
-#define D2 16
-#define D3 15
-#define D4 14
-#define D5 13
-#define D6 12
-#define D7 4
+#define D0 1
+#define D1 2
+#define D2 3
+#define D3 4
+#define D4 5
+#define D5 6
+#define D6 7
+#define D7 14
 
-#define SD_CS 5 // Chip select for the SD card.
+#define SD_CS 10      // Chip select for the SD card.
+#define LED 13        // LED pin.
+#define SLEEP_PIN 15  // Pin to trigger sleep mode.
+#define WAKEUP_PIN 16 // Pin to wake up.
 
 OV7670 *camera;
 File videoFile;
