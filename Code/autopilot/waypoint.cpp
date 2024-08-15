@@ -57,3 +57,46 @@ void updateWaypoint() {
     targetLon = TARGET_LON;
   }
 }
+
+// When getting closer to the waypoint, the plane should start turning to face the next waypoint, smoothly.
+float getNextTurnWaypoint() {
+  float turnRate = 0.1;
+  float stepDistance = 0.0001;
+
+  float heading = yaw;
+
+  // Calculate the desired heading towards the target.
+  float desiredHeading = atan2(targetLon - lon, targetLat - lat);
+
+  if (heading < desiredHeading) {
+    heading += turnRate;
+    if (heading > desiredHeading)
+      heading = desiredHeading;
+  } else if (heading > desiredHeading) {
+    heading -= turnRate;
+    if (heading < desiredHeading)
+      heading = desiredHeading;
+  }
+
+  // Calculate the next waypoint using the current heading.
+  float nextLat = currentLat + stepDistance * cos(heading);
+  float nextLon = currentLon + stepDistance * sin(heading);
+  return nextLat, nextLon;
+}
+
+#define RADIUS diameter / 2.0
+#define EARTH_RADIUS 6371000.0 // Earth radius in meters.
+#define CIRCLE_POINTS 20
+
+float getNextCircleWaypoint(float centerLat, float centerLon, int diameter) {
+  // Calculate the angle from the center to the current position.
+  double angle = atan2(lon - centerLon, lat - centerLat);
+
+  // Calculate the next angle by adding a small increment (controls the smoothness).
+  double angleIncrement = 2 * M_PI / CIRCLE_POINTS;
+  angle += angleIncrement;
+
+  float nextLat = centerLat + (RADIUS / EARTH_RADIUS) * cos(angle) * (180.0 / M_PI);
+  float nextLon = centerLon + (RADIUS / EARTH_RADIUS) * sin(angle) * (180.0 / M_PI) / cos(centerLat * M_PI / 180.0);
+  return nextLat, nextLon;
+}
