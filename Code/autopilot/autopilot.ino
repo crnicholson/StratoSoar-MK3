@@ -21,7 +21,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Test bi directional communication
 // - Compile with different enables
 // - Add a minimum temeperature for the cutdown mechanism
-// - Add the GPS to one of the non blocking loops for updates every second
 // - Add a flare on landing
 // - Add an SD card that takes data written to the EEPROM and writes it to the SD card at certain intervals
 // - Take photos at certain areas
@@ -189,26 +188,6 @@ void loop() {
 
   // If IMU timer matches with the update rate.
   if (imu.delt_t > updateRate) {
-
-#ifdef USE_GPS
-    // If not using GPS low power, just get data and do nothing else.
-#ifndef GPS_LOW_POWER
-    if (millis() - gpsLast > GPS_UPDATE_RATE) {
-      gpsLast = millis();
-      lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
-    }
-#endif
-    // If using GPS low power mode, get data and put GPS to sleep.
-#ifdef GPS_LOW_POWER
-    if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
-      gpsLast = millis();
-      gpsWakeup(); // Wakeup GPS module and wait for fix.
-      lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
-      gpsSleep(); // Put GPS module to sleep.
-    }
-#endif
-#endif
-
     // Getting sensor values.
 #ifdef USE_BME
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
@@ -245,45 +224,23 @@ void loop() {
       abortFlight = true;
     }
     if (abortFlight) {
-      land(90, 110); // This should send the glider into a spiral for landing.
+      // land(90, 110); // This should send the glider into a spiral for landing.
+      targetLat, targetLon = getNextCircleWaypoint(lat, lon, 30);
     }
 
-    // Steering.
-    if (!abortFlight) {
-      servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
-      moveLeftServo(servoPositionLeft);
-      moveRightServo(servoPositionRight);
+    // Calculate again if needed.
+    if (abortFlight) {
+      distance = calculateDistance(lat, lon, targetLat, targetLon);
+      turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
     }
+
+    servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
+    moveLeftServo(servoPositionLeft);
+    moveRightServo(servoPositionRight);
 
     // EEPROM.
 #ifdef USE_EEPROM
     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
-#endif
-
-    // LoRa communication.
-#ifdef USE_LORA
-    if (millis() - lastLoRa > loraUpdateRate) {
-      packet.lat = lat;
-      packet.lon = lon;
-      packet.tLat = targetLat;
-      packet.tLon = targetLon;
-      packet.altitude = altitude;
-      packet.temperature = temperature;
-      packet.pressure = pressure;
-      packet.humidity = humidity;
-      packet.volts = voltage;
-      packet.yaw = yaw;
-      packet.pitch = pitch;
-      packet.roll = roll;
-      packet.hour = hour;
-      packet.minute = minute;
-      packet.second = second;
-      packet.txCount++;
-      packet.abortFlight = abortFlight;
-      sendHammingData(packet);
-      lastLoRa = millis();
-    }
-    hammingReceive();
 #endif
 
     // Updating time for IMU.
@@ -294,3 +251,52 @@ void loop() {
 void loop2() { // We're doing threading on an Arduino! (This is a really cool library).
   imuMath();
 }
+
+#ifdef USE_GPS
+void loop3() {
+
+  // If not using GPS low power, just get data and do nothing else.
+#ifndef GPS_LOW_POWER
+  if (millis() - gpsLast > GPS_UPDATE_RATE) {
+    gpsLast = millis();
+    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+  }
+#endif
+  // If using GPS low power mode, get data and put GPS to sleep.
+#ifdef GPS_LOW_POWER
+  if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
+    gpsLast = millis();
+    gpsWakeup(); // Wakeup GPS module and wait for fix.
+    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    gpsSleep(); // Put GPS module to sleep.
+  }
+#endif
+}
+#endif
+
+#ifdef USE_LORA
+void loop4() {
+  if (millis() - lastLoRa > loraUpdateRate) {
+    packet.lat = lat;
+    packet.lon = lon;
+    packet.tLat = targetLat;
+    packet.tLon = targetLon;
+    packet.altitude = altitude;
+    packet.temperature = temperature;
+    packet.pressure = pressure;
+    packet.humidity = humidity;
+    packet.volts = voltage;
+    packet.yaw = yaw;
+    packet.pitch = pitch;
+    packet.roll = roll;
+    packet.hour = hour;
+    packet.minute = minute;
+    packet.second = second;
+    packet.txCount++;
+    packet.abortFlight = abortFlight;
+    sendHammingData(packet);
+    lastLoRa = millis();
+  }
+  hammingReceive();
+}
+#endif

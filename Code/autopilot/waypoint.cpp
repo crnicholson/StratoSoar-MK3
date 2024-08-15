@@ -46,11 +46,12 @@ void updateWaypoint() {
   if (!(x / y)) {
     if (distance <= CHANGE_WAYPOINT) {
       float prevTLat = targetLat, prevTLon = targetLon;
-      targetLat, targetLon = returnNextWaypoint();
+      float realTargetLat, realTargetLon = returnNextWaypoint();
       if (targetLat == 0.0 || targetLon == 0.0) {
         targetLat = prevTLat;
         targetLon = prevTLon;
       }
+      float turnLat, turnLon = getNextTurnWaypoint();
     }
   } else {
     targetLat = TARGET_LAT;
@@ -58,30 +59,52 @@ void updateWaypoint() {
   }
 }
 
+bool closeToPoint;
+bool foundCoords;
+
+// Only sets a new waypoint if conditions are right.
+void updateWaypointNew() {
+  if (distance <= CHANGE_WAYPOINT) {
+    closeToPoint = true;
+  } else {
+    closeToPoint = false;
+  }
+  if (closeToPoint && !foundCoords) {
+    float currentTargetLat, currentTargetLon = getCurrentWaypoint();
+    float nextTargetLat, nextTargetLon = returnNextWaypoint();
+  }
+  if (closeToPoint && foundCoords) {
+    float turnLat, turnLon = getNextTurnWaypoint();
+  }
+}
+
 // When getting closer to the waypoint, the plane should start turning to face the next waypoint, smoothly.
 float getNextTurnWaypoint() {
-  float turnRate = 0.1;
+  float turnRate = 0.001; // Adjust this value for the desired turn sharpness.
   float stepDistance = 0.0001;
 
   float heading = yaw;
 
-  // Calculate the desired heading towards the target.
-  float desiredHeading = atan2(targetLon - lon, targetLat - lat);
+  // Calculate the heading towards the next waypoint.
+  float desiredHeadingToNext = atan2(nextLon - currentLon, nextLat - currentLat);
 
-  if (heading < desiredHeading) {
-    heading += turnRate;
-    if (heading > desiredHeading)
-      heading = desiredHeading;
-  } else if (heading > desiredHeading) {
-    heading -= turnRate;
-    if (heading < desiredHeading)
-      heading = desiredHeading;
-  }
+  // Calculate the difference between the current heading and the desired heading to the next waypoint.
+  float headingDifference = desiredHeadingToNext - heading;
 
-  // Calculate the next waypoint using the current heading.
-  float nextLat = currentLat + stepDistance * cos(heading);
-  float nextLon = currentLon + stepDistance * sin(heading);
-  return nextLat, nextLon;
+  // Normalize the heading difference to the range -PI to PI.
+  if (headingDifference > M_PI)
+    headingDifference -= 2 * M_PI;
+  if (headingDifference < -M_PI)
+    headingDifference += 2 * M_PI;
+
+  // Adjust the heading (heading) gradually towards the heading to the next waypoint.
+  heading += headingDifference * turnRate;
+
+  // Calculate the new target latitude and longitude based on the updated heading.
+  float turnLat = currentLat + stepDistance * cos(heading);
+  float turnLon = currentLon + stepDistance * sin(heading);
+
+  return turnLat, turnLon;
 }
 
 #define RADIUS diameter / 2.0
