@@ -110,23 +110,44 @@ StratoSoar uses data from an IMU that goes through a Kalman filter to receive ac
 
 With the turning angle computed, a PID mechanism is used to control the servo attached to the rudder of the glider. This PID mechanism learn from it's mistakes and can accurately aim the glider in the correct direction. 
 
-The glider will fly to the selected coordinates, and depending on the user configuration, will either spiral down or release a parachute above the coordinates once it has reached them to safely descend. Additionally, if the glider is too low in altitude, prior to the flight the user can enter closer coordinates as backup landing locations. 
+Additionally, the glider beacons it's location at a configurable interval with LoRa for tracking. It also allows for a camera module to be added on to take photos and video. 
 
-**More is a WIP!**
+The glider will fly to the selected coordinates, and depending on the user configuration, will either spiral down or release a parachute above the coordinates once it has reached them to safely descend. Additionally, if the glider is too low in altitude, prior to the flight the user can enter closer coordinates as backup landing locations.  -->
 
-<!--
-## What Are Some of the Features of StratoSoar?
--->
+StratoSoar MK3 is an advanced autonomous glider designed to operate at high altitudes, such as those reached by weather balloons. The glider is attached to a weather balloon via a cutdown mechanism. Once the balloon reaches the desired altitude, the cutdown mechanism releases the glider, initiating its descent. The glider then navigates autonomously to specified coordinates, using a combination of sensors, advanced algorithms, and low-power electronics.
 
-<!--
-## Why Did I Make This?
--->
+### Core Components and Functionality:
 
-<!-- 
-## Is This Legal?
--->
+- **Autopilot System**:
+    - **GPS and IMU Integration**: StratoSoar uses a custom GPS module and an IMU, both designed for low-power operation. The IMU data is processed through a Kalman filter to provide accurate Attitude Heading Reference System (AHRS) data, including pitch, yaw, and roll. This information, combined with GPS coordinates, enables precise navigation.
+    - **Advanced Waypoint Navigation**: The waypoint navigation system is designed for complex flight paths, incorporating advanced turning algorithms to ensure smooth and accurate direction changes.
+    - **Servo Control with PID**: A PID control mechanism governs the rudder’s servo, ensuring precise adjustments to the glider's course based on real-time feedback.
+
+- **Communication and Data Logging**:
+    - **LoRa Telemetry**: The glider continuously beacons its location via LoRa communication, which includes forward error correction for reliable data transmission. This allows for real-time tracking and data collection.
+    - **Data Logging**: Critical flight data, including sensor readings and GPS coordinates, are logged using a combination of SD card and EEPROM storage, optimized for low power consumption.
+
+- **Modularity and Customization**:
+    - **Hackability**: StratoSoar is designed to be highly configurable and hackable. Users can customize its descent strategy, whether by spiral descent, parachute deployment, or alternative landing locations. The codebase is modular, allowing for easy modifications or the addition of new features.
+    - **Camera Module**: An optional low-power camera module can be added to capture photos or video during the flight, with Python scripts available for post-processing the footage.
+
+- **Ground Station and Data Handling**:
+    - **Ground Station**: The ground station, built on an ESP32 platform, receives telemetry data from the glider via LoRa. It logs this data locally and communicates with a server using HTTP requests. A Flask-based uploader script then transfers the data to SondeHub for analysis and storage.
+
+- **PCB Design**:
+    - **StratoSoar MK3 PCB**: The main PCB, optimized for power efficiency, size, and cost, integrates over 100 components, managing the various systems onboard.
+    - **Additional PCBs**: Supporting PCBs, such as those for the GPS module, LoRa communication, camera, and IMU, are designed for specific tasks, enhancing the glider's overall functionality.
+
+### Operation and Recovery:
+
+Upon release from the weather balloon, StratoSoar begins its guided descent towards the pre-set coordinates. It calculates the optimal flight path using its GPS and AHRS data, making real-time adjustments to its trajectory through the PID-controlled servo system. Depending on user configurations, the glider can either glide smoothly to the target coordinates, initiate a spiral descent, or deploy a parachute for a safe landing.
+
+If the glider's altitude drops below a certain threshold, backup landing coordinates can be used to ensure a safe recovery. Throughout the flight, the glider’s location is continuously transmitted, allowing for easy tracking and recovery.
 
 ## Technical Details
+
+## Is This Legal?
+Yes! Since the glider is unpowered, and during flight you have no control of where the glider goes, it qualifies as a free flight glider. Free flight gliders have very little regulations. You can think of them as a paper airplane. 
 
 ## Can I Buy a Kit or a Complete Product?
 
@@ -181,6 +202,8 @@ And these entities:
 - New England Sci-Tech (NEST) for providing a maker space to work, funding, and hosting NEWBS.
 
 - New England Weather Balloon Society (NEWBS) for expertise and the opportunity.
+
+- Bagel Fund, for providing funding. 
 
 ## Affiliate Programs and Projects
 
