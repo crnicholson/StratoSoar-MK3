@@ -1,20 +1,26 @@
 
 
-# StratoSoar MK3 - The Low-Power, Autonomous High-Altitude Glider
+# StratoSoar MK3 - UAVs For the Masses
 
-**WORK IN PROGRESS** - This project is still in the works. I don't recommend using it yet because it has the potential of being dangerous.
+<!-- **TL;DR**: The StratoSoar project is a low-cost, lightweight UAV designed to be dropped from a weather balloon  at any altitude, aiming for autonomous, efficient flight to selected GPS coordinates. The hope is to get a UAV platform in the hands of educators, researchers, and hobbyists alike since StratoSoar is much smaller, lighter, and cheaper than conventional UAVs.  -->
+
+**TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vechile (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation.
+
+## Get Up To Speed on The Project
+
+<!-- **WORK IN PROGRESS** - This project is still in the works. I don't recommend using it yet because it has the potential of being dangerous.
 
 **NEW** - Writing code and making the PCB. 
 
-**STATE as of 7/1/24** - Just starting development!
+**STATE as of 7/1/24** - Just starting development! -->
 
-<!-- <img src="https://github.com/crnicholson/StratoSoar-MK2/blob/main/Media/logo.png" alt="Logo" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK2/blob/main/Media/boardPhotoMK2.0.png" alt="PCB" width="300"/>
+<img src="https://github.com/crnicholson/StratoSoar-MK3/blob/main/Media/`StratoSoar Thumbnail.png`" alt="Logo" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/blob/main/Media/`StratoSoar PCB.png`" alt="PCB" width="300"/>
 -- | --
-<i>StratoSoar Logo.</i> | <i>StratoSoar MK2.0 Circuit Board.</i> -->
+<i>StratoSoar Thumbnail.</i> | <i>StratoSoar MK3 Circuit Board.</i>
 
 ## What Is the StratoSoar Project?
 
-StratoSoar is a low-power, adaptive UAV that is dropped from a weather balloon at approximately 10,000 feet, with plans to reach even higher altitudes soon. The main goal of StratoSoar is to fly to selected GPS coordinates efficiently or choose a closer, more realistic landing site without human interaction. The current aim for StratoSoar is to operate on a single 300 mAh 5 gram LiPo battery for a 3+ hour flight. 
+StratoSoar is a low-power, adaptive UAV that is dropped from a weather balloon at approximately 5,000 feet, with plans to reach even higher altitudes soon. The main goal of StratoSoar is to fly to selected GPS coordinates efficiently or choose a closer, more realistic landing site without human interaction. The current aim for StratoSoar is to operate on a single 600 mAh 15 gram LiPo battery for a 10+ hour flight. 
 
 ## Now, What Is a UAV?
 
@@ -22,15 +28,16 @@ UAVs, or Unmanned Aerial Vehicles, are autonomous aircraft, usually in the form 
 
 ### Common Types of UAVs Include:
 
-Quadcopter (typical drones)
-Fixed-wing aircraft (like StratoSoar)
-StratoSoar vs. Conventional UAVs
+- Quadcopter (typical drones)
+- Fixed-wing aircraft (like StratoSoar)
+
+## StratoSoar vs. Conventional UAVs
 
 ### Traditional UAVs Are Typically:
 
 - Large (5-15 meter wingspan)
 - Heavy (2-20 kg)
-- Expensive ($100,000-10,000,000 USD)
+- Expensive ($10,000-10,000,000 USD)
 
 ### StratoSoar Aims to Overcome These Limitations With:
 
@@ -40,13 +47,13 @@ StratoSoar vs. Conventional UAVs
 
 ## What Are the Uses of StratoSoar?
 
-Currently, the two main ideas we are thinking of include an educational kit or a platform for the study of aerodynamics of the stratosphere (of which very little exist). Other ideas include reusable radiosondes, remote medicine/parcel/etc. delivery, and atmospheric monitoring. 
+Currently, the two main ideas I am thinking of include an educational kit or a platform for the study of aerodynamics of the stratosphere (of which very little exist). Other ideas include reusable radiosondes, remote medicine/parcel/etc. delivery, and atmospheric monitoring. 
 
 ## A Quick Note on MK1, MK2, Naming, and Revisions
 
 StratoSoar MK1 was the precursor and the spark to StratoSoar MK2. StratoSoar MK1 was officially developed from October 1st to July 30th, although StratoSoar MK2 was unofficially being worked on in the months of March through June. StratoSoar MK1 failed to fly autonomously, and it also failed to release from the balloon. Major upgrades have been made since then.
 
-StratoSoar MK2 officially started on October 1st, and will end very soon when I launch StratoSoar from a weather balloon. I have yet to see if it is successful.
+StratoSoar MK2 officially started on October 1st, and will end has now ended. It was a success. 
 
 StratoSoar MK3 officially started on June 1st, and will end in quite some time when I launch it from a weather balloon. A new major revision (eg. MK4) will come out every time when I release the glider from the balloon in the Summer. After the Summer, work on the next revision begins, with many updates and new features. 
 
@@ -56,26 +63,50 @@ Also, I use "we" a lot in this writing. This usually refers to myself or this pr
 
 One last thing. When I refer to StratoSoar, I am referring to the project as a whole, but more specifically, the most recent version. 
 
-<!-- ## What Includes the StratoSoar Project? What Are the Different Parts of it?
+## What Includes the StratoSoar Project? What Are the Different Parts of it?
 
 StratoSoar has many different parts, and they all combine to make this project. 
 
-- **Code** - All of the code directory, and the programs needed to run it. These include the main `.ino`s and the accompanying settings files, along with the test files for the EEPROM.
+- **Code** - All of the code directory, and the programs needed to run it. These include the main `.ino`s and the accompanying `.cpp` and `.h` files, along with the test files for the IMU and GPS/
 - **Glider** - This is the real thing that flies! I'll include guides to make this, but it is really designed to be more free style, in a sense, where you can design your own glider and use StratoSoar's electronics.
 - **PCB** - The circuit board is the basis of this project, it interfaces the code with the glider. StratoSoar includes the circuit board files and the schematics and everything needed to build a PCB.
 - **3D Files** - StratoSoar requires some 3D printed parts to function, but these files also serve as an interactive build guide. StratoSoar includes the 3D files needed to print parts for the glider and the 3D files to assemble the glider.
-- **Media** - The images and logos of StratoSoar. 
-- **Docs** - StratoSoar has docs to help you assemble and work with it. It is this stuff right here! There is a folder called `Docs` which also includes some interesting legal information about StratoSoar. 
+- **Media** - The images and such of StratoSoar. 
 - **Cutdown Mechanism** - This is the thing that helps you release the glider from the balloon payload - or whatever you want to drop it from. This includes all of the above things but will be in a separate GitHub repository. 
-- **Breadboard Ammeter** - This is an ammeter built into the breadboard to find extremely accurate current readings over time. There will be a small GitHub repo with the code and the wiring diagram.  -->
+
+## File System and More Project Info
+
+I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all it's features. Note that this is also only stuff I did during Hack Club Arcade.
+
+- `Code/autopilot`:
+    - `autopilot.ino`: The script that ties all of these files together.
+    - `gps.cpp`: GPS code custom-made for low-power.
+    - `waypoint.cpp`: Custom waypoint flight with advanced turning.
+    - `lora.cpp`: LoRa communications with complex forward error correction.
+    - `sd.cpp` + `eeprom.cpp`: Data logging in a low-power manner.
+    - `servo.cpp`: Ultra low-power servo functions.
+    - `bme280.cpp`: Weather data sensor.
+- `Code/groundStation`: 
+    - `groundStation.ino`: The code for the receiving station of the LoRa telemetry, uses ESP32 and HTTP requests to communicate with the server, also locally logs data. 
+    - `uploader/flaskUploader.py`: A Flask server that uses an API to put all the data on SondeHub. 
+- `Code/camera`: Utilization of a low-power camera module and Python scripts for conversion.
+- `Code/calculator`: Python script to parametrically create flying wing glider. 
+- `PCB/StratoSoar-MK3.0`: The main PCB consisting of over 100 components, optimized for power, size, and cost.
+- `PCB/gpsBreakout`: A PCB designed for testing a cheap, $2 Chinese GPS module.
+- `PCB/loRa`: The ground station to receive the glider's data. 
+- `PCB/camera`: A breakout board for a low-power camera module. 
+- `PCB/imuBreakout`: One of the first breakout boards made for a new Interial Measurement Unit. 
+- `3D Files/cardboardGlider`: Parametric Fusion 360 desgin for a folding origami glider. 
+
+## Watch my Talk About StratoSoar MK2 The North East HamXpo!
 
 ## How Does StratoSoar Work at a High Level?
 
-StratoSoar is attached to a weather balloon via the cutdown mechanism. Once the balloon reaches the desired altitude, the cutdown mechanism drops the glider. The glider then descends, steering its way to specified coordinates. 
+<!-- StratoSoar is attached to a weather balloon via the cutdown mechanism. Once the balloon reaches the desired altitude, the cutdown mechanism drops the glider. The glider then descends, steering its way to specified coordinates. 
 
 StratoSoar takes pride in being highly configurable and hackable, so there are many ways you change how it comes down built into the code. 
 
-StratoSoar uses data from an IMU that goes through a Mahony filter to receive accurate AHRS, or Attitude Heading Reference System. This can tell StratoSoar the pitch, yaw, and roll of the glider. Then, StratoSoar integrates a GPS module to get the GPS coordinates. Both the GPS and the AHRS are used to compute the azimuth to find the turning angle of the glider. The turning angle tells the glider how much it needs to turn to be facing the correct yaw that will get the glider to the target location. Additionally, an algorithm is used to get the distance between the glider location's and the target location. 
+StratoSoar uses data from an IMU that goes through a Kalman filter to receive accurate AHRS, or Attitude Heading Reference System. This can tell StratoSoar the pitch, yaw, and roll of the glider. Then, StratoSoar integrates a GPS module to get the GPS coordinates. Both the GPS and the AHRS are used to compute the azimuth to find the turning angle of the glider. The turning angle tells the glider how much it needs to turn to be facing the correct yaw that will get the glider to the target location. Additionally, an algorithm is used to get the distance between the glider location's and the target location. 
 
 With the turning angle computed, a PID mechanism is used to control the servo attached to the rudder of the glider. This PID mechanism learn from it's mistakes and can accurately aim the glider in the correct direction. 
 
@@ -103,7 +134,9 @@ Currently, StratoSoar is not available to purchase online as a kit or complete p
 
 ## How Can I Make One? Are There Docs?
 
-One of the goals of StratoSoar was to make an affordable and open source system for anyone to perform stratospheric research, so all the files are available for free. This means that you can construct StratoSoar from scratch. **A guide to do this will be available soon. It is still in the works, but you can check out `DOCS.md` under the `Docs` folder.** 
+One of the goals of StratoSoar was to make an affordable and open source system for anyone to perform stratospheric research, so all the files are available for free. This means that you can construct StratoSoar from scratch. **A guide to do this will be available soon.**
+
+<!-- It is still in the works, but you can check out `DOCS.md` under the `Docs` folder.**  -->
 
 ## Helpful Sources and Credits
 
@@ -151,8 +184,7 @@ And these entities:
 
 ## Affiliate Programs and Projects
 
-- **LittleLoRa** - This is my high altitude tracking system designed to play in with my glider. It is still in development. 
-- **Hack Club** - Hack Club is a non-profit designed for teenagers thta provides support for porjects like this. 
+- **Hack Club** - Hack Club is a non-profit designed for teenagers that provides support for projects like this. 
 - **NEWBS** - Max and Seth Kendall of NEWBS, or New England Weather Balloon Society, are helping me launch my project from a balloon. They are dedicated to helping people in New England launch weather balloons. 
 - **New England Sci-Tech** - Bob Phinney of NEST is hosting NEWBS. NEST is a great maker space. If you are in the Greater Boston Area, go check them out!
 - **StratoScience** - This is the official class that I'm in helping me launch my project. This is a high altitude engineering class for teens. Check them out if your are in the Greater Boston area!
