@@ -14,9 +14,9 @@
 
 **STATE as of 7/1/24** - Just starting development! -->
 
-<img src="https://github.com/crnicholson/StratoSoar-MK3/blob/main/Media/`StratoSoar Thumbnail.png`" alt="Logo" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/blob/main/Media/`StratoSoar PCB.png`" alt="PCB" width="300"/>
+<img src="./Media/glider.png" alt="Glider" width="300"/> | <img src="./Media/mk3.0.png" alt="PCB" width="300"/>
 -- | --
-<i>StratoSoar Thumbnail.</i> | <i>StratoSoar MK3 Circuit Board.</i>
+<i>StratoSoar glider.</i> | <i>StratoSoar MK3.0 circuit board.</i>
 
 ## What Is the StratoSoar Project?
 
@@ -38,67 +38,28 @@ UAVs, or Unmanned Aerial Vehicles, are autonomous aircraft, usually in the form 
 - Large (5-15 meter wingspan)
 - Heavy (2-20 kg)
 - Expensive ($10,000-10,000,000 USD)
+- Closed source and propietary
 
 ### StratoSoar Aims to Overcome These Limitations With:
 
 - Weight: less than 250 grams
 - Wingspan: 80 cm
 - Cost: less than $150 USD
+- Open source and accesible
 
 ## What Are the Uses of StratoSoar?
 
-Currently, the two main ideas I am thinking of include an educational kit or a platform for the study of aerodynamics of the stratosphere (of which very little exist). Other ideas include reusable radiosondes, remote medicine/parcel/etc. delivery, and atmospheric monitoring. 
+I'm currently considering two main concepts: an educational kit for students and hobbyists or a platform designed to study the aerodynamics of the stratosphere, a field with limited existing resources. Additionally, I'm exploring other ideas such as reusable radiosondes, systems for remote delivery of medicine and parcels, and advanced atmospheric monitoring solutions.
 
-## A Quick Note on MK1, MK2, Naming, and Revisions
-
-StratoSoar MK1 was the precursor and the spark to StratoSoar MK2. StratoSoar MK1 was officially developed from October 1st to July 30th, although StratoSoar MK2 was unofficially being worked on in the months of March through June. StratoSoar MK1 failed to fly autonomously, and it also failed to release from the balloon. Major upgrades have been made since then.
-
-StratoSoar MK2 officially started on October 1st, and will end has now ended. It was a success. 
-
-StratoSoar MK3 officially started on June 1st, and will end in quite some time when I launch it from a weather balloon. A new major revision (eg. MK4) will come out every time when I release the glider from the balloon in the Summer. After the Summer, work on the next revision begins, with many updates and new features. 
-
-<!-- A new sub-revision (for lack of better word) comes out every time I make a new PCB. For example, my first version of my PCB was MK2.0. At the time of writing, the current version of StratoSoar is MK2.1. A new version of 3D model is denoted by the Rev number. Rev starts at 0. 0 and 1 are not shown in this repo because they didn't turn out very good. The physical gliders are denoted by the 3D model number. Sometimes a small change is made with glider so the name of the glider is Rev x.x, for example. Sometimes the same happens with the 3D model, again it would be x.x. To put this in practice, the final glider may be MK2.5 Rev 7.3.1. The code has no version history in the way the 3D models and the PCB do. -->
-
-Also, I use "we" a lot in this writing. This usually refers to myself or this project, but it also refers to my small team over at New England Weather Balloon Society.
-
-One last thing. When I refer to StratoSoar, I am referring to the project as a whole, but more specifically, the most recent version. 
-
-## What Includes the StratoSoar Project? What Are the Different Parts of it?
+<!-- ## What Includes the StratoSoar Project? What Are the Different Parts of it?
 
 StratoSoar has many different parts, and they all combine to make this project. 
 
-- **Code** - All of the code directory, and the programs needed to run it. These include the main `.ino`s and the accompanying `.cpp` and `.h` files, along with the test files for the IMU and GPS/
-- **Glider** - This is the real thing that flies! I'll include guides to make this, but it is really designed to be more free style, in a sense, where you can design your own glider and use StratoSoar's electronics.
+- **Code** - All of the code directory, and the programs needed to run it. These include the main `.ino`s and the accompanying `.cpp` and `.h` files, along with the test files for the IMU and GPS.
 - **PCB** - The circuit board is the basis of this project, it interfaces the code with the glider. StratoSoar includes the circuit board files and the schematics and everything needed to build a PCB.
 - **3D Files** - StratoSoar requires some 3D printed parts to function, but these files also serve as an interactive build guide. StratoSoar includes the 3D files needed to print parts for the glider and the 3D files to assemble the glider.
 - **Media** - The images and such of StratoSoar. 
-- **Cutdown Mechanism** - This is the thing that helps you release the glider from the balloon payload - or whatever you want to drop it from. This includes all of the above things but will be in a separate GitHub repository. 
-
-## File System and More Project Info
-
-I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all it's features. Note that this is also only stuff I did during Hack Club Arcade.
-
-- `Code/autopilot`:
-    - `autopilot.ino`: The script that ties all of these files together.
-    - `gps.cpp`: GPS code custom-made for low-power.
-    - `waypoint.cpp`: Custom waypoint flight with advanced turning.
-    - `lora.cpp`: LoRa communications with complex forward error correction.
-    - `sd.cpp` + `eeprom.cpp`: Data logging in a low-power manner.
-    - `servo.cpp`: Ultra low-power servo functions.
-    - `bme280.cpp`: Weather data sensor.
-- `Code/groundStation`: 
-    - `groundStation.ino`: The code for the receiving station of the LoRa telemetry, uses ESP32 and HTTP requests to communicate with the server, also locally logs data. 
-    - `uploader/flaskUploader.py`: A Flask server that uses an API to put all the data on SondeHub. 
-- `Code/camera`: Utilization of a low-power camera module and Python scripts for conversion.
-- `Code/calculator`: Python script to parametrically create flying wing glider. 
-- `PCB/StratoSoar-MK3.0`: The main PCB consisting of over 100 components, optimized for power, size, and cost.
-- `PCB/gpsBreakout`: A PCB designed for testing a cheap, $2 Chinese GPS module.
-- `PCB/loRa`: The ground station to receive the glider's data. 
-- `PCB/camera`: A breakout board for a low-power camera module. 
-- `PCB/imuBreakout`: One of the first breakout boards made for a new Interial Measurement Unit. 
-- `3D Files/cardboardGlider`: Parametric Fusion 360 desgin for a folding origami glider. 
-
-## Watch my Talk About StratoSoar MK2 The North East HamXpo!
+- **Cutdown Mechanism** - This is the thing that helps you release the glider from the balloon payload - or whatever you want to drop it from. This includes all of the above things but will be in a separate GitHub repository.  -->
 
 ## How Does StratoSoar Work at a High Level?
 
@@ -126,6 +87,7 @@ StratoSoar MK3 is an advanced autonomous glider designed to operate at high alti
 - **Communication and Data Logging**:
     - **LoRa Telemetry**: The glider continuously beacons its location via LoRa communication, which includes forward error correction for reliable data transmission. This allows for real-time tracking and data collection.
     - **Data Logging**: Critical flight data, including sensor readings and GPS coordinates, are logged using a combination of SD card and EEPROM storage, optimized for low power consumption.
+    - **Camera**: If configured, the glider uses a custom designed camera module to take photos at specific coordinates or record the entire flight.  
 
 - **Modularity and Customization**:
     - **Hackability**: StratoSoar is designed to be highly configurable and hackable. Users can customize its descent strategy, whether by spiral descent, parachute deployment, or alternative landing locations. The codebase is modular, allowing for easy modifications or the addition of new features.
@@ -140,11 +102,51 @@ StratoSoar MK3 is an advanced autonomous glider designed to operate at high alti
 
 ### Operation and Recovery:
 
-Upon release from the weather balloon, StratoSoar begins its guided descent towards the pre-set coordinates. It calculates the optimal flight path using its GPS and AHRS data, making real-time adjustments to its trajectory through the PID-controlled servo system. Depending on user configurations, the glider can either glide smoothly to the target coordinates, initiate a spiral descent, or deploy a parachute for a safe landing.
+Upon release from the weather balloon, StratoSoar begins its guided descent following waypoints or single target coordinate. It calculates the optimal flight path using its GPS and AHRS data, making real-time adjustments to its trajectory through the PID-controlled servo system. Depending on user configurations, the glider can either glide smoothly to the target coordinates, initiate a spiral descent, or deploy a parachute for a safe landing.
 
 If the glider's altitude drops below a certain threshold, backup landing coordinates can be used to ensure a safe recovery. Throughout the flight, the glider’s location is continuously transmitted, allowing for easy tracking and recovery.
 
-## Technical Details
+## File System and More Project Info
+
+I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all it's features. Note that this is also only stuff I did during Hack Club Arcade.
+
+- `Code/autopilot`: (5000 lines of code!)
+    - `autopilot.ino`: The script that ties all of these files together.
+    - `gps.cpp`: GPS code custom-made for low-power.
+    - `waypoint.cpp`: Custom waypoint flight with advanced turning.
+    - `lora.cpp`: LoRa communications with complex forward error correction.
+    - `sd.cpp` + `eeprom.cpp`: Data logging in a low-power manner.
+    - `servo.cpp`: Ultra low-power servo functions.
+    - `bme280.cpp`: Weather data sensor.
+    - `imu.cpp`: An interial measurement unit running a Kalman filter.
+- `Code/groundStation`: 
+    - `groundStation.ino`: The code for the receiving station of the LoRa telemetry, uses ESP32 and HTTP requests to communicate with the server, also locally logs data. 
+    - `uploader/flaskUploader.py`: A Flask server that uses an API to put all the data on SondeHub. 
+- `Code/camera`: Utilization of a low-power camera module and Python scripts for conversion.
+- `Code/calculator`: Python script to parametrically create flying wing glider. 
+- `PCB/StratoSoar-MK3.0`: The main PCB consisting of over 100 components, optimized for power, size, and cost.
+- `PCB/gpsBreakout`: A PCB designed for testing a cheap, $2 Chinese GPS module.
+- `PCB/loRa`: The ground station to receive the glider's data. 
+- `PCB/camera`: A breakout board for a low-power camera module. 
+- `PCB/imuBreakout`: One of the first breakout boards made for a new Interial Measurement Unit. 
+- `3D Files/cardboardGlider`: Parametric Fusion 360 desgin for a folding origami glider. 
+- `3D Files/StratoSoar Rev2 v36`: High efficieny glider.
+
+## A Quick Note on MK1, MK2, Naming, and Revisions
+
+StratoSoar MK1 was the precursor and the spark to StratoSoar MK2. StratoSoar MK1 was officially developed from October 1st to July 30th, although StratoSoar MK2 was unofficially being worked on in the months of March through June. StratoSoar MK1 failed to fly autonomously, and it also failed to release from the balloon. Major upgrades have been made since then.
+
+StratoSoar MK2 officially started on October 1st, and will end has now ended. It was a success. 
+
+StratoSoar MK3 officially started on June 1st, and will end in quite some time when I launch it from a weather balloon. A new major revision (eg. MK4) will come out every time when I release the glider from the balloon in the Summer. After the Summer, work on the next revision begins, with many updates and new features. 
+
+<!-- A new sub-revision (for lack of better word) comes out every time I make a new PCB. For example, my first version of my PCB was MK2.0. At the time of writing, the current version of StratoSoar is MK2.1. A new version of 3D model is denoted by the Rev number. Rev starts at 0. 0 and 1 are not shown in this repo because they didn't turn out very good. The physical gliders are denoted by the 3D model number. Sometimes a small change is made with glider so the name of the glider is Rev x.x, for example. Sometimes the same happens with the 3D model, again it would be x.x. To put this in practice, the final glider may be MK2.5 Rev 7.3.1. The code has no version history in the way the 3D models and the PCB do. -->
+
+Also, I use "we" a lot in this writing. This usually refers to myself or this project, but it also refers to my small team over at New England Weather Balloon Society.
+
+One last thing. When I refer to StratoSoar, I am referring to the project as a whole, but more specifically, the most recent version. 
+
+## Watch my Talk About StratoSoar MK2 The North East HamXpo!
 
 ## Is This Legal?
 Yes! Since the glider is unpowered, and during flight you have no control of where the glider goes, it qualifies as a free flight glider. Free flight gliders have very little regulations. You can think of them as a paper airplane. 
