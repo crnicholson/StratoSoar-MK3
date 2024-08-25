@@ -159,7 +159,7 @@ One last thing. When I refer to StratoSoar, I am referring to the project as a w
 <!-- ## Watch my Talk About StratoSoar MK2 The North East HamXpo! -->
 
 ## Is This Legal?
-Yes! Since the glider is unpowered, and during flight you have no control of where the glider goes, it qualifies as a free flight glider. Free flight gliders have very little regulations. You can think of them as a paper airplane. 
+Yes! During flight, the ground operator has no ***direct*** control over the flight path, i.e. via a radio. Because of this, and it being unpowered, it qualifies as a free flight glider. Free flight gliders have very little regulations. You can think of them as a paper airplane. 
 
 ## Can I Buy a Kit or a Complete Product?
 
