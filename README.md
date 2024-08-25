@@ -14,17 +14,20 @@
 
 **STATE as of 7/1/24** - Just starting development! -->
 
-<div style="max-width: 500px; margin: 0 auto;">
+<!-- <div style="max-width: 500px; margin: 0 auto;">
   <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
     <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/TiqkcGWG4g8" title="StratoSoar MK2/3: A Review" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
 </div>
 
-<br />
+<br /> -->
 
 <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/glider.png" alt="Glider" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/mk3.0.png" alt="PCB" width="300"/>
 -- | --
 <i>StratoSoar glider.</i> | <i>StratoSoar MK3.0 circuit board.</i>
+<img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/cfd.png" alt="Glider" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/soldering.png" alt="PCB" width="300"/>
+-- | --
+<i>Computational fluid dynamic sims.</i> | <i>Soldering of the board..</i>
 
 ## What Is the StratoSoar Project?
 
@@ -154,7 +157,7 @@ Also, I use "we" a lot in this writing. This usually refers to myself or this pr
 
 One last thing. When I refer to StratoSoar, I am referring to the project as a whole, but more specifically, the most recent version. 
 
-## Watch my Talk About StratoSoar MK2 The North East HamXpo!
+<!-- ## Watch my Talk About StratoSoar MK2 The North East HamXpo! -->
 
 ## Is This Legal?
 Yes! Since the glider is unpowered, and during flight you have no control of where the glider goes, it qualifies as a free flight glider. Free flight gliders have very little regulations. You can think of them as a paper airplane. 
