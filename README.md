@@ -14,7 +14,15 @@
 
 **STATE as of 7/1/24** - Just starting development! -->
 
-<img src="./Media/glider.png" alt="Glider" width="300"/> | <img src="./Media/mk3.0.png" alt="PCB" width="300"/>
+<div style="max-width: 500px; margin: 0 auto;">
+  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/TiqkcGWG4g8" title="StratoSoar MK2/3: A Review" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</div>
+
+<br />
+
+<img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/glider.png" alt="Glider" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/mk3.0.png" alt="PCB" width="300"/>
 -- | --
 <i>StratoSoar glider.</i> | <i>StratoSoar MK3.0 circuit board.</i>
 
