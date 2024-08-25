@@ -26,7 +26,7 @@
 -- | --
 <i>StratoSoar glider.</i> | <i>StratoSoar MK3.0 circuit board.</i>
 <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/cfd.png" alt="Glider" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/soldering.png" alt="PCB" width="300"/>
-<i>Computational fluid dynamic sims.</i> | <i>Soldering of the board..</i>
+<i>Computational fluid dynamic sims.</i> | <i>Soldering of the board.</i>
 
 ## What Is the StratoSoar Project?
 
