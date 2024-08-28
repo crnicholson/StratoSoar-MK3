@@ -6,7 +6,9 @@
 
 **TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vechile (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation.
 
-## Get Up To Speed on The Project
+## Watch The Video
+
+### Click The Image!
 
 <!-- **WORK IN PROGRESS** - This project is still in the works. I don't recommend using it yet because it has the potential of being dangerous.
 
@@ -21,6 +23,8 @@
 </div>
 
 <br /> -->
+
+[![YouTube Video](https://img.youtube.com/vi/TiqkcGWG4g8/0.jpg)](https://www.youtube.com/watch?v=TiqkcGWG4g8&t=1s)
 
 <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/glider.png" alt="Glider" width="300"/> | <img src="https://github.com/crnicholson/StratoSoar-MK3/raw/main/Media/mk3.0.png" alt="PCB" width="300"/>
 -- | --
