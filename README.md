@@ -8,6 +8,10 @@
 
 This was designed by a 14-year-old, and every single thing is custom including the 5,000+ lines of code and the 7 PCBs desgined, totatling 1,000+ components. (Excluding the foam testing glider.)
 
+This is different from a traditional drone, qouting what I said in the Hack Club Slack:
+> It's not a drone! It's fully custom electronics and code to do a high altitude missions in an efficient way via a glider!
+>> How'd a drone make it through, I don't mean to be rude but it doesn't require much technical skill or creativity
+
 ## Watch The Video
 
 ### Click The Image!
