@@ -4,7 +4,9 @@
 
 <!-- **TL;DR**: The StratoSoar project is a low-cost, lightweight UAV designed to be dropped from a weather balloon  at any altitude, aiming for autonomous, efficient flight to selected GPS coordinates. The hope is to get a UAV platform in the hands of educators, researchers, and hobbyists alike since StratoSoar is much smaller, lighter, and cheaper than conventional UAVs.  -->
 
-**TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vechile (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation. This was designed by a 14-year-old, and every single thing is custom including the 5,000+ lines of code and the 7 PCBs desgined, totatling 1,000+ components. 
+**TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vechile (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation. 
+
+This was designed by a 14-year-old, and every single thing is custom including the 5,000+ lines of code and the 7 PCBs desgined, totatling 1,000+ components. (Excluding the foam testing glider.)
 
 ## Watch The Video
 
