@@ -4,7 +4,7 @@
 
 <!-- **TL;DR**: The StratoSoar project is a low-cost, lightweight UAV designed to be dropped from a weather balloon  at any altitude, aiming for autonomous, efficient flight to selected GPS coordinates. The hope is to get a UAV platform in the hands of educators, researchers, and hobbyists alike since StratoSoar is much smaller, lighter, and cheaper than conventional UAVs.  -->
 
-**TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vechile (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation. 
+**TL:DR**: The StratoSoar project is a low-cost, lightweight Unmanned Aerial Vehicle (UAV) designed for deployment from a weather balloon at various altitudes, aiming for autonomous and efficient flight to designated GPS coordinates. By offering a more affordable, compact, and lightweight alternative to conventional UAVs, StratoSoar aims to empower educators, researchers, and hobbyists with an accessible platform for exploration and experimentation. 
 
 ## Watch The Video
 
@@ -120,7 +120,7 @@ If the glider's altitude drops below a certain threshold, backup landing coordin
 
 ## File System and More Project Info
 
-I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all it's features. Note that this is also only stuff I did during Hack Club Arcade.
+I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all its features. Note that this is also only stuff I did during Hack Club Arcade.
 
 - `Code/autopilot`: (5000 lines of code!)
     - `autopilot.ino`: The script that ties all of these files together.
@@ -141,7 +141,7 @@ I'm only listing the key items, leaving out all the unessecary stuff. This shoul
 - `PCB/loRa`: The ground station to receive the glider's data. 
 - `PCB/camera`: A breakout board for a low-power camera module. 
 - `PCB/imuBreakout`: One of the first breakout boards made for a new Interial Measurement Unit. 
-- `3D Files/cardboardGlider`: Parametric Fusion 360 desgin for a folding origami glider. 
+- `3D Files/cardboardGlider`: Parametric Fusion 360 design for a folding origami glider. 
 - `3D Files/StratoSoar Rev2 v36`: High efficieny glider.
 
 ## A Quick Note on MK1, MK2, Naming, and Revisions
