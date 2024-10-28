@@ -7132,6 +7132,18 @@
 		(layer "Edge.Cuts")
 		(uuid "a17c873c-646b-46a7-b2e4-832cd51c9221")
 	)
+	(gr_text "JLCJLCJLCJLC"
+		(at 225.552 123.571 -0)
+		(layer "B.SilkS")
+		(uuid "581e32b2-e238-4bde-a631-054b6f68698d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(gr_text "LoRa"
 		(at 207.391 94.361 -0)
 		(layer "B.SilkS")

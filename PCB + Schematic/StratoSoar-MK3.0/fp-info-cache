@@ -1,4 +1,4 @@
-23356336304102468
+23359794552788590
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -161,7 +161,7 @@ AAA battery holder Keystone
 2
 2
 Battery
-BatteryHolder_Keystone_2468_2xAAA
+BatteryHolder_Keystone_2469_2xAAA
 2xAAA cell battery holder, Keystone P/N 2468, http://www.keyelco.com/product-pdf.cfm?p=1033
 AAA battery cell holder
 0
@@ -2313,6 +2313,13 @@ Button_Switch_THT
 SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm
 Wuerth, WS-SLTV, 450301014042, https://www.we-online.com/components/products/datasheet/450301014042.pdf
 switch single-pole double-throw SPDT würth wurth
+0
+3
+3
+Button_Switch_THT
+SW_Slide_SPDT
+
+
 0
 3
 3
@@ -88080,6 +88087,13 @@ sensirion dfn nolead
 0
 10
 9
+Sensor_Humidity
+Soil
+
+
+0
+1
+1
 Sensor_Motion
 Analog_LGA-16_3.25x3mm_P0.5mm_LayoutBorder3x5y
 LGA, 16 Pin (https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL363.pdf#page=44)

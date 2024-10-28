@@ -1,4 +1,4 @@
-23378691190309484
+23385593060012499
 1575AT43A0040E
 ANT_1575AT_JOT
 
@@ -161,7 +161,7 @@ AAA battery holder Keystone
 2
 2
 Battery
-BatteryHolder_Keystone_2468_2xAAA
+BatteryHolder_Keystone_2469_2xAAA
 2xAAA cell battery holder, Keystone P/N 2468, http://www.keyelco.com/product-pdf.cfm?p=1033
 AAA battery cell holder
 0
@@ -2313,6 +2313,13 @@ Button_Switch_THT
 SW_Slide-03_Wuerth-WS-SLTV_10x2.5x6.4_P2.54mm
 Wuerth, WS-SLTV, 450301014042, https://www.we-online.com/components/products/datasheet/450301014042.pdf
 switch single-pole double-throw SPDT würth wurth
+0
+3
+3
+Button_Switch_THT
+SW_Slide_SPDT
+
+
 0
 3
 3
@@ -55768,6 +55775,20 @@ One digit LED 7 segment SA39-11 SC39-11 SA39-12 SC39-12
 0
 10
 10
+ESP32-C3-MINI-1-N4
+ESP32-C3-MINI-1_EXP
+
+ESP32-C3-MINI-1-N4 
+0
+61
+61
+ESP32-DEVKIT-V1
+MODULE_ESP32_DEVKIT_V1
+
+
+0
+30
+30
 Ferrite_THT
 LairdTech_28C0236-0JW-10
 Ferrite, vertical, LairdTech 28C0236-0JW-10, https://assets.lairdtech.com/home/brandworld/files/28C0236-0JW-10.pdf, JW Miller core https://www.bourns.com/products/magnetic-products/j.w.-miller-through-hole-ferrite-beads-emi-filters
@@ -88080,6 +88101,13 @@ sensirion dfn nolead
 0
 10
 9
+Sensor_Humidity
+Soil
+
+
+0
+1
+1
 Sensor_Motion
 Analog_LGA-16_3.25x3mm_P0.5mm_LayoutBorder3x5y
 LGA, 16 Pin (https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL363.pdf#page=44)

@@ -30727,7 +30727,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1575AT43A0040001E"
+		(property "Value" "GPS1003"
 			(at 369.57 33.0199 0)
 			(effects
 				(font
@@ -30736,7 +30736,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "1575AT43A0040E:ANT_1575AT_JOT-L"
+		(property "Footprint" "RF_Antenna:GPS1003"
 			(at 361.95 29.845 0)
 			(effects
 				(font

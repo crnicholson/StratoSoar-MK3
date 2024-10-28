@@ -6,9 +6,9 @@ taper = 0.45  # Taper ratio of the wing.
 weight = 0  # You can leave this value empty. Weight in grams of the projected glider.
 sweep = 25  # Sweep angle of the leading edge.
 elevonChord = 20  # mm of the chord for the elevons.
-electronicsWeight = 10  # Estimated weight of the electronics in grams. (Controller = 10 grams, battery = 10 grams, servos = 6 grams).
+electronicsWeight = 5  # Estimated weight of the electronics in grams. (Controller = 10 grams, battery = 10 grams, servos = 6 grams).
 
-fr4Mode = True
+fr4Mode = False
 fr4 = 1.85  # Density of FR4 in g/cm^3
 fr4Thickness = 1.2  # Thickness of the PCB
 
