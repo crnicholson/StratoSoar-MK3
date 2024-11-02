@@ -18,15 +18,17 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 // Enables.
 #define DEVMODE       // Toggle serial monitor.
-#define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
+// #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
 // #define USE_GPS
-#define USE_BME
-#define USE_EEPROM
-#define USE_LORA
+// #define USE_BME
+// #define USE_EEPROM
+// #define USE_LORA
+// #define USE_VOLTAGE
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
-#define USE_WAYPOINTS
-#define FIND_PITCH // Use a program to find the best pitch of the glider. BME and GPS must be enabled.
-#define DROP_START // Don't start the program until the glider has detected a drop in altitude.
+// #define USE_WAYPOINTS 
+#define SMOOTH_TURNING // Smoothly turn the glider towards the next waypoint.
+// #define FIND_PITCH // Use a program to find the best pitch of the glider. BME and GPS must be enabled. Very experimental.
+// #define DROP_START // Don't start the program until the glider has detected a drop in altitude.
 
 // Pins.
 #define LED 13
@@ -39,8 +41,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define LORA_RESET_PIN 6
 #define DIO0_PIN 5
 // #define BUTTON 4   // Reserved for future use.
-// #define RESERVED 1 // Reserved for Serial.
-// #define RESERVED 0 // Reserved for Serial.
+// #define RESERVED 1 // Reserved for serial GPS connection. 
+// #define RESERVED 0 // Reserved for serial GPS connection. 
 #define SS_PIN 38
 #define VOLTMETER_PIN A0
 
@@ -90,7 +92,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 // GPS.
 #define GPS_BAUD_RATE 9600       // Baud rate of the GPS module.
-#define GPS_UPDATE_RATE 5000     // The time in milliseconds stating the frequency of new GPS data.
+#define GPS_UPDATE_RATE 1000     // The time in milliseconds stating the frequency of new GPS data. Cannot go lower than 1000 ms without chaning config on GPS.
 #define GPS_LOW_POWER_RATE 15000 // The time in milliseconds stating the frequency of new GPS data in low power mode.
 
 // Coordinates. Coordinates for the waypoint system are set in "waypoint.cpp".

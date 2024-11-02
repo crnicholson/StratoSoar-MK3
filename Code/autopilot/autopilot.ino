@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // - Compile with different enables
 // - Add a minimum temeperature for the cutdown mechanism
 // - Add a flare on landing
-// - Add an SD card that takes data written to the EEPROM and writes it to the SD card at certain intervals
+// - Finish the SD card code
 // - Take photos at certain areas
 // - Add better turning with beizer for the waypoints
 
@@ -39,7 +39,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "settings.h"
 #include "vars.h"
 #include "waypoint.h"
-#include <Scheduler.h>
+// #include <Scheduler.h>
 
 ICM20948 imu;
 
@@ -57,7 +57,7 @@ int humidity;
 // Other vars.
 int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE;
 bool abortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
-float desiredPitch = DESIRED_PITCH;
+float desiredPitch = DESIRED_PITCH, voltage, lastVoltage;
 
 struct data packet;
 
@@ -86,7 +86,7 @@ void setup() {
   SerialUSB.println("StratoSoar MK3.0 Autopilot.");
 #endif
 
-  longBlink(LED); // Show successful Serial init.
+  longBlink(LED); // Show successful serial init.
 
   Wire.begin();
   imuSetup();
@@ -188,6 +188,8 @@ void loop() {
 
   // If IMU timer matches with the update rate.
   if (imu.delt_t > updateRate) {
+    // yaw, pitch, roll = imuInternalMath(); // Getting IMU values.
+
     // Getting sensor values.
 #ifdef USE_BME
     temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
@@ -198,14 +200,19 @@ void loop() {
     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
     lastVoltage = voltage;
+#ifdef USE_VOLTAGE
     voltage = readVoltage();
+#endif
+#ifndef USE_VOLTAGE
+    voltage = LOW_VOLTAGE + 0.1; // Fake the voltage if reader is disabled.
+#endif
     if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
       lowVoltage = true;
       updateRate = 5000;      // Move the servos less frequently.
       loraUpdateRate = 30000; // Reduce the LoRa update rate.
     }
     if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
-      ultralowVoltage = true;
+      ultraLowVoltage = true;
       loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
       abortFlight = true;     // Land the glider.
     }
@@ -218,13 +225,13 @@ void loop() {
 
     // Landing.
     if (altitude > LOCK_ALTITUDE) {
-      altitudeLock = true;
+      altitudeLock = true; // This enables when the glider is above a certain altitude. This makes sure it doesn't land when we're releasing it.
     }
     if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
       abortFlight = true;
     }
     if (abortFlight) {
-      // land(90, 110); // This should send the glider into a spiral for landing.
+      // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
       targetLat, targetLon = getNextCircleWaypoint(lat, lon, 30);
     }
 
@@ -248,13 +255,12 @@ void loop() {
   }
 }
 
-void loop2() { // We're doing threading on an Arduino! (This is a really cool library).
-  imuMath();
-}
+// void loop2() { // We're doing threading on an Arduino! (This is a really cool library).
+//   imuMath();   // This runs in the background 24/7. When the code is ready to access the data, imuInternalMath() is called.
+// }
 
 #ifdef USE_GPS
 void loop3() {
-
   // If not using GPS low power, just get data and do nothing else.
 #ifndef GPS_LOW_POWER
   if (millis() - gpsLast > GPS_UPDATE_RATE) {
@@ -276,6 +282,28 @@ void loop3() {
 
 #ifdef USE_LORA
 void loop4() {
+#ifdef FAST_LORA
+  packet.lat = lat;
+  packet.lon = lon;
+  packet.tLat = targetLat;
+  packet.tLon = targetLon;
+  packet.altitude = altitude;
+  packet.temperature = temperature;
+  packet.pressure = pressure;
+  packet.humidity = humidity;
+  packet.volts = voltage;
+  packet.yaw = yaw;
+  packet.pitch = pitch;
+  packet.roll = roll;
+  packet.hour = hour;
+  packet.minute = minute;
+  packet.second = second;
+  packet.txCount++;
+  packet.abortFlight = abortFlight;
+  sendData(packet);
+  lastLoRa = millis();
+#endif
+#ifndef FAST_LORA
   if (millis() - lastLoRa > loraUpdateRate) {
     packet.lat = lat;
     packet.lon = lon;
@@ -294,8 +322,9 @@ void loop4() {
     packet.second = second;
     packet.txCount++;
     packet.abortFlight = abortFlight;
-    sendHammingData(packet);
+    sendHammingData(packet); // Sends with forward error correction for redundancy over long distances.
     lastLoRa = millis();
+#endif
   }
   hammingReceive();
 }

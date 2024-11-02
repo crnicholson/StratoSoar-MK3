@@ -149,7 +149,7 @@ void imuMath() {
   imu.delt_t = millis() - imu.count;
 }
 
-void imuInternalMath() {
+int imuInternalMath() {
   imu.yaw = atan2(2.0f * (*(getQ() + 1) * *(getQ() + 2) + *getQ() * *(getQ() + 3)), *getQ() * *getQ() + *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) - *(getQ() + 3) * *(getQ() + 3));
   imu.pitch = -asin(2.0f * (*(getQ() + 1) * *(getQ() + 3) - *getQ() * *(getQ() + 2)));
   imu.roll = atan2(2.0f * (*getQ() * *(getQ() + 1) + *(getQ() + 2) * *(getQ() + 3)), *getQ() * *getQ() - *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) + *(getQ() + 3) * *(getQ() + 3));
@@ -160,5 +160,5 @@ void imuInternalMath() {
   imu.yaw -= DECLINATION;
   imu.roll *= RAD_TO_DEG;
 
-  yaw, pitch, roll = imu.yaw, imu.pitch, imu.roll;
+  return imu.yaw, imu.pitch, imu.roll;
 }

@@ -1,11 +1,11 @@
-#pragma once
+// #pragma once
 
-#include "blink.h"
-#include "settings.h"
-#include "vars.h"
-#include <Arduino.h>
-#include <SD.h>
-#include <SPI.h>
+// #include "blink.h"
+// #include "settings.h"
+// #include "vars.h"
+// #include <Arduino.h>
+// #include <SD.h>
+// #include <SPI.h>
 
-void sdSetup();
-void writeDataToSD(Packet packet);
+// void sdSetup();
+// void writeDataToSD(Packet packet);

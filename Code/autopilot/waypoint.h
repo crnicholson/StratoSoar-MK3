@@ -6,5 +6,7 @@
 
 void waypointsSetup();
 float returnNextWaypoint();
-int getCurrentWaypoinx();
+int getWaypointCount();
 void updateWaypoint();
+float getNextTurnWaypoint();
+float getNextCircleWaypoint(float centerLat, float centerLon, int diameter);

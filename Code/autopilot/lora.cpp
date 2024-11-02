@@ -12,15 +12,15 @@ void loraSetup() {
     }
   }
 
+  LoRa.setSyncWord(SYNC_WORD); // Defined in settings.h.
+
 #ifndef FAST_LORA
-  LoRa.setSyncWord(SYNC_WORD);               // Defined in settings.h.
   LoRa.setSpreadingFactor(SPREADING_FACTOR); // Defined in settings.h.
   LoRa.setSignalBandwidth(BANDWIDTH);        // Defined in settings.h.
   LoRa.crc();                                // Checksum for packet error detection.
 #endif
 
 #ifdef FAST_LORA
-  LoRa.setSyncWord(SYNC_WORD); // Defined in settings.h.
   LoRa.setSpreadingFactor(7);
   LoRa.setSignalBandwidth(250000);
   LoRa.crc(); // Checksum for packet error detection.
@@ -34,7 +34,7 @@ void loraSetup() {
 void sendData(struct data &newPacket) {
   // Wait until the LoRa is ready to send a new packet!
   while (LoRa.beginPacket() == 0) {
-    delay(10);
+    delay(2);
   }
 
   LoRa.beginPacket();
@@ -57,7 +57,7 @@ void sendHammingData(struct data &newPacket) {
 
   // Wait until the LoRa is ready to send a new packet!
   while (LoRa.beginPacket() == 0) {
-    delay(10);
+    delay(2);
   }
 
   LoRa.beginPacket();

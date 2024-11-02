@@ -26,32 +26,34 @@ float returnNextWaypoint() {
   if (waypointCounter == waypointIndexes) {
     return 0.0, 0.0;
   }
-  float WLon = coordinates[waypointCounter];
+  float wLon = coordinates[waypointCounter];
   waypointCounter++;
   if (waypointCounter == waypointIndexes) {
     return 0.0, 0.0;
   }
 
-  return wLat, WLon;
+  return wLat, wLon;
 }
 
-// Return current waypoint and total waypoints.
-int getCurrentWaypoint() {
+// Return current waypoint count and total waypoints count.
+int getWaypointCount() {
   return (waypointCounter + 1) / 2, waypoints;
 }
 
 // Only sets a new waypoint if conditions are right.
 void updateWaypoint() {
-  int x, y = getCurrentWaypoint();
+  int x, y = getWaypointCount();
   if (!(x / y)) {
     if (distance <= CHANGE_WAYPOINT) {
       float prevTLat = targetLat, prevTLon = targetLon;
-      float realTargetLat, realTargetLon = returnNextWaypoint();
+      targetLat, targetLon = returnNextWaypoint();
       if (targetLat == 0.0 || targetLon == 0.0) {
         targetLat = prevTLat;
         targetLon = prevTLon;
       }
-      float turnLat, turnLon = getNextTurnWaypoint();
+#ifdef SMOOTH_TURNING
+      targetLat, targetLon = getNextTurnWaypoint();
+#endif
     }
   } else {
     targetLat = TARGET_LAT;
@@ -59,24 +61,25 @@ void updateWaypoint() {
   }
 }
 
-bool closeToPoint;
-bool foundCoords;
+// Commented out because it's old code.
+// bool closeToPoint;
+// bool foundCoords;
 
-// Only sets a new waypoint if conditions are right.
-void updateWaypointNew() {
-  if (distance <= CHANGE_WAYPOINT) {
-    closeToPoint = true;
-  } else {
-    closeToPoint = false;
-  }
-  if (closeToPoint && !foundCoords) {
-    float currentTargetLat, currentTargetLon = getCurrentWaypoint();
-    float nextTargetLat, nextTargetLon = returnNextWaypoint();
-  }
-  if (closeToPoint && foundCoords) {
-    float turnLat, turnLon = getNextTurnWaypoint();
-  }
-}
+// // Only sets a new waypoint if conditions are right. NEED TO WORK ON THIS.
+// void updateWaypointNew() {
+//   if (distance <= CHANGE_WAYPOINT) {
+//     closeToPoint = true;
+//   } else {
+//     closeToPoint = false;
+//   }
+//   if (closeToPoint && !foundCoords) {
+//     float currentTargetLat, currentTargetLon = getCurrentWaypoint();
+//     float nextTargetLat, nextTargetLon = returnNextWaypoint();
+//   }
+//   if (closeToPoint && foundCoords) {
+//     float turnLat, turnLon = getNextTurnWaypoint();
+//   }
+// }
 
 // When getting closer to the waypoint, the plane should start turning to face the next waypoint, smoothly.
 float getNextTurnWaypoint() {
@@ -86,7 +89,7 @@ float getNextTurnWaypoint() {
   float heading = yaw;
 
   // Calculate the heading towards the next waypoint.
-  float desiredHeadingToNext = atan2(nextLon - currentLon, nextLat - currentLat);
+  float desiredHeadingToNext = atan2(targetLon - lon, targetLat - lat);
 
   // Calculate the difference between the current heading and the desired heading to the next waypoint.
   float headingDifference = desiredHeadingToNext - heading;
@@ -101,8 +104,8 @@ float getNextTurnWaypoint() {
   heading += headingDifference * turnRate;
 
   // Calculate the new target latitude and longitude based on the updated heading.
-  float turnLat = currentLat + stepDistance * cos(heading);
-  float turnLon = currentLon + stepDistance * sin(heading);
+  float turnLat = lat + stepDistance * cos(heading);
+  float turnLon = lon + stepDistance * sin(heading); 
 
   return turnLat, turnLon;
 }
@@ -119,7 +122,5 @@ float getNextCircleWaypoint(float centerLat, float centerLon, int diameter) {
   double angleIncrement = 2 * M_PI / CIRCLE_POINTS;
   angle += angleIncrement;
 
-  float nextLat = centerLat + (RADIUS / EARTH_RADIUS) * cos(angle) * (180.0 / M_PI);
-  float nextLon = centerLon + (RADIUS / EARTH_RADIUS) * sin(angle) * (180.0 / M_PI) / cos(centerLat * M_PI / 180.0);
-  return nextLat, nextLon;
+  return centerLat + (RADIUS / EARTH_RADIUS) * cos(angle) * (180.0 / M_PI), centerLon + (RADIUS / EARTH_RADIUS) * sin(angle) * (180.0 / M_PI) / cos(centerLat * M_PI / 180.0); // Return the lat, lon.
 }

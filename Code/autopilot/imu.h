@@ -27,4 +27,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 void imuSetup();
 void imuMath();
-void imuInternalMath();
+int imuInternalMath();
