@@ -24,11 +24,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Arduino.h>
 #include <TinyGPSPlus.h>
 
+extern TinyGPSPlus gps;
+
 void gpsSetup();
-float getGPSData();
-float getGPSLocation();
-int getGPSTime();
-int getGPSDate();
+void getGPSData();
+void getGPSLocation();
+void getGPSTime();
+void getGPSDate();
 void gpsSleepTime(long ms);
 void gpsSleep();
 void gpsWakeup(bool wait = true);

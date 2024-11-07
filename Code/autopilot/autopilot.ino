@@ -39,9 +39,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "settings.h"
 #include "vars.h"
 #include "waypoint.h"
-// #include <Scheduler.h>
-
-ICM20948 imu;
+#include <Scheduler.h>
 
 // GPS vars.
 float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON;
@@ -55,7 +53,7 @@ float temperature, pressure, bmeAltitude;
 int humidity;
 
 // Other vars.
-int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE;
+int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE, lastUpdate;
 bool abortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
 float desiredPitch = DESIRED_PITCH, voltage, lastVoltage;
 
@@ -149,6 +147,14 @@ void setup() {
   desiredPitch = findBestPitch();
 #endif
 
+  Scheduler.startLoop(loop1);
+#ifdef USE_GPS
+  Scheduler.startLoop(loop2);
+#endif
+#ifdef USE_LORA
+  Scheduler.startLoop(loop3);
+#endif
+
 #ifdef DEVMODE
   SerialUSB.println("Everything has initialized, moving on to main sketch in 5 seconds.");
 #endif
@@ -156,12 +162,12 @@ void setup() {
   delay(5000);
 }
 
-void loop() {
+void loop1() {
 #ifdef DROP_START
   int altitudeCounter = 0;
   float lastAltitude = 0;
   while (bmeAltitude < LOCK_ALTITUDE) {
-    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+    getBMEData(SEA_LEVEL_PRESSURE); // Get BME data, put into global variables.
 #ifdef DEVMODE
     SerialUSB.println("Waiting to initiate flight until the lock altitude is reached.");
 #endif
@@ -169,7 +175,7 @@ void loop() {
   }
   while (altitudeCounter < 2) {
     lastAltitude = bmeAltitude;
-    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
+    getBMEData(SEA_LEVEL_PRESSURE); // Get BME data, put into global variables.
     if (bmeAltitude < lastAltitude) {
       altitudeCounter++;
     }
@@ -186,81 +192,89 @@ void loop() {
   delay(5000); // Give enough time for the glider to stabilize in flight before starting steering shenanigans.
 #endif
 
-  // If IMU timer matches with the update rate.
-  if (imu.delt_t > updateRate) {
-    // yaw, pitch, roll = imuInternalMath(); // Getting IMU values.
+  if (millis() - lastUpdate > updateRate) {
+    getAHRS(); // Get the yaw, pitch, and roll from the IMU and assign it the respective global variables.
 
-    // Getting sensor values.
-#ifdef USE_BME
-    temperature, humidity, pressure, bmeAltitude = getBMEData(SEA_LEVEL_PRESSURE);
-#endif
+    //     // Getting sensor values.
+    // #ifdef USE_BME
+    //     getBMEData(SEA_LEVEL_PRESSURE); // Get BME data, put into global variables.
+    // #endif
 
-    // Calculations.
-    distance = calculateDistance(lat, lon, targetLat, targetLon);
-    turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+    //     // Calculations.
+    //     distance = calculateDistance(lat, lon, targetLat, targetLon);
+    //     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
-    lastVoltage = voltage;
-#ifdef USE_VOLTAGE
-    voltage = readVoltage();
-#endif
-#ifndef USE_VOLTAGE
-    voltage = LOW_VOLTAGE + 0.1; // Fake the voltage if reader is disabled.
-#endif
-    if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
-      lowVoltage = true;
-      updateRate = 5000;      // Move the servos less frequently.
-      loraUpdateRate = 30000; // Reduce the LoRa update rate.
-    }
-    if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
-      ultraLowVoltage = true;
-      loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
-      abortFlight = true;     // Land the glider.
-    }
+    //     lastVoltage = voltage;
+    // #ifdef USE_VOLTAGE
+    //     voltage = readVoltage();
+    // #endif
+    // #ifndef USE_VOLTAGE
+    //     voltage = (LOW_VOLTAGE + 0.1) * 2; // Fake the voltage if reader is disabled.
+    // #endif
+    //     if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
+    //       lowVoltage = true;
+    //       updateRate = 5000;      // Move the servos less frequently.
+    //       loraUpdateRate = 30000; // Reduce the LoRa update rate.
+    //     }
+    //     if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
+    //       ultraLowVoltage = true;
+    //       loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
+    //       abortFlight = true;     // Land the glider.
+    //     }
 
-#ifdef USE_WAYPOINTS
-    if (!lowVoltage) {
-      updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
-    }
-#endif
+    // #ifdef USE_WAYPOINTS
+    //     if (!lowVoltage) {
+    //       updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
+    //     }
+    // #endif
 
-    // Landing.
-    if (altitude > LOCK_ALTITUDE) {
-      altitudeLock = true; // This enables when the glider is above a certain altitude. This makes sure it doesn't land when we're releasing it.
-    }
-    if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
-      abortFlight = true;
-    }
-    if (abortFlight) {
-      // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
-      targetLat, targetLon = getNextCircleWaypoint(lat, lon, 30);
-    }
+    //     // Landing.
+    //     if (altitude > LOCK_ALTITUDE) {
+    //       altitudeLock = true; // This enables when the glider is above a certain altitude. This makes sure it doesn't land when we're releasing it.
+    //     }
+    //     if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
+    //       abortFlight = true;
+    //     }
+    //     if (abortFlight) {
+    //       // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
+    //       getNextCircleWaypoint(lat, lon, 30); // Get new targetLat and targetLon.
+    //     }
 
-    // Calculate again if needed.
-    if (abortFlight) {
-      distance = calculateDistance(lat, lon, targetLat, targetLon);
-      turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
-    }
+    //     // Calculate again if needed.
+    //     if (abortFlight) {
+    //       distance = calculateDistance(lat, lon, targetLat, targetLon);
+    //       turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+    //     }
 
-    servoPositionLeft, servoPositionRight = pidElevons(pitch, yaw, turnAngle);
-    moveLeftServo(servoPositionLeft);
-    moveRightServo(servoPositionRight);
+    //     pidElevons(pitch, yaw, turnAngle); // Get servoPositionLeft, servoPositionRight.
+    //     moveLeftServo(servoPositionLeft);
+    //     moveRightServo(servoPositionRight);
 
-    // EEPROM.
-#ifdef USE_EEPROM
-    writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
-#endif
+    //     // EEPROM.
+    // #ifdef USE_EEPROM
+    //     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
+    // #endif
 
-    // Updating time for IMU.
-    imu.count = millis();
+    // #ifdef DEVMODE
+    // #ifdef DISPLAY_DATA
+    //     printData(); // Print all the data to the serial monitor.
+    // #endif
+    // #endif
+
+    SerialUSB.println(yaw);
+
+    lastUpdate = millis();
   }
+  yield();
 }
 
-// void loop2() { // We're doing threading on an Arduino! (This is a really cool library).
-//   imuMath();   // This runs in the background 24/7. When the code is ready to access the data, imuInternalMath() is called.
-// }
+void loop() { // We're doing threading on an Arduino! (This is a really cool library).
+  imuMath();  // This runs in the background 24/7. When the code is ready to access the data, getAHRS() is called.
+  yield();
+}
 
 #ifdef USE_GPS
-void loop3() {
+void loop2() {
   // If not using GPS low power, just get data and do nothing else.
 #ifndef GPS_LOW_POWER
   if (millis() - gpsLast > GPS_UPDATE_RATE) {
@@ -272,16 +286,16 @@ void loop3() {
 #ifdef GPS_LOW_POWER
   if (millis() - gpsLast > GPS_LOW_POWER_RATE) {
     gpsLast = millis();
-    gpsWakeup(); // Wakeup GPS module and wait for fix.
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
-    gpsSleep(); // Put GPS module to sleep.
+    gpsWakeup();  // Wakeup GPS module and wait for fix.
+    getGPSData(); // Get GPS data and put into global variables.
+    gpsSleep();   // Put GPS module to sleep.
   }
 #endif
 }
 #endif
 
 #ifdef USE_LORA
-void loop4() {
+void loop3() {
 #ifdef FAST_LORA
   packet.lat = lat;
   packet.lon = lon;
@@ -326,6 +340,6 @@ void loop4() {
     lastLoRa = millis();
 #endif
   }
-  hammingReceive();
+  hammingReceive(); // Receive LoRa data to abort flight and change targetLat and targetLon.
 }
 #endif

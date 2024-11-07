@@ -29,7 +29,7 @@ void servoSetup() {
   rightServo.attach(RIGHT_SERVO);
 }
 
-int pidElevons(int pitch, int yaw, int turningAngle) {
+void pidElevons(int pitch, int yaw, int turningAngle) {
   errorPitch = SETPOINT_PITCH - pitch;
   errorYaw = turningAngle;
 
@@ -42,14 +42,12 @@ int pidElevons(int pitch, int yaw, int turningAngle) {
   prevErrorYaw = errorYaw;
   integralYaw += errorYaw;
 
-  int servoPositionLeft = 90 - outputPitch + outputYaw + desiredPitch;
-  int servoPositionRight = 90 - outputPitch - outputYaw + desiredPitch;
+  servoPositionLeft = 90 - outputPitch + outputYaw + desiredPitch;
+  servoPositionRight = 90 - outputPitch - outputYaw + desiredPitch;
 
   // Map servo positions if needed.
   // servoPositionLeft = map(servoPositionLeft, 0, 180, 750, 2250);
   // servoPositionRight = map(servoPositionRight, 0, 180, 750, 2250);
-
-  return servoPositionLeft, servoPositionRight;
 }
 
 void moveLeftServo(int degrees) {
@@ -99,7 +97,7 @@ float findBestPitch() {
   int x = 0;
   int y = 0;
   while (x < PITCH_RANGE) {
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    getGPSData();
     float prevLat = lat;
     float prevLon = lon;
     float prevAlt = altitude;
@@ -109,7 +107,7 @@ float findBestPitch() {
     while (beforeTest + STEP_TIME < millis()) {
       longBlink(LED); // Just blink the LED.
     }
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    getGPSData();
     float distance = calculateDistance(prevLat, prevLon, lat, lon);
     float glideRate = distance / altitude;
 

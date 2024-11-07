@@ -18,13 +18,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "AHRSAlgorithms.h"
-#include "ICM20948.h"
 #include "settings.h"
 #include "vars.h"
 #include <Arduino.h>
+#include <ICM_20948.h> // You will need the Sparkfun ICM-20948 library.
 #include <Wire.h>
 
+extern ICM_20948_I2C imu;
+
 void imuSetup();
+void getAHRS();
 void imuMath();
-int imuInternalMath();
+float vectorDot(float a[3], float b[3]);
+void vectorNormalize(float a[3]);
+void getScaledIMU(float Gxyz[3], float Axyz[3], float Mxyz[3]);
+void quaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz, float mx, float my, float mz, float deltaTime);

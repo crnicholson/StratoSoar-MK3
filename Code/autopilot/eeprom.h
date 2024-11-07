@@ -23,6 +23,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Arduino.h>
 #include <SparkFun_External_EEPROM.h> // Click here to get the library: http://librarymanager/All#SparkFun_External_EEPROM
 
+extern ExternalEEPROM eeprom;
+
 void eepromSetup();
 void writeDataToEEPROM(float lat, float lon, short altitude, short yaw, short pitch, short roll, byte hour, byte minute, byte second);
 void writeByteToEEPROM(int address, byte value);

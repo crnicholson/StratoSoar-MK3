@@ -11,6 +11,12 @@
 ICM20948 myIMU;
 
 void setup() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+
+
   Wire.begin();
   SerialUSB.begin(BAUD_RATE);
   while (!SerialUSB) {

@@ -43,6 +43,6 @@ struct data {
 extern struct data packet;
 
 // Other vars.
-extern int lastLoRa, abortCounter, loraUpdateRate, updateRate;
+extern int lastLoRa, abortCounter, loraUpdateRate, updateRate, lastUpdate;
 extern bool abortFlight, loraAbortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
 extern float desiredPitch, voltage, lastVoltage;

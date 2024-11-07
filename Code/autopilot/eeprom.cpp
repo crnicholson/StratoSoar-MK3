@@ -18,12 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "eeprom.h"
 
-int eepromAddress, start, last, size, writeTime;
+int eepromAddress, eepromStart, lastWrite, size, writeTime;
 
 ExternalEEPROM eeprom; // Initialize EEPROM.
 
 void eepromSetup() {
-#ifdef USE_EEPROM
   eeprom.setMemoryType(EEPROM_SIZE); // Valid types: 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1025, 2048
 
   if (!eeprom.begin()) {
@@ -45,11 +44,11 @@ void eepromSetup() {
 #ifdef DEVMODE
   SerialUSB.println("Erasing EEPROM, should take ~10 seconds.");
 #endif
-  start = millis();
+  eepromStart = millis();
   eeprom.erase();
 #ifdef DEVMODE
   SerialUSB.print("Done erasing. Time took in milliseconds: ");
-  SerialUSB.println(mills() - start);
+  SerialUSB.println(mills() - eepromStart);
 #endif
 #endif
 
@@ -66,14 +65,13 @@ void eepromSetup() {
 #endif
     longBlink(ERR_LED);
   }
-#endif
 
   writeTime = (FLIGHT_TIME * 60000) / (size / BYTES_PER_CYCLE) + EEPROM_BUFFER;
 }
 
 void writeDataToEEPROM(float lat, float lon, short altitude, short yaw, short pitch, short roll, byte hour, byte minute, byte second) {
-  if (writeTime > millis() - last) {
-    last = millis();
+  if (writeTime > millis() - lastWrite) {
+    lastWrite = millis();
     writeFloatToEEPROM(eepromAddress, lat);
     writeFloatToEEPROM(eepromAddress, lon);
     writeShortToEEPROM(eepromAddress, altitude);

@@ -1,6 +1,6 @@
 {
     "board": "arduino:samd:arduino_zero_native",
-    "port": "/dev/tty.usbmodem1101",
+    "port": "/dev/tty.usbmodem12201",
     "sketch": "Code/autopilot/autopilot.ino",
     "output": "../ArduinoOutput"
 }

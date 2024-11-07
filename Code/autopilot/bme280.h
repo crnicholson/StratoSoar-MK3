@@ -19,9 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 
 #include "settings.h"
+#include "vars.h"
 #include <Arduino.h>
 #include <TinyBME280.h>
 #include <Wire.h>
 
 float bme280Altitude(float referencePressure = 1013.250);
-float getBMEData(float referencePressure = 1013.250);
+void getBMEData(float referencePressure = 1013.250);

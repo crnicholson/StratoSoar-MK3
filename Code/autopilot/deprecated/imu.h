@@ -1,5 +1,5 @@
 /*
-servo.h, part of StratoSoar MK3, for an autonomous glider.
+imu.h, part of StratoSoar MK3, for an autonomous glider.
 Copyright (C) 2024 Charles Nicholson
 
 This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "calc.h"
-#include "gps.h"
+#include "AHRSAlgorithms.h"
+#include "ICM20948.h"
 #include "settings.h"
 #include "vars.h"
 #include <Arduino.h>
-#include <Servo.h>
+#include <Wire.h>
 
-void servoSetup();
-void pidElevons(int pitch, int yaw, int turningAngle);
-void moveLeftServo(int degrees);
-void moveRightServo(int degrees);
-void land(int left, int right);
-float findBestPitch();
+void imuSetup();
+void imuMath();
+int imuInternalMath();

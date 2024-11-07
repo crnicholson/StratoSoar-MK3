@@ -23,7 +23,10 @@ float bme280Altitude(float referencePressure) {
   return ((float)-45846.2) * (pow(((float)(BME280pressure()) / (float)referencePressure), 0.190263) - (float)1); // referencePressure is the pressure in hPa at zero altitude; for example, 1013.250.
 }
 
-float getBMEData(float referencePressure) {
+void getBMEData(float referencePressure) {
   // Temperature (C), humidity (RH%), pressure (hPa), and altitude (m).
-  return BME280temperature(), BME280humidity(), BME280pressure(), bme280Altitude(referencePressure);
+  temperature = BME280temperature();
+  humidity = BME280humidity();
+  pressure = BME280pressure();
+  bmeAltitude = bme280Altitude(referencePressure);
 }

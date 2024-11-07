@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "gps.h"
 
+TinyGPSPlus gps;
+
 long sleepStart;
 bool sleepStarted;
-
-TinyGPSPlus gps;
 
 void gpsSetup() {
   Serial.begin(GPS_BAUD_RATE);
@@ -58,55 +58,59 @@ void gpsSetup() {
 #endif
 }
 
-float getGPSData() {
+void getGPSData() {
   if (!Serial.available() == 0) {
     while (Serial.available() > 0) {
       gps.encode(Serial.read());
     }
 
     if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
-      return gps.location.lat(), gps.location.lng(), gps.altitude.meters(), gps.date.year(), gps.date.month(), gps.date.day(), gps.time.hour(), gps.time.minute(), gps.time.second();
-    } else {
-      return lat, lon, altitude, year, month, day, hour, minute, second; // Return the previous values if the GPS is not valid.
+      lat = gps.location.lat();
+      lon = gps.location.lng();
+      altitude = gps.altitude.meters();
+      year = gps.date.year();
+      month = gps.date.month();
+      day = gps.date.day();
+      hour = gps.time.hour();
+      minute = gps.time.minute();
+      second = gps.time.second();
     }
-  } else {
-    return lat, lon, altitude, year, month, day, hour, minute, second; // Return the previous values if there is no data available.s
   }
 }
 
-float getGPSLocation() {
+void getGPSLocation() {
   while (Serial.available() > 0) {
     gps.encode(Serial.read());
   }
 
   if (gps.location.isValid() && gps.altitude.isValid()) {
-    return gps.location.lat(), gps.location.lng(), gps.altitude.meters();
-  } else {
-    return 0;
+    lat = gps.location.lat();
+    lon = gps.location.lng();
+    altitude = gps.altitude.meters();
   }
 }
 
-int getGPSTime() {
+void getGPSTime() {
   while (Serial.available() > 0) {
     gps.encode(Serial.read());
   }
 
   if (gps.time.isValid()) {
-    return gps.time.hour(), gps.time.minute(), gps.time.second();
-  } else {
-    return 0;
+    hour = gps.time.hour();
+    minute = gps.time.minute();
+    second = gps.time.second();
   }
 }
 
-int getGPSDate() {
+void getGPSDate() {
   while (Serial.available() > 0) {
     gps.encode(Serial.read());
   }
 
   if (gps.date.isValid()) {
-    return gps.date.month(), gps.date.day(), gps.date.year();
-  } else {
-    return 0;
+    month = gps.date.month();
+    day = gps.date.day();
+    year = gps.date.year();
   }
 }
 

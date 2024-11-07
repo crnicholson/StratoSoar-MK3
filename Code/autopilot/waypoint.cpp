@@ -52,7 +52,7 @@ void updateWaypoint() {
         targetLon = prevTLon;
       }
 #ifdef SMOOTH_TURNING
-      targetLat, targetLon = getNextTurnWaypoint();
+      getNextTurnWaypoint(); // Gets new targetLat and targetLon and puts it into the global variables.
 #endif
     }
   } else {
@@ -82,7 +82,7 @@ void updateWaypoint() {
 // }
 
 // When getting closer to the waypoint, the plane should start turning to face the next waypoint, smoothly.
-float getNextTurnWaypoint() {
+void getNextTurnWaypoint() {
   float turnRate = 0.001; // Adjust this value for the desired turn sharpness.
   float stepDistance = 0.0001;
 
@@ -104,17 +104,15 @@ float getNextTurnWaypoint() {
   heading += headingDifference * turnRate;
 
   // Calculate the new target latitude and longitude based on the updated heading.
-  float turnLat = lat + stepDistance * cos(heading);
-  float turnLon = lon + stepDistance * sin(heading); 
-
-  return turnLat, turnLon;
+  targetLat = lat + stepDistance * cos(heading);
+  targetLon = lon + stepDistance * sin(heading);
 }
 
 #define RADIUS diameter / 2.0
 #define EARTH_RADIUS 6371000.0 // Earth radius in meters.
 #define CIRCLE_POINTS 20
 
-float getNextCircleWaypoint(float centerLat, float centerLon, int diameter) {
+void getNextCircleWaypoint(float centerLat, float centerLon, int diameter) {
   // Calculate the angle from the center to the current position.
   double angle = atan2(lon - centerLon, lat - centerLat);
 
@@ -122,5 +120,6 @@ float getNextCircleWaypoint(float centerLat, float centerLon, int diameter) {
   double angleIncrement = 2 * M_PI / CIRCLE_POINTS;
   angle += angleIncrement;
 
-  return centerLat + (RADIUS / EARTH_RADIUS) * cos(angle) * (180.0 / M_PI), centerLon + (RADIUS / EARTH_RADIUS) * sin(angle) * (180.0 / M_PI) / cos(centerLat * M_PI / 180.0); // Return the lat, lon.
+  targetLat = centerLat + (RADIUS / EARTH_RADIUS) * cos(angle) * (180.0 / M_PI);
+  targetLon = centerLon + (RADIUS / EARTH_RADIUS) * sin(angle) * (180.0 / M_PI) / cos(centerLat * M_PI / 180.0); // Return the lat, lon.
 }

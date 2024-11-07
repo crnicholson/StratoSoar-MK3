@@ -1,102 +1,116 @@
-/*
-imu.cpp, part of StratoSoar MK3, for an autonomous glider.
-Copyright (C) 2024 Charles Nicholson
+// Modified version of ICM-20948 AHRS code from SJ Remington.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+// Calibration procedure can be found here: http://sailboatinstruments.blogspot.com/2011/08/improved-magnetometer-calibration.html
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+#include <ICM_20948.h> // You will need the Sparkfun ICM-20948 library.
+#include <Scheduler.h>
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+// Settings.
+#define DECLINATION 0    // -13.5 // Local magnetic declination in degrees in Boston. Yaw increases CW from North. Can be found here: https://www.ngdc.noaa.gov/geomag-web/#declination.
+#define AD0_VAL 0        // Change I2C address. 0 = 0x68, 1 = 0x69.
+#define PRINT_SPEED 1000 // The milliseconds between printouts.
+#define BAUD_RATE 115200 // The baud rate for the serial monitor.
+// #define HERTZ             // Print the frequency of the sensor.
 
-#include "imu.h"
+// These are the previously determined offsets and scale factors for the accelerometer and magnetometer.
+// Gyro default scale 250 dps. Convert to radians/sec subtract offsets
+float Gscale = (M_PI / 180.0) * 0.00763; // 250 dps scale sensitivity = 131 dps/LSB
+float G_offset[3] = {69.6, 22.0, -35.1};
 
-ICM_20948_I2C imu;
+float A_B[3]{774.57, 109.87, 821.08};
+
+float A_Ainv[3][3]{{0.0602, -0.00097, -0.00513},
+                   {-0.00097, 0.06405, -0.00172},
+                   {-0.00513, -0.00172, 0.0561}};
+
+float M_B[3]{15.29, 184.51, 37.83};
+
+float M_Ainv[3][3]{{3.03796, -0.04154, -0.0047},
+                   {-0.04154, 2.95127, -0.02467},
+                   {-0.0047, -0.02467, 2.95456}};
 
 // Don't change. Tuning parameters. IMU_KP is not yet optimized (slight overshoot apparent after rapid sensor reorientations). IMU_KI is not used.
 #define IMU_KP 50.0
 #define IMU_KI 0.0
 
-#define PRINT_SPEED 1300
-
 // Variables.
-unsigned long imuNow, lastIMUUpdate; // For counting time between updates.
-float deltat = 0;                    // For counting time between updates in microseconds.
+unsigned long now, last; // For counting time between updates.
+float deltat = 0;        // For counting time between updates in microseconds.
 
 int hertz; // For measuring frequency of sensor.
 
-unsigned long lastIMUUpdatePrint = 0; // Keep track of print time
+unsigned long lastPrint = 0; // Keep track of print time
 
 float q[4] = {1.0, 0.0, 0.0, 0.0};           // Vector to hold quaternion.
+float yaw, pitch, roll;                      // Euler angle output.
 float Gxyz[3], Axyz[3], Mxyz[3];             // Centered and scaled gyro/accel/mag data.
 float integralError[3] = {0.0f, 0.0f, 0.0f}; // Integral error for Mahony method.
-bool imuInit, magInit;                       // Bools for mag and IMU intialization.
+bool imuInit, magInit;                       // Bools for IMU and magnetometer initialization.å
 
-float Gscale = (M_PI / 180.0) * 0.00763; // 250 dps scale sensitivity = 131 dps/LSB
+ICM_20948_I2C imu; // Create the IMU object.
 
-// void setup() {
-//   SerialUSB.begin(BAUD_RATE);
-//   while (!SerialUSB)
-//     ;
+void setup() {
+  SerialUSB.begin(BAUD_RATE);
+  while (!SerialUSB)
+    ;
 
-//   SerialUSB.println("ICM-20948 AHRS testing.");
+  SerialUSB.println("ICM-20948 AHRS testing.");
 
-//   Wire.begin();
-//   Wire.setClock(400000);
+  Wire.begin();
+  Wire.setClock(400000);
 
-//   imuSetup();
-// }
+  imuSetup();
 
-// void loop() {
-//   imuMath();
+  Scheduler.startLoop(loop1);
+}
 
-//   // Check to see if it's time to print out the data.
-//   if (millis() - lastIMUUpdatePrint > PRINT_SPEED) {
-//     outputAHRS();
-//   }
-// }
+void loop() {
+  imuMath();
+  yield();
+}
+
+void loop1() {
+  // Check to see if it's time to print out the data.
+  if (millis() - lastPrint > PRINT_SPEED) {
+    outputAHRS();
+  }
+  yield();
+}
 
 void imuSetup() {
   while (!imuInit || !magInit) {
     imu.begin(Wire, AD0_VAL);
 
-#ifdef DEVMODE
     SerialUSB.print("Initialization of the IMU returned: ");
     SerialUSB.println(imu.statusString());
-#endif
     if (imu.status != ICM_20948_Stat_Ok) {
-#ifdef DEVMODE
       SerialUSB.println("Trying again...");
-#endif
       delay(500);
     } else {
       imuInit = true;
     }
 
     imu.startupMagnetometer();
-#ifdef DEVMODE
     SerialUSB.print(F("Initialization of the magnetometer returned: "));
     SerialUSB.println(imu.statusString());
-#endif
     if (imu.status != ICM_20948_Stat_Ok) {
-#ifdef DEVMODE
       SerialUSB.println("Trying again...");
-#endif
       delay(500);
     } else {
       magInit = true;
     }
   }
+
+  SerialUSB.println("ICM-20948 connected. Sketch starting shortly.");
+#ifdef HERTZ
+  SerialUSB.println("Yaw, pitch, roll, Hertz");
+#endif
+#ifndef HERTZ
+  SerialUSB.println("Yaw, pitch, roll");
+#endif
 }
 
-void getAHRS() {
+void outputAHRS() {
   // Converting the quarternions to Euler angles (radians). This angular conversion can fail. See gimbal lock.
   roll = atan2((q[0] * q[1] + q[2] * q[3]), 0.5 - (q[1] * q[1] + q[2] * q[2]));
   pitch = asin(2.0 * (q[0] * q[2] - q[1] * q[3]));
@@ -107,20 +121,29 @@ void getAHRS() {
   pitch *= 180.0 / PI;
   roll *= 180.0 / PI;
 
-  // // Accounting for declination.
-  // yaw = -(yaw + DECLINATION);
-  // if (yaw < 0)
-  //   yaw += 360.0;
-  // if (yaw >= 360.0)
-  //   yaw -= 360.0;
+  // Accounting for declination.
+  yaw = -(yaw + DECLINATION);
+  if (yaw < 0)
+    yaw += 360.0;
+  if (yaw >= 360.0)
+    yaw -= 360.0;
 
-  int freq = hertz / (PRINT_SPEED / 1000);
-
-  SerialUSB.println();
-  SerialUSB.println(freq); // Calculating the frequency of the sensor.
-  SerialUSB.println();
+  SerialUSB.print(yaw, 0);
+  SerialUSB.print(", ");
+  SerialUSB.print(pitch, 0);
+  SerialUSB.print(", ");
+#ifdef HERTZ
+  SerialUSB.print(roll, 0);
+  SerialUSB.print(", ");
+  SerialUSB.print(hertz / (PRINT_SPEED / 1000), 0); // Calculating the frequency of the sensor.
+  SerialUSB.println(" Hz");
+#endif
+#ifndef HERTZ
+  SerialUSB.println(roll, 0);
+#endif
 
   hertz = 0; // Reset counter for next print.
+  lastPrint = millis();
 }
 
 void imuMath() {
@@ -134,9 +157,9 @@ void imuMath() {
     Mxyz[1] = -Mxyz[1]; // Reflect Y and Z.
     Mxyz[2] = -Mxyz[2]; // Must be done after offsets & scales applied to raw data.
 
-    imuNow = micros();
-    deltat = (imuNow - lastIMUUpdate) * 1.0e-6; // Get microseconds since lastIMUUpdate update.
-    lastIMUUpdate = imuNow;
+    now = micros();
+    deltat = (now - last) * 1.0e-6; // Get microseconds since last update.
+    last = now;
 
     quaternionUpdate(Axyz[0], Axyz[1], Axyz[2], Gxyz[0], Gxyz[1], Gxyz[2], Mxyz[0], Mxyz[1], Mxyz[2], deltat); // Updates the quaternion array with the scaled values.
   }

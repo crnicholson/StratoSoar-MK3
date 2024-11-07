@@ -1,19 +1,28 @@
-// Originally by Kris Winer, 2014, updated to work with ICM20948 by Brent Wilkins, 2016. Further updated by Charles Nicholson, 2024.
+/*
+imu.cpp, part of StratoSoar MK3, for an autonomous glider.
+Copyright (C) 2024 Charles Nicholson
 
-#include "AHRSAlgorithms.h"
-#include "ICM20948.h"
-#include "settings.h"
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-ICM20948 imu;
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-void setup() {
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#include "imu.h"
+
+extern ICM20948 imu;
+
+
+void imuSetup() {
   Wire.begin();
-  // TWBR = 12;  // If needed, set I2C speed to be 400 kbit/sec.
-
-  SerialUSB.begin(BAUD_RATE);
-  while (!SerialUSB) {
-    delay(10);
-  }
 
   // Reset ICM20948.
   imu.writeByte(ICM20948_ADDRESS, PWR_MGMT_1, READ_FLAG);
@@ -22,12 +31,15 @@ void setup() {
   delay(100);
 
   byte c = imu.readByte(ICM20948_ADDRESS, WHO_AM_I_ICM20948);
+#ifdef DEVMODE
   SerialUSB.print(F("ICM20948 I AM 0x"));
   SerialUSB.print(c, HEX);
   SerialUSB.print(F(" I should be 0x"));
   SerialUSB.println(0xEA, HEX);
+#endif
 
   if (c == 0xEA) { // WHO_AM_I should always be 0x71.
+#ifdef DEVMODE
     SerialUSB.println(F("ICM20948 is online..."));
 
     // Start by performing self test and reporting values.
@@ -50,36 +62,48 @@ void setup() {
     SerialUSB.print(F("z-axis self test: gyration trim within : "));
     SerialUSB.print(imu.selfTest[5], 1);
     SerialUSB.println("% of factory value");
+#endif
 
     imu.calibrateICM20948(imu.gyroBias, imu.accelBias); // Calibrate gyro and accelerometers, load biases in bias registers.
 
     imu.initICM20948();
+#ifdef DEVMODE
     SerialUSB.println("ICM20948 initialized for active data mode....");
+#endif
 
     // Read the WHO_AM_I register of the magnetometer, this is a good test of comms.
     byte d = imu.readByte(AK09916_ADDRESS, WHO_AM_I_AK09916);
+#ifdef DEVMODE
     SerialUSB.print("AK8963 ");
     SerialUSB.print("I AM 0x");
     SerialUSB.print(d, HEX);
     SerialUSB.print(" I should be 0x");
     SerialUSB.println(0x09, HEX);
+#endif
 
     if (d != 0x09) {
+#ifdef DEVMODE
       SerialUSB.println(F("Communication with magnetometer failed, abort!"));
       SerialUSB.flush();
+#endif
       abort();
     }
 
     imu.initAK09916(); // Get magnetometer calibration from AK8963 ROM.
+#ifdef DEVMODE
     SerialUSB.println("AK09916 initialized for active data mode...");
+#endif
 
     imu.getAres();
     imu.getGres();
     imu.getMres();
 
-    // The next call delays for 4 seconds, and then records about 15 seconds of data to calculate bias and scale.
+// The next call delays for 4 seconds, and then records about 15 seconds of data to calculate bias and scale.
+#ifdef DEVMODE
     SerialUSB.println("Keep the magnetometer still during this time... I think.");
+#endif
     imu.magCalICM20948(imu.magBias, imu.magScale);
+#ifdef DEVMODE
     SerialUSB.println("AK09916 mag biases (mG)");
     SerialUSB.println(imu.magBias[0]);
     SerialUSB.println(imu.magBias[1]);
@@ -89,18 +113,20 @@ void setup() {
     SerialUSB.println(imu.magScale[0]);
     SerialUSB.println(imu.magScale[1]);
     SerialUSB.println(imu.magScale[2]);
+#endif
     delay(2000);
   } else { // If the WHO_AM_I read from the ICM20948 is incorrect, stop here.
+#ifdef DEVMODE
     SerialUSB.print("Could not connect to ICM20948: 0x");
     SerialUSB.println(c, HEX);
     SerialUSB.println(F("Communication failed, abort!"));
     SerialUSB.flush();
+#endif
     abort();
   }
-  SerialUSB.print("Yaw, Pitch, Roll: ");
 }
 
-void loop() {
+void imuMath() {
   if (imu.readByte(ICM20948_ADDRESS, INT_STATUS_1) & 0x01) {
     imu.readAccelData(imu.accelCount);
     imu.ax = (float)imu.accelCount[0] * imu.aRes;
@@ -122,23 +148,18 @@ void loop() {
   MahonyQuaternionUpdate(imu.ax, imu.ay, imu.az, imu.gx * DEG_TO_RAD, imu.gy * DEG_TO_RAD, imu.gz * DEG_TO_RAD, imu.my, imu.mx, imu.mz, imu.deltat);
 
   imu.delt_t = millis() - imu.count;
-  if (imu.delt_t > PRINT_FREQUENCY) {
-    imu.yaw = atan2(2.0f * (*(getQ() + 1) * *(getQ() + 2) + *getQ() * *(getQ() + 3)), *getQ() * *getQ() + *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) - *(getQ() + 3) * *(getQ() + 3));
-    imu.pitch = -asin(2.0f * (*(getQ() + 1) * *(getQ() + 3) - *getQ() * *(getQ() + 2)));
-    imu.roll = atan2(2.0f * (*getQ() * *(getQ() + 1) + *(getQ() + 2) * *(getQ() + 3)), *getQ() * *getQ() - *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) + *(getQ() + 3) * *(getQ() + 3));
+}
 
-    imu.pitch *= RAD_TO_DEG;
-    imu.yaw *= RAD_TO_DEG;
+int imuInternalMath() {
+  imu.yaw = atan2(2.0f * (*(getQ() + 1) * *(getQ() + 2) + *getQ() * *(getQ() + 3)), *getQ() * *getQ() + *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) - *(getQ() + 3) * *(getQ() + 3));
+  imu.pitch = -asin(2.0f * (*(getQ() + 1) * *(getQ() + 3) - *getQ() * *(getQ() + 2)));
+  imu.roll = atan2(2.0f * (*getQ() * *(getQ() + 1) + *(getQ() + 2) * *(getQ() + 3)), *getQ() * *getQ() - *(getQ() + 1) * *(getQ() + 1) - *(getQ() + 2) * *(getQ() + 2) + *(getQ() + 3) * *(getQ() + 3));
 
-    imu.yaw -= DECLINATION;
-    imu.roll *= RAD_TO_DEG;
+  imu.pitch *= RAD_TO_DEG;
+  imu.yaw *= RAD_TO_DEG;
 
-    SerialUSB.print(imu.yaw, 2);
-    SerialUSB.print(", ");
-    SerialUSB.print(imu.pitch, 2);
-    SerialUSB.print(", ");
-    SerialUSB.println(imu.roll, 2);
+  imu.yaw -= DECLINATION;
+  imu.roll *= RAD_TO_DEG;
 
-    imu.count = millis();
-  }
+  return imu.yaw, imu.pitch, imu.roll;
 }

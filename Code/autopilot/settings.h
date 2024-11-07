@@ -16,8 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#pragma once
+
 // Enables.
-#define DEVMODE       // Toggle serial monitor.
+#define DEVMODE // Toggle serial monitor.
 // #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
 // #define USE_GPS
 // #define USE_BME
@@ -25,10 +27,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // #define USE_LORA
 // #define USE_VOLTAGE
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
-// #define USE_WAYPOINTS 
-#define SMOOTH_TURNING // Smoothly turn the glider towards the next waypoint.
+// #define USE_WAYPOINTS
+// #define SMOOTH_TURNING // Smoothly turn the glider towards the next waypoint.
 // #define FIND_PITCH // Use a program to find the best pitch of the glider. BME and GPS must be enabled. Very experimental.
 // #define DROP_START // Don't start the program until the glider has detected a drop in altitude.
+#define DISPLAY_DATA // Dump the data on the serial monitor every update.
 
 // Pins.
 #define LED 13
@@ -41,8 +44,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define LORA_RESET_PIN 6
 #define DIO0_PIN 5
 // #define BUTTON 4   // Reserved for future use.
-// #define RESERVED 1 // Reserved for serial GPS connection. 
-// #define RESERVED 0 // Reserved for serial GPS connection. 
+// #define RESERVED 1 // Reserved for serial GPS connection.
+// #define RESERVED 0 // Reserved for serial GPS connection.
 #define SS_PIN 38
 #define VOLTMETER_PIN A0
 
@@ -60,7 +63,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define UPDATE_RATE 1000           // The time in milliseconds between glider respositionings.
 #define BAUD_RATE 115200           // Baud rate of the serial monitor.
 #define SEA_LEVEL_PRESSURE 1013.25 // Sea level pressure in hPa.
-#define DECLINATION 14             // http://www.ngdc.noaa.gov/geomag-web/#declination
+#define DECLINATION 0 // -13.5          // Local magnetic declination in degrees in Boston. Yaw increases CW from North. Can be found here: https://www.ngdc.noaa.gov/geomag-web/#declination.
+#define AD0_VAL 0                  // Change I2C address of IMU. 0 = 0x68, 1 = 0x69.
 #define LAND_ALTITUDE 100          // This many meters from the gorund the glider will start its landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 #define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
@@ -110,4 +114,18 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define CALL_SIGN "XXXXXX"    // Your call sign - make sure to change this. Uneeded in the US if using 915 MHz.
 #define LORA_UPDATE_RATE 5000 // The milliseconds between LoRa updates.
 
-#define PI 3.1415926
+// These are the previously determined offsets and scale factors for the accelerometer and magnetometer.
+// Gyro default scale 250 dps. Convert to radians/sec subtract offsets
+static float G_offset[3]{69.6, 22.0, -35.1};
+
+static float A_B[3]{774.57, 109.87, 821.08};
+
+static float A_Ainv[3][3]{{0.0602, -0.00097, -0.00513},
+                          {-0.00097, 0.06405, -0.00172},
+                          {-0.00513, -0.00172, 0.0561}};
+
+static float M_B[3]{15.29, 184.51, 37.83};
+
+static float M_Ainv[3][3]{{3.03796, -0.04154, -0.0047},
+                          {-0.04154, 2.95127, -0.02467},
+                          {-0.0047, -0.02467, 2.95456}};
