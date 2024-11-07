@@ -32,36 +32,12 @@ float deltat = 0;                    // For counting time between updates in mic
 
 int hertz; // For measuring frequency of sensor.
 
-unsigned long lastIMUUpdatePrint = 0; // Keep track of print time
-
 float q[4] = {1.0, 0.0, 0.0, 0.0};           // Vector to hold quaternion.
 float Gxyz[3], Axyz[3], Mxyz[3];             // Centered and scaled gyro/accel/mag data.
 float integralError[3] = {0.0f, 0.0f, 0.0f}; // Integral error for Mahony method.
 bool imuInit, magInit;                       // Bools for mag and IMU intialization.
 
 float Gscale = (M_PI / 180.0) * 0.00763; // 250 dps scale sensitivity = 131 dps/LSB
-
-// void setup() {
-//   SerialUSB.begin(BAUD_RATE);
-//   while (!SerialUSB)
-//     ;
-
-//   SerialUSB.println("ICM-20948 AHRS testing.");
-
-//   Wire.begin();
-//   Wire.setClock(400000);
-
-//   imuSetup();
-// }
-
-// void loop() {
-//   imuMath();
-
-//   // Check to see if it's time to print out the data.
-//   if (millis() - lastIMUUpdatePrint > PRINT_SPEED) {
-//     outputAHRS();
-//   }
-// }
 
 void imuSetup() {
   while (!imuInit || !magInit) {
@@ -108,17 +84,17 @@ void getAHRS() {
   roll *= 180.0 / PI;
 
   // // Accounting for declination.
-  // yaw = -(yaw + DECLINATION);
-  // if (yaw < 0)
-  //   yaw += 360.0;
-  // if (yaw >= 360.0)
-  //   yaw -= 360.0;
+  yaw = -(yaw + DECLINATION);
+  if (yaw < 0)
+    yaw += 360.0;
+  if (yaw >= 360.0)
+    yaw -= 360.0;
 
   int freq = hertz / (PRINT_SPEED / 1000);
 
-  SerialUSB.println();
-  SerialUSB.println(freq); // Calculating the frequency of the sensor.
-  SerialUSB.println();
+  // SerialUSB.println();
+  // SerialUSB.println(freq); // Calculating the frequency of the sensor.
+  // SerialUSB.println();
 
   hertz = 0; // Reset counter for next print.
 }
@@ -135,7 +111,7 @@ void imuMath() {
     Mxyz[2] = -Mxyz[2]; // Must be done after offsets & scales applied to raw data.
 
     imuNow = micros();
-    deltat = (imuNow - lastIMUUpdate) * 1.0e-6; // Get microseconds since lastIMUUpdate update.
+    deltat = (imuNow - lastIMUUpdate) * 1.0e-6; // Get microseconds since last update.
     lastIMUUpdate = imuNow;
 
     quaternionUpdate(Axyz[0], Axyz[1], Axyz[2], Gxyz[0], Gxyz[1], Gxyz[2], Mxyz[0], Mxyz[1], Mxyz[2], deltat); // Updates the quaternion array with the scaled values.
