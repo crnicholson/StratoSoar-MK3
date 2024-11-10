@@ -32,7 +32,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <SPI.h>
 
 struct receive {
-  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts;
+  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts, hdop;
   short yaw, pitch, roll;
   byte hour, minute, second;
   short txCount;

@@ -68,6 +68,7 @@ void getGPSData() {
       lat = gps.location.lat();
       lon = gps.location.lng();
       altitude = gps.altitude.meters();
+      hdop = gps.hdop.hdop();
       year = gps.date.year();
       month = gps.date.month();
       day = gps.date.day();
@@ -75,6 +76,9 @@ void getGPSData() {
       minute = gps.time.minute();
       second = gps.time.second();
     }
+  } else {
+    waitForFix();
+    getGPSData();
   }
 }
 

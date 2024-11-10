@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Arduino.h>
 
 // GPS vars.
-extern float lat, lon, altitude, targetLat, targetLon, prevTLat, prevTLon;
+extern float lat, lon, altitude, targetLat, targetLon, prevTLat, prevTLon, hdop;
 extern int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
@@ -33,7 +33,7 @@ extern float temperature, pressure, bmeAltitude;
 extern int humidity;
 
 struct data {
-  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts;
+  float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts, hdop;
   short yaw, pitch, roll;
   byte hour, minute, second;
   short txCount;
@@ -46,4 +46,4 @@ extern struct data packet;
 // Other vars.
 extern int lastLoRa, abortCounter, loraUpdateRate, updateRate, lastUpdate;
 extern bool abortFlight, loraAbortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
-extern float desiredPitch, voltage, lastVoltage;
+extern float desiredPitch, voltage;

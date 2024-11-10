@@ -62,6 +62,8 @@ void setup() {
   imuSetup();
 
   Scheduler.startLoop(loop1);
+
+  delay(15000);
 }
 
 void loop() {

@@ -21,11 +21,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // Enables.
 #define DEVMODE // Toggle serial monitor.
 // #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
-#define USE_GPS
-// #define USE_BME
+// #define USE_GPS
+#define USE_BME
 // #define USE_EEPROM
 // #define USE_LORA
-// #define USE_VOLTAGE
+#define USE_VOLTAGE
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
 // #define USE_WAYPOINTS
 // #define SMOOTH_TURNING // Smoothly turn the glider towards the next waypoint.
@@ -68,8 +68,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define LAND_ALTITUDE 100          // This many meters from the gorund the glider will start its landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
 #define CHANGE_WAYPOINT 10         // The distance in meters between the current location and the waypoint needed before changing to the next waypoint.
-#define LOW_VOLTAGE 3.4            // Below this voltage the glider will reduce the frequency of position updates and servo updates.
-#define TOO_LOW_VOLTAGE 3.2        // Below this voltage the glider will simply spiral down with even fewer updates.
+#define LOW_VOLTAGE 3.2            // Below this voltage the glider will reduce the frequency of position updates and servo updates.
+#define TOO_LOW_VOLTAGE 3.0        // Below this voltage the glider will simply spiral down with even fewer updates.
 
 // Glider pitch control.
 #define DESIRED_PITCH -5.0 // Pitch the glider should be flying at during the flight.

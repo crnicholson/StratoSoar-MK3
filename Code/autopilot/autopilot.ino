@@ -42,7 +42,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Scheduler.h>
 
 // GPS vars.
-float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON;
+float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON, hdop;
 int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
@@ -56,7 +56,7 @@ int humidity;
 // Other vars.
 int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE, lastUpdate;
 bool abortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
-float desiredPitch = DESIRED_PITCH, voltage, lastVoltage;
+float desiredPitch = DESIRED_PITCH, voltage;
 
 struct data packet;
 
@@ -95,6 +95,23 @@ void setup() {
 #endif
 #ifdef USE_LORA
   loraSetup();
+#endif
+#ifdef USE_BME
+  if (findDevice(0x77) || findDevice(0x76)) {
+#ifdef DEVMODE
+    SerialUSB.println("BME280 has been found.");
+#endif
+    if (findDevice(0x77))
+      BME280setI2Caddress(119);
+    if (findDevice(0x76))
+      BME280setI2Caddress(118);
+  } else {
+#ifdef DEVMODE
+    SerialUSB.println("BME280 has not been found. Freezing sketch.");
+#endif
+    while (1)
+      longBlink(ERR_LED);
+  }
 #endif
 #ifdef USE_GPS
 #ifdef DEVMODE
@@ -157,10 +174,8 @@ void setup() {
 #endif
 
 #ifdef DEVMODE
-  SerialUSB.println("Everything has initialized, moving on to main sketch in 5 seconds.");
+  SerialUSB.println("Everything has initialized, moving on to main sketch.");
 #endif
-
-  delay(5000);
 }
 
 void loop() { // We're doing threading on an Arduino! (This is a really cool library).
@@ -210,19 +225,18 @@ void loop1() {
     distance = calculateDistance(lat, lon, targetLat, targetLon);
     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
-    lastVoltage = voltage;
 #ifdef USE_VOLTAGE
     voltage = readVoltage();
 #endif
 #ifndef USE_VOLTAGE
     voltage = (LOW_VOLTAGE + 0.1) * 2; // Fake the voltage if reader is disabled.
 #endif
-    if (((voltage + lastVoltage) / 2) < LOW_VOLTAGE) {
+    if (voltage < LOW_VOLTAGE) {
       lowVoltage = true;
       updateRate = 5000;      // Move the servos less frequently.
       loraUpdateRate = 30000; // Reduce the LoRa update rate.
     }
-    if (((voltage + lastVoltage) / 2) < TOO_LOW_VOLTAGE) {
+    if (voltage < TOO_LOW_VOLTAGE) {
       ultraLowVoltage = true;
       loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
       abortFlight = true;     // Land the glider.
@@ -253,8 +267,8 @@ void loop1() {
     }
 
     pidElevons(pitch, yaw, turnAngle); // Get servoPositionLeft, servoPositionRight.
-    moveLeftServo(servoPositionLeft);
-    moveRightServo(servoPositionRight);
+    // moveLeftServo(servoPositionLeft);
+    // moveRightServo(servoPositionRight);
 
     // EEPROM.
 #ifdef USE_EEPROM
@@ -278,7 +292,7 @@ void loop2() {
 #ifndef GPS_LOW_POWER
   if (millis() - gpsLast > GPS_UPDATE_RATE) {
     gpsLast = millis();
-    getGPSData();
+    getGPSData(); // Get GPS data. If data is invalid, it waits for a better fix.
   }
 #endif
   // If using GPS low power mode, get data and put GPS to sleep.
@@ -306,6 +320,7 @@ void loop3() {
   packet.pressure = pressure;
   packet.humidity = humidity;
   packet.volts = voltage;
+  packet.hdop = hdop;
   packet.yaw = yaw;
   packet.pitch = pitch;
   packet.roll = roll;

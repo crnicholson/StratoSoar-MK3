@@ -21,6 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "settings.h"
 #include "vars.h"
 #include <Arduino.h>
+#include <Wire.h>
 
 float readVoltage();
 void printData();
+bool findDevice(byte address);

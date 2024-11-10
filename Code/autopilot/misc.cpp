@@ -27,27 +27,29 @@ float readVoltage() {
 }
 
 void printData() {
-  SerialUSB.print("Lat: ");
+  SerialUSB.print("\nLat: ");
   SerialUSB.print(lat, 7);
-  SerialUSB.print(" Lon: ");
+  SerialUSB.print(", Lon: ");
   SerialUSB.print(lon, 7);
-  SerialUSB.print(" Altitude (Meters): ");
+  SerialUSB.print(", Altitude (Meters): ");
   SerialUSB.print(altitude);
-  SerialUSB.print(" Distance to Target: ");
+  SerialUSB.print(", HDOP: ");
+  SerialUSB.print(hdop);
+  SerialUSB.print(", Distance to Target: ");
   SerialUSB.print(distance);
-  SerialUSB.print(" Yaw: ");
+  SerialUSB.print(", Yaw: ");
   SerialUSB.print(yaw);
-  SerialUSB.print(" Pitch: ");
+  SerialUSB.print(", Pitch: ");
   SerialUSB.print(pitch);
-  SerialUSB.print(" Roll: ");
+  SerialUSB.print(", Roll: ");
   SerialUSB.print(roll);
-  SerialUSB.print(" Turning Angle: ");
+  SerialUSB.print(", Turning Angle: ");
   SerialUSB.print(turnAngle);
-  SerialUSB.print(" Left Servo Position: ");
+  SerialUSB.print(", Left Servo Position: ");
   SerialUSB.print(servoPositionLeft);
-  SerialUSB.print(" Right Servo Position: ");
+  SerialUSB.print(", Right Servo Position: ");
   SerialUSB.print(servoPositionRight);
-  SerialUSB.print(" Date/Time: ");
+  SerialUSB.print(", Date/Time: ");
   SerialUSB.print(year);
   SerialUSB.print("-");
   SerialUSB.print(month);
@@ -59,12 +61,21 @@ void printData() {
   SerialUSB.print(minute);
   SerialUSB.print(":");
   SerialUSB.print(second);
-  SerialUSB.print(" Temperature: ");
+  SerialUSB.print(", Temperature: ");
   SerialUSB.print(temperature);
-  SerialUSB.print(" Humidity: ");
+  SerialUSB.print(", Humidity: ");
   SerialUSB.print(humidity);
-  SerialUSB.print(" Pressure: ");
+  SerialUSB.print(", Pressure: ");
   SerialUSB.print(pressure);
-  SerialUSB.print(" Altitude (BME): ");
-  SerialUSB.println(bmeAltitude);
+  SerialUSB.print(", Altitude (BME): ");
+  SerialUSB.print(bmeAltitude);
+  SerialUSB.print(", Voltage: ");
+  SerialUSB.println(voltage);
+}
+
+bool findDevice(byte address) {
+  Wire.beginTransmission(address);
+  if (Wire.endTransmission() == 0)
+    return true;
+  return false;
 }
