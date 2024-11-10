@@ -46,7 +46,7 @@ float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON, hdop;
 int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
-int int turnAngle, servoPositionLeft, servoPositionRight, servoPositionRudder, servoPositionElvator, distance;
+int turnAngle, servoPositionLeft, servoPositionRight, servoPositionRudder, servoPositionElevator, distance;
 float yaw, pitch, roll;
 
 // Environmental vars.
@@ -131,12 +131,22 @@ void setup() {
 #ifdef DEVMODE
   SerialUSB.println("Testing servos...");
 #endif
+#ifdef FLYING_WING
   moveLeftServo(90);
   moveRightServo(90);
   moveLeftServo(0);
   moveRightServo(0);
   moveLeftServo(90);
   moveRightServo(90);
+#endif
+#ifndef FLYING_WING
+  moveRudder(90);
+  moveElevator(90);
+  moveRudder(0);
+  moveElevator(0);
+  moveRudder(90);
+  moveElevator(90);
+#endif
 
 #ifdef FIND_PITCH
 #ifndef USE_BME
@@ -289,7 +299,7 @@ void loop1() {
 #endif
 #ifndef FLYING_WING
     servoPositionRudder = pidRudder(turnAngle);
-    servoPoistionElevator = pidElevator(pitch);
+    servoPositionElevator = pidElevator(pitch);
 #ifdef SERVO_NONBLOCKING
     startRudder(servoPositionRudder);
     startElevator(servoPositionElevator);

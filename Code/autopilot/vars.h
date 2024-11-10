@@ -25,7 +25,7 @@ extern float lat, lon, altitude, targetLat, targetLon, prevTLat, prevTLon, hdop;
 extern int year, month, day, hour, minute, second, gpsLast;
 
 // Navigation/IMU vars.
-extern int turnAngle, servoPositionLeft, servoPositionRight, servoPositionRudder, servoPositionElvator, distance;
+extern int turnAngle, servoPositionLeft, servoPositionRight, servoPositionRudder, servoPositionElevator, distance;
 extern float yaw, pitch, roll;
 
 // Environmental vars.

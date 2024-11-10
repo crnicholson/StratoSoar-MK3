@@ -28,6 +28,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 void servoSetup();
 void pidElevons(int pitch, int turningAngle);
 int pidRudder(int turningAngle);
+int pidElevator(int pitch);
 void moveLeftServo(int degrees);
 void startLeftServo(int degrees);
 void updateLeftServo();

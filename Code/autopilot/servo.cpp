@@ -22,12 +22,8 @@ int prevErrorPitch, prevErrorYaw, integralPitch, integralYaw, leftTime, rightTim
 unsigned long leftServoStartTime, rightServoStartTime, rudderStartTime, elevatorStartTime;
 bool leftServoMoving, rightServoMoving, rudderMoving, elevatorMoving;
 
-#ifdef FLYING_WING
 Servo leftServo, rightServo;
-#endif
-#ifndef FLYING_WING
 Servo rudder, elevator;
-#endif
 
 void servoSetup() {
 #ifdef FLYING_WING
@@ -203,6 +199,46 @@ void updateRudder() {
   if ((millis() - rudderStartTime > rudderTime) && rudderMoving) {
     digitalWrite(RIGHT_FET, LOW);
     rudderMoving = false;
+  }
+}
+
+void moveElevator(int degrees) {
+  digitalWrite(ELEVATOR_FET, HIGH); // Turn servo on.
+  int elevatorLast = elevator.read();
+  int elevatorChange = abs(elevatorLast - degrees);
+  int elevatorTime = elevatorChange * 170 / 60;
+  if (elevatorTime < 40) {
+    elevatorTime = elevatorTime + 40;
+  }
+  if (elevatorTime < 60) {
+    elevatorTime = elevatorTime + 20;
+  }
+  elevator.write(degrees);
+  delay(elevatorTime);
+  digitalWrite(ELEVATOR_FET, LOW); // Turn servo off.
+}
+
+void startElevator(int degrees) {
+  digitalWrite(ELEVATOR_FET, HIGH); // Turn servo on.
+
+  int elevatorChange = abs(elevator.read() - degrees);
+  elevatorTime = elevatorChange * 170 / 60;
+  if (elevatorTime < 40) {
+    elevatorTime += 40;
+  }
+  if (elevatorTime < 60) {
+    elevatorTime += 20;
+  }
+
+  elevator.write(degrees);
+  elevatorStartTime = millis();
+  elevatorMoving = true;
+}
+
+void updateElevator() {
+  if ((millis() - elevatorStartTime > elevatorTime) && elevatorMoving) {
+    digitalWrite(ELEVATOR_FET, LOW);
+    elevatorMoving = false;
   }
 }
 
