@@ -21,7 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // Enables.
 #define DEVMODE // Toggle serial monitor.
 // #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
-// #define USE_GPS
+#define USE_GPS
 // #define USE_BME
 // #define USE_EEPROM
 // #define USE_LORA

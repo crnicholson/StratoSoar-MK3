@@ -1,93 +1,135 @@
-#include <SoftwareSerial.h>
+/*
+gps.ino, part of StratoSoar MK3, for an autonomous glider.
+Copyright (C) 2024 Charles Nicholson
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 #include <TinyGPSPlus.h>
 
-#define GPS_RX_PIN 10
-#define GPS_TX_PIN 11
-#define SLEEP_PIN 12
+// Settings.
+#define BAUD_RATE 115200 // Baud rate for serial monitor.
+#define GPS_BAUD 9600    // Baud rate for GPS module.
 
-long sleepStart;
+#define SLEEP // Test the sleep mode of the GPS module.
+
+#define SLEEP_PIN 12 // Sleep pin for GPS module, to be connected to EN or ON/OFF.
+
+int status = 2; // 0 = no GPS, 1 = GPS, 2 = unknown.
+long sleepStart, connectionTestStart;
 bool sleepStarted;
 
 TinyGPSPlus gps;
-SoftwareSerial ss(GPS_RX_PIN, GPS_TX_PIN);
 
 void setup() {
   pinMode(SLEEP_PIN, OUTPUT);
-  digitalWrite(SLEEP_PIN, HIGH);
+  digitalWrite(SLEEP_PIN, LOW);
 
-  Serial.begin(115200);
-  Serial.println("ATGM336H GPS Testing Code");
-  ss.begin(9600);
+  SerialUSB.begin(BAUD_RATE);
+  while (!SerialUSB)
+    ;
+  delay(1000);
+  SerialUSB.println("ATGM336H GPS testing code.");
+  SerialUSB.println("Checking for GPS module connection.");
+  Serial1.begin(GPS_BAUD);
+  delay(100);
+
+  connectionTestStart = millis();
+
+  while (millis() - connectionTestStart < 5000) {
+    while (Serial1.available() > 0)
+      gps.encode(Serial1.read());
+
+    if (millis() - connectionTestStart > 3000 && gps.charsProcessed() < 7) {
+      SerialUSB.println("No GPS detected: check wiring. Freezing sketch.");
+      while (1)
+        ;
+    }
+  }
+
+  SerialUSB.println("GPS module connected.");
+
+  SerialUSB.println("Setting dynamic model to airborne.");
+  Serial1.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
   delay(1000);
 
-  Serial.println("Setting dynamic model to airborne.");
-  ss.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
-  delay(1000);
-
-  Serial.println("Testing GPS sleep mode for 10 seconds.");
+#ifdef SLEEP
+  SerialUSB.println("Testing GPS sleep mode for 10 seconds.");
   gpsSleep();
   delay(10000);
-  gpsWakeup(waitForFix = false);
-  Serial.println("Done sleeping GPS, hopefully h")
+  gpsWakeup(false); // Wake up, but don't wait for fix.
+  SerialUSB.println("Done sleeping GPS, hopefully power consumption went down.");
+#endif
 }
 
 void loop() {
-  while (ss.available() > 0)
-    if (gps.encode(ss.read()))
+  while (Serial1.available() > 0)
+    if (gps.encode(Serial1.read()))
       displayInfo();
 
   if (millis() > 5000 && gps.charsProcessed() < 10) {
-    Serial.println(F("No GPS detected: check wiring."));
+    SerialUSB.println("No GPS detected: check wiring. Freezing sketch.");
     while (true)
       ;
   }
-  
+
   // gpsSleepTime(60000) // Sleep for 60 seconds.
 }
 
 void displayInfo() {
-  Serial.print(F("Location: "));
+  SerialUSB.print("Location: ");
   if (gps.location.isValid()) {
-    Serial.print(gps.location.lat(), 6);
-    Serial.print(F(","));
-    Serial.print(gps.location.lng(), 6);
+    SerialUSB.print(gps.location.lat(), 6);
+    SerialUSB.print(",");
+    SerialUSB.print(gps.location.lng(), 6);
   } else {
-    Serial.print(F("INVALID"));
+    SerialUSB.print("Invalid");
   }
 
-  Serial.print(F("  Date/Time: "));
+  SerialUSB.print(" Date: ");
   if (gps.date.isValid()) {
-    Serial.print(gps.date.month());
-    Serial.print(F("/"));
-    Serial.print(gps.date.day());
-    Serial.print(F("/"));
-    Serial.print(gps.date.year());
+    SerialUSB.print(gps.date.month());
+    SerialUSB.print("/");
+    SerialUSB.print(gps.date.day());
+    SerialUSB.print("/");
+    SerialUSB.print(gps.date.year());
   } else {
-    Serial.print(F("INVALID"));
+    SerialUSB.print("Invalid");
   }
 
-  Serial.print(F(" "));
+  SerialUSB.print(" Time: ");
   if (gps.time.isValid()) {
     if (gps.time.hour() < 10)
-      Serial.print(F("0"));
-    Serial.print(gps.time.hour());
-    Serial.print(F(":"));
+      SerialUSB.print("0");
+    SerialUSB.print(gps.time.hour());
+    SerialUSB.print(":");
     if (gps.time.minute() < 10)
-      Serial.print(F("0"));
-    Serial.print(gps.time.minute());
-    Serial.print(F(":"));
+      SerialUSB.print("0");
+    SerialUSB.print(gps.time.minute());
+    SerialUSB.print(":");
     if (gps.time.second() < 10)
-      Serial.print(F("0"));
-    Serial.print(gps.time.second());
-    Serial.print(F("."));
+      SerialUSB.print("0");
+    SerialUSB.print(gps.time.second());
+    SerialUSB.print(".");
     if (gps.time.centisecond() < 10)
-      Serial.print(F("0"));
-    Serial.print(gps.time.centisecond());
+      SerialUSB.print("0");
+    SerialUSB.print(gps.time.centisecond());
   } else {
-    Serial.print(F("INVALID"));
+    SerialUSB.print("Invalid");
   }
 
-  Serial.println();
+  SerialUSB.println();
 }
 
 void gpsSleepTime(long ms) {
@@ -96,20 +138,20 @@ void gpsSleepTime(long ms) {
     gpsSleep();
     sleepStarted = true;
   } else if (millis() - sleepStart >= ms) {
-    gpsWakeup();
+    gpsWakeup(true); // Wait for a fix after waking up GPS.
     sleepStarted = false;
   }
 }
 
+// Sleep GPS until woken up with gpsWakeup().
 void gpsSleep() {
-  digitalWrite(SLEEP_PIN, LOW);
+  digitalWrite(SLEEP_PIN, HIGH);
 }
 
-void gpsWakeup(bool waitForFix) { // Default is to wait for a fix, as defined in gps.h.
-  digitalWrite(SLEEP_PIN, HIGH);
+void gpsWakeup(bool waitForFix) {
+  digitalWrite(SLEEP_PIN, LOW);
   if (waitForFix) {
-    while (!gps.location.isValid()) { // Wait for a valid location before continuing with sketch.
-      return 0;
-    }
+    while (!gps.location.isValid() && !gps.altitude.isValid() && !gps.time.isValid() && !gps.date.isValid()) // Wait for a valid data before continuing with sketch.
+      gps.encode(Serial1.read());
   }
 }

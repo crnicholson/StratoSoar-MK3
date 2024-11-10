@@ -163,6 +163,11 @@ void setup() {
   delay(5000);
 }
 
+void loop() { // We're doing threading on an Arduino! (This is a really cool library).
+  imuMath();  // This runs in the background 24/7. When the code is ready to access the data, getAHRS() is called.
+  yield();
+}
+
 void loop1() {
 #ifdef DROP_START
   int altitudeCounter = 0;
@@ -238,7 +243,7 @@ void loop1() {
     }
     if (abortFlight) {
       // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
-      getNextCircleWaypoint(lat, lon, 30); // Get new targetLat and targetLon.
+      getNextCircleWaypoint(lat, lon, 30); // Experimental. Get new targetLat and targetLon.
     }
 
     // Calculate again if needed.
@@ -267,18 +272,13 @@ void loop1() {
   yield();
 }
 
-void loop() { // We're doing threading on an Arduino! (This is a really cool library).
-  imuMath();  // This runs in the background 24/7. When the code is ready to access the data, getAHRS() is called.
-  yield();
-}
-
 #ifdef USE_GPS
 void loop2() {
   // If not using GPS low power, just get data and do nothing else.
 #ifndef GPS_LOW_POWER
   if (millis() - gpsLast > GPS_UPDATE_RATE) {
     gpsLast = millis();
-    lat, lon, altitude, year, month, day, hour, minute, second = getGPSData();
+    getGPSData();
   }
 #endif
   // If using GPS low power mode, get data and put GPS to sleep.
@@ -290,6 +290,7 @@ void loop2() {
     gpsSleep();   // Put GPS module to sleep.
   }
 #endif
+  yield();
 }
 #endif
 

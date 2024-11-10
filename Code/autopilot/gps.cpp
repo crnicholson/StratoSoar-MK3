@@ -20,48 +20,48 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 TinyGPSPlus gps;
 
-long sleepStart;
+long sleepStart, connectionTestStart;
 bool sleepStarted;
 
 void gpsSetup() {
-  Serial.begin(GPS_BAUD_RATE);
+  Serial1.begin(GPS_BAUD_RATE);
   delay(1000);
 
 #ifdef DEVMODE
-  SerialUSB.println("Setting GPS dynamic model to airborne.");
+  SerialUSB.println("Testing GPS connection for 5 seconds.");
 #endif
 
-  Serial.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
-  delay(1000);
+  connectionTestStart = millis();
 
-#ifdef DEVMODE
-  SerialUSB.println("Testing GPS conbection for 5 seconds.");
-#endif
+  while (millis() - connectionTestStart < 5000) {
+    while (Serial1.available() > 0)
+      gps.encode(Serial1.read());
 
-  long start = millis();
-  while (millis() - start < 5000) {
-    while (Serial.available() > 0) {
-      gps.encode(Serial.read());
-    }
-    if (millis() > 3000 && gps.charsProcessed() < 7) {
+    if (millis() - connectionTestStart > 3000 && gps.charsProcessed() < 7) {
 #ifdef DEVMODE
-      SerialUSB.println(F("No GPS detected: check wiring."));
+      SerialUSB.println("No GPS detected: check wiring. Freezing sketch.");
 #endif
       while (1)
         longBlink(ERR_LED);
-      ;
     }
   }
 
 #ifdef DEVMODE
   SerialUSB.println("GPS connected correctly.");
 #endif
+
+#ifdef DEVMODE
+  SerialUSB.println("Now setting GPS dynamic model to airborne.");
+#endif
+
+  Serial1.print("$PCAS11,5*18\r\n"); // Set the dynamic model to be airborne with <1g acceleration.
+  delay(1000);
 }
 
 void getGPSData() {
-  if (!Serial.available() == 0) {
-    while (Serial.available() > 0) {
-      gps.encode(Serial.read());
+  if (!Serial1.available() == 0) {
+    while (Serial1.available() > 0) {
+      gps.encode(Serial1.read());
     }
 
     if (gps.location.isValid() && gps.altitude.isValid() && gps.time.isValid() && gps.date.isValid()) {
@@ -79,8 +79,8 @@ void getGPSData() {
 }
 
 void getGPSLocation() {
-  while (Serial.available() > 0) {
-    gps.encode(Serial.read());
+  while (Serial1.available() > 0) {
+    gps.encode(Serial1.read());
   }
 
   if (gps.location.isValid() && gps.altitude.isValid()) {
@@ -91,8 +91,8 @@ void getGPSLocation() {
 }
 
 void getGPSTime() {
-  while (Serial.available() > 0) {
-    gps.encode(Serial.read());
+  while (Serial1.available() > 0) {
+    gps.encode(Serial1.read());
   }
 
   if (gps.time.isValid()) {
@@ -103,8 +103,8 @@ void getGPSTime() {
 }
 
 void getGPSDate() {
-  while (Serial.available() > 0) {
-    gps.encode(Serial.read());
+  while (Serial1.available() > 0) {
+    gps.encode(Serial1.read());
   }
 
   if (gps.date.isValid()) {
@@ -137,14 +137,15 @@ void gpsWakeup(bool wait) { // Default is to wait for a fix, as defined in gps.h
 }
 
 void waitForFix() {
-  while (!gps.location.isValid()) {
-    while (Serial.available() > 0) {
-      gps.encode(Serial.read());
+  while (!gps.location.isValid() || !gps.time.isValid() || !gps.date.isValid()) {
+    while (Serial1.available() > 0) {
+      gps.encode(Serial1.read());
     }
 #ifdef DEVMODE
     SerialUSB.println("Waiting for a GPS fix.");
-    delay(980);
+    SerialUSB.print("Current HDOP: ");
+    SerialUSB.println(gps.hdop.hdop());
 #endif
-    delay(20);
+    delay(1000);
   }
 }
