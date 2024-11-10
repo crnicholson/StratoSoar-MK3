@@ -26,12 +26,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <Servo.h>
 
 void servoSetup();
-void pidElevons(int pitch, int yaw, int turningAngle);
+void pidElevons(int pitch, int turningAngle);
+int pidRudder(int turningAngle);
 void moveLeftServo(int degrees);
 void startLeftServo(int degrees);
 void updateLeftServo();
 void moveRightServo(int degrees);
 void startRightServo(int degrees);
 void updateRightServo();
-void land(int left, int right);
+void moveRudder(int degrees);
+void startRudder(int degrees);
+void updateRudder();
+void moveElevator(int degrees);
+void startElevator(int degrees);
+void updateElevator();
+// void land(int left, int right);
 float findBestPitch();

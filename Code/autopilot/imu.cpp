@@ -72,6 +72,7 @@ void imuSetup() {
   }
 }
 
+// Called when data is needed.
 void getAHRS() {
   // Converting the quarternions to Euler angles (radians). This angular conversion can fail. See gimbal lock.
   roll = atan2((q[0] * q[1] + q[2] * q[3]), 0.5 - (q[1] * q[1] + q[2] * q[2]));
@@ -99,6 +100,7 @@ void getAHRS() {
   hertz = 0; // Reset counter for next print.
 }
 
+// Ran in a loop.
 void imuMath() {
   if (imu.dataReady()) {
     imu.getAGMT(); // Get accelerometer, gyro, mag, and temperature data and put it into the imu.agmt data structure.
@@ -115,6 +117,27 @@ void imuMath() {
     lastIMUUpdate = imuNow;
 
     quaternionUpdate(Axyz[0], Axyz[1], Axyz[2], Gxyz[0], Gxyz[1], Gxyz[2], Mxyz[0], Mxyz[1], Mxyz[2], deltat); // Updates the quaternion array with the scaled values.
+
+    // SerialUSB.print("Axyz: ");
+    // SerialUSB.print(Axyz[0]);
+    // SerialUSB.print(", ");
+    // SerialUSB.print(Axyz[1]);
+    // SerialUSB.print(", ");
+    // SerialUSB.println(Axyz[2]);
+
+    // SerialUSB.print("Gxyz: ");
+    // SerialUSB.print(Gxyz[0]);
+    // SerialUSB.print(", ");
+    // SerialUSB.print(Gxyz[1]);
+    // SerialUSB.print(", ");
+    // SerialUSB.println(Gxyz[2]);
+
+    // SerialUSB.print("Mxyz: ");
+    // SerialUSB.print(Mxyz[0]);
+    // SerialUSB.print(", ");
+    // SerialUSB.print(Mxyz[1]);
+    // SerialUSB.print(", ");
+    // SerialUSB.println(Mxyz[2]);
   }
 }
 
@@ -250,4 +273,12 @@ void quaternionUpdate(float ax, float ay, float az, float gx, float gy, float gz
   q[1] = q2 * norm;
   q[2] = q3 * norm;
   q[3] = q4 * norm;
+
+  // SerialUSB.print(q[0]);
+  // SerialUSB.print(", ");
+  // SerialUSB.print(q[1]);
+  // SerialUSB.print(", ");
+  // SerialUSB.print(q[2]);
+  // SerialUSB.print(", ");
+  // SerialUSB.println(q[3]);
 }

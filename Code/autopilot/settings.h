@@ -32,15 +32,21 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // #define FIND_PITCH // Use a program to find the best pitch of the glider. BME and GPS must be enabled. Very experimental.
 // #define DROP_START // Don't start the program until the glider has detected a drop in altitude.
 #define DISPLAY_DATA // Dump the data on the serial monitor every update.
+// #define FLYING_WING  // If enabled, the glider uses flying wing kinematics. If not, it uses the traditional rudder and elevator.
+// #define SERVO_NONBLOCKING // Use non-blocking code for the servo. 
 
 // Pins.
 #define LED 13
 #define ERR_LED 12
 #define GPS_SLEEP_PIN 11
 #define LEFT_SERVO 10
+#define RUDDER_PIN 10
 #define RIGHT_SERVO 9
+#define ELEVATOR_PIN 9
 #define LEFT_FET 8
+#define RUDDER_FET 8
 #define RIGHT_FET 7
+#define ELEVATOR_FET 7
 #define LORA_RESET_PIN 6
 #define DIO0_PIN 5
 // #define BUTTON 4   // Reserved for future use.
@@ -63,7 +69,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define UPDATE_RATE 1000           // The time in milliseconds between glider respositionings.
 #define BAUD_RATE 115200           // Baud rate of the serial monitor.
 #define SEA_LEVEL_PRESSURE 1013.25 // Sea level pressure in hPa.
-#define DECLINATION 0 // -13.5          // Local magnetic declination in degrees in Boston. Yaw increases CW from North. Can be found here: https://www.ngdc.noaa.gov/geomag-web/#declination.
+#define DECLINATION 0              // -13.5          // Local magnetic declination in degrees in Boston. Yaw increases CW from North. Can be found here: https://www.ngdc.noaa.gov/geomag-web/#declination.
 #define AD0_VAL 0                  // Change I2C address of IMU. 0 = 0x68, 1 = 0x69.
 #define LAND_ALTITUDE 100          // This many meters from the gorund the glider will start its landing sequence.
 #define LOCK_ALTITUDE 1000         // The landing sequence will only be available after this many meters in altitude.
@@ -78,6 +84,9 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define PITCH_STEPS 1      // This is the number of degrees stepped upwards when finding the optimum pitch angle per cycle.
 #define STEP_TIME 10       // Time in seconds spent on each step.
 
+#define SETPOINT_PITCH 0    // For the flying wing.
+#define SETPOINT_ELEVATOR 0 // For the traditional setup.
+
 // PID settings.
 #define KP_LEFT 1
 #define KI_LEFT 0
@@ -86,6 +95,14 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define KP_RIGHT 1
 #define KI_RIGHT 0
 #define KD_RIGHT 0
+
+#define KP_RUDDER 1
+#define KI_RUDDER 0
+#define KD_RUDDER 0
+
+#define KP_ELEVATOR 1
+#define KI_ELEVATOR 0
+#define KD_ELEVATOR 0
 
 // EEPROM.
 // #define ERASE_EEPROM // Erases the EEPROM every start. Highly unreccomended.

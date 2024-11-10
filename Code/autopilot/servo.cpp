@@ -18,31 +18,39 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "servo.h"
 
-#define SETPOINT_PITCH 0
+int prevErrorPitch, prevErrorYaw, integralPitch, integralYaw, leftTime, rightTime, rudderTime, elevatorTime, prevErrorRudder, integralRudder, prevErrorElevator, integralElevator;
+unsigned long leftServoStartTime, rightServoStartTime, rudderStartTime, elevatorStartTime;
+bool leftServoMoving, rightServoMoving, rudderMoving, elevatorMoving;
 
-int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw, leftTime, rightTime;
-unsigned long leftServoStartTime, rightServoStartTime;
-bool leftServoMoving, rightServoMoving;
-
+#ifdef FLYING_WING
 Servo leftServo, rightServo;
+#endif
+#ifndef FLYING_WING
+Servo rudder, elevator;
+#endif
 
 void servoSetup() {
+#ifdef FLYING_WING
   leftServo.attach(LEFT_SERVO);
   rightServo.attach(RIGHT_SERVO);
+#endif
+#ifndef FLYING_WING
+  rudder.attach(RUDDER_PIN);
+  elevator.attach(ELEVATOR_PIN);
+#endif
 }
 
-void pidElevons(int pitch, int yaw, int turningAngle) {
-  errorPitch = SETPOINT_PITCH - pitch;
-  errorYaw = turningAngle;
+void pidElevons(int pitch, int turningAngle) {
+  int errorPitch = SETPOINT_PITCH - pitch;
 
   int outputPitch = KP_LEFT * errorPitch + KI_LEFT * integralPitch + KD_LEFT * (errorPitch - prevErrorPitch);
-  int outputYaw = KP_RIGHT * errorYaw + KI_RIGHT * integralYaw + KD_RIGHT * (errorYaw - prevErrorYaw);
+  int outputYaw = KP_RIGHT * turningAngle + KI_RIGHT * integralYaw + KD_RIGHT * (turningAngle - prevErrorYaw);
 
   prevErrorPitch = errorPitch;
   integralPitch += errorPitch;
 
-  prevErrorYaw = errorYaw;
-  integralYaw += errorYaw;
+  prevErrorYaw = turningAngle;
+  integralYaw += turningAngle;
 
   servoPositionLeft = 90 - outputPitch + outputYaw + desiredPitch;
   servoPositionRight = 90 - outputPitch - outputYaw + desiredPitch;
@@ -50,6 +58,32 @@ void pidElevons(int pitch, int yaw, int turningAngle) {
   // Map servo positions if needed.
   // servoPositionLeft = map(servoPositionLeft, 0, 180, 750, 2250);
   // servoPositionRight = map(servoPositionRight, 0, 180, 750, 2250);
+}
+
+int pidRudder(int turningAngle) {
+  int outputRudder = KP_RUDDER * turningAngle + KI_RUDDER * integralRudder + KD_RUDDER * (turningAngle - prevErrorRudder);
+
+  // Update previous error and integral.
+  prevErrorRudder = turningAngle;
+  integralRudder += turningAngle;
+
+  // map(servoPositionRudder, 0, 180, 1250, 1750); // For servos that take microseconds, not degrees.
+
+  return (180 + outputRudder) / 2;
+}
+
+int pidElevator(int pitch) {
+  int errorElevator = SETPOINT_ELEVATOR - pitch; // Calculate the error.
+
+  int outputElevator = KP_ELEVATOR * errorElevator + KI_ELEVATOR * integralElevator + KD_ELEVATOR * (errorElevator - prevErrorElevator);
+
+  // Update previous error and integral.
+  prevErrorElevator = errorElevator;
+  integralElevator += errorElevator;
+
+  // map(servoPositionElevator2, 0, 180, 750, 2250); // For servos that take microseconds, not degrees.
+
+  return 90 - outputElevator;
 }
 
 void moveLeftServo(int degrees) {
@@ -132,10 +166,50 @@ void updateRightServo() {
   }
 }
 
-void land(int left, int right) {
-  moveLeftServo(left);
-  moveRightServo(right);
+void moveRudder(int degrees) {
+  digitalWrite(RUDDER_FET, HIGH); // Turn servo on.
+  int rudderLast = rudder.read();
+  int rudderChange = abs(rudderLast - degrees);
+  int rudderTime = rudderChange * 170 / 60;
+  if (rudderTime < 40) {
+    rudderTime = rudderTime + 40;
+  }
+  if (rudderTime < 60) {
+    rudderTime = rudderTime + 20;
+  }
+  rudder.write(degrees);
+  delay(rudderTime);
+  digitalWrite(RUDDER_FET, LOW); // Turn servo off.
 }
+
+void startRudder(int degrees) {
+  digitalWrite(RUDDER_FET, HIGH); // Turn servo on.
+
+  int rudderChange = abs(rudder.read() - degrees);
+  rudderTime = rudderChange * 170 / 60;
+  if (rudderTime < 40) {
+    rudderTime += 40;
+  }
+  if (rudderTime < 60) {
+    rudderTime += 20;
+  }
+
+  rudder.write(degrees);
+  rudderStartTime = millis();
+  rudderMoving = true;
+}
+
+void updateRudder() {
+  if ((millis() - rudderStartTime > rudderTime) && rudderMoving) {
+    digitalWrite(RIGHT_FET, LOW);
+    rudderMoving = false;
+  }
+}
+
+// void land(int left, int right) {
+//   moveLeftServo(left);
+//   moveRightServo(right);
+// }
 
 // Experimental stuff below.
 
