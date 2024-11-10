@@ -28,6 +28,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 void servoSetup();
 void pidElevons(int pitch, int yaw, int turningAngle);
 void moveLeftServo(int degrees);
+void startLeftServo(int degrees);
+void updateLeftServo();
 void moveRightServo(int degrees);
+void startRightServo(int degrees);
+void updateRightServo();
 void land(int left, int right);
 float findBestPitch();

@@ -22,10 +22,10 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 #define DEVMODE // Toggle serial monitor.
 // #define GPS_LOW_POWER // Sets the GPS to sleep after waking up after every GPS_LOW_POWER_RATE milliseconds.
 // #define USE_GPS
-#define USE_BME
+// #define USE_BME
 // #define USE_EEPROM
 // #define USE_LORA
-#define USE_VOLTAGE
+// #define USE_VOLTAGE
 #define FAST_LORA // Ignore other LoRa settings and use a very quick LoRa update rate for short range.
 // #define USE_WAYPOINTS
 // #define SMOOTH_TURNING // Smoothly turn the glider towards the next waypoint.

@@ -74,6 +74,7 @@ void loop() {
 void loop1() {
   // Check to see if it's time to print out the data.
   if (millis() - lastPrint > PRINT_SPEED) {
+    delay(50);
     outputAHRS();
   }
   yield();

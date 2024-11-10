@@ -20,7 +20,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #define SETPOINT_PITCH 0
 
-int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw;
+int errorPitch, errorYaw, prevErrorPitch, prevErrorYaw, integralPitch, integralYaw, leftTime, rightTime;
+unsigned long leftServoStartTime, rightServoStartTime;
+bool leftServoMoving, rightServoMoving;
 
 Servo leftServo, rightServo;
 
@@ -66,6 +68,30 @@ void moveLeftServo(int degrees) {
   digitalWrite(LEFT_FET, LOW); // Turn servo off.
 }
 
+void startLeftServo(int degrees) {
+  digitalWrite(LEFT_FET, HIGH); // Turn servo on.
+
+  int leftChange = abs(leftServo.read() - degrees);
+  leftTime = leftChange * 170 / 60;
+  if (leftTime < 40) {
+    leftTime += 40;
+  }
+  if (leftTime < 60) {
+    leftTime += 20;
+  }
+
+  leftServo.write(degrees);
+  leftServoStartTime = millis();
+  leftServoMoving = true;
+}
+
+void updateLeftServo() {
+  if ((millis() - leftServoStartTime > leftTime) && leftServoMoving) {
+    digitalWrite(LEFT_FET, LOW);
+    leftServoMoving = false;
+  }
+}
+
 void moveRightServo(int degrees) {
   digitalWrite(RIGHT_FET, HIGH); // Turn servo on.
   int rightLast = rightServo.read();
@@ -80,6 +106,30 @@ void moveRightServo(int degrees) {
   rightServo.write(degrees);
   delay(rightTime);
   digitalWrite(RIGHT_FET, LOW); // Turn servo off.
+}
+
+void startRightServo(int degrees) {
+  digitalWrite(RIGHT_FET, HIGH); // Turn servo on.
+
+  int rightChange = abs(rightServo.read() - degrees);
+  rightTime = rightChange * 170 / 60;
+  if (rightTime < 40) {
+    rightTime += 40;
+  }
+  if (rightTime < 60) {
+    rightTime += 20;
+  }
+
+  rightServo.write(degrees);
+  rightServoStartTime = millis();
+  rightServoMoving = true;
+}
+
+void updateRightServo() {
+  if ((millis() - rightServoStartTime > rightTime) && rightServoMoving) {
+    digitalWrite(RIGHT_FET, LOW);
+    rightServoMoving = false;
+  }
 }
 
 void land(int left, int right) {

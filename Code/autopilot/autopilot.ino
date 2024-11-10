@@ -213,67 +213,70 @@ void loop1() {
   delay(5000); // Give enough time for the glider to stabilize in flight before starting steering shenanigans.
 #endif
 
+  // updateLeftServo();
+  // updateRightServo();
+
   if (millis() - lastUpdate > updateRate) {
     getAHRS(); // Get the yaw, pitch, and roll from the IMU and assign it the respective global variables.
 
-    // Getting sensor values.
-#ifdef USE_BME
-    getBMEData(SEA_LEVEL_PRESSURE); // Get BME data, put into global variables.
-#endif
+//     // Getting sensor values.
+// #ifdef USE_BME
+//     getBMEData(SEA_LEVEL_PRESSURE); // Get BME data, put into global variables.
+// #endif
 
-    // Calculations.
-    distance = calculateDistance(lat, lon, targetLat, targetLon);
-    turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+//     // Calculations.
+//     distance = calculateDistance(lat, lon, targetLat, targetLon);
+//     turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
 
-#ifdef USE_VOLTAGE
-    voltage = readVoltage();
-#endif
-#ifndef USE_VOLTAGE
-    voltage = (LOW_VOLTAGE + 0.1) * 2; // Fake the voltage if reader is disabled.
-#endif
-    if (voltage < LOW_VOLTAGE) {
-      lowVoltage = true;
-      updateRate = 5000;      // Move the servos less frequently.
-      loraUpdateRate = 30000; // Reduce the LoRa update rate.
-    }
-    if (voltage < TOO_LOW_VOLTAGE) {
-      ultraLowVoltage = true;
-      loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
-      abortFlight = true;     // Land the glider.
-    }
+// #ifdef USE_VOLTAGE
+//     voltage = readVoltage();
+// #endif
+// #ifndef USE_VOLTAGE
+//     voltage = (LOW_VOLTAGE + 0.1) * 2; // Fake the voltage if reader is disabled.
+// #endif
+//     if (voltage < LOW_VOLTAGE) {
+//       lowVoltage = true;
+//       updateRate = 5000;      // Move the servos less frequently.
+//       loraUpdateRate = 30000; // Reduce the LoRa update rate.
+//     }
+//     if (voltage < TOO_LOW_VOLTAGE) {
+//       ultraLowVoltage = true;
+//       loraUpdateRate = 60000; // Reduce the LoRa update rate even further.
+//       abortFlight = true;     // Land the glider.
+//     }
 
-#ifdef USE_WAYPOINTS
-    if (!lowVoltage) {
-      updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
-    }
-#endif
+// #ifdef USE_WAYPOINTS
+//     if (!lowVoltage) {
+//       updateWaypoint(); // Update the target lat and lon if waypoints are enabled.
+//     }
+// #endif
 
-    // Landing.
-    if (altitude > LOCK_ALTITUDE) {
-      altitudeLock = true; // This enables when the glider is above a certain altitude. This makes sure it doesn't land when we're releasing it.
-    }
-    if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
-      abortFlight = true;
-    }
-    if (abortFlight) {
-      // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
-      getNextCircleWaypoint(lat, lon, 30); // Experimental. Get new targetLat and targetLon.
-    }
+//     // Landing.
+//     if (altitude > LOCK_ALTITUDE) {
+//       altitudeLock = true; // This enables when the glider is above a certain altitude. This makes sure it doesn't land when we're releasing it.
+//     }
+//     if (altitude < LAND_ALTITUDE + TARGET_ALT && altitudeLock) {
+//       abortFlight = true;
+//     }
+//     if (abortFlight) {
+//       // land(90, 110); // Outdated. This should send the glider into a spiral for landing.
+//       getNextCircleWaypoint(lat, lon, 30); // Experimental. Get new targetLat and targetLon.
+//     }
 
-    // Calculate again if needed.
-    if (abortFlight) {
-      distance = calculateDistance(lat, lon, targetLat, targetLon);
-      turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
-    }
+//     // Calculate again if needed.
+//     if (abortFlight) {
+//       distance = calculateDistance(lat, lon, targetLat, targetLon);
+//       turnAngle = turningAngle(lat, lon, yaw, targetLat, targetLon);
+//     }
 
-    pidElevons(pitch, yaw, turnAngle); // Get servoPositionLeft, servoPositionRight.
-    // moveLeftServo(servoPositionLeft);
-    // moveRightServo(servoPositionRight);
+//     pidElevons(pitch, yaw, turnAngle); // Get servoPositionLeft, servoPositionRight.
+//     startLeftServo(servoPositionLeft);
+//     startRightServo(servoPositionRight);
 
-    // EEPROM.
-#ifdef USE_EEPROM
-    writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
-#endif
+//     // EEPROM.
+// #ifdef USE_EEPROM
+//     writeDataToEEPROM(lat, lon, altitude, yaw, pitch, roll, hour, minute, second); // Write all the data to EEPROM.
+// #endif
 
 #ifdef DEVMODE
 #ifdef DISPLAY_DATA
