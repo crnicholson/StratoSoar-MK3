@@ -1,12 +1,14 @@
-name: Spellcheck
+name: Spell Check
 
+# See: https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+  schedule:
+    # Run every Tuesday at 8 AM UTC to catch new misspelling detections resulting from dictionary updates.
+    - cron: "0 8 * * TUE"
+  workflow_dispatch:
+  repository_dispatch:
 
 jobs:
   spellcheck:
@@ -14,9 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Run Spellcheck
-        uses: rojopolis/spellcheck-github-actions@0.45.0
-
-
+      - name: Spell check
+        uses: codespell-project/actions-codespell@master
