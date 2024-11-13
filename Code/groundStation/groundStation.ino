@@ -155,7 +155,6 @@ void loop() {
     displayData();
 #endif
   }
-  e
 #endif
 #ifndef HAMMING
   normalReceive();
@@ -174,6 +173,7 @@ void loop() {
 #endif
   }
 #endif
+  sendToGlider(); // Sends updated abort status 
 }
 
 void longBlink(int pin) {
@@ -281,6 +281,7 @@ void sendToGlider() {
     serializeJson(doc, requestBody);
 
     int httpResponseCode = http.POST(requestBody);
+    http.end(); // Free resources.
 
     if (httpResponseCode > 0) {
       String response = http.getString();
@@ -294,30 +295,29 @@ void sendToGlider() {
         float newTLon = responseDoc["tLon"];
         abortFlight = bool(responseDoc["abort"]);
 
-        // This makes sure that if abort is true, the packet will be sent. There's a chance that it will not be sent if the lat and lon did not change.
+        // If abort or lat and lon has changed, send the new data.
         if (abort || (newTLon != receivedData.tLon && newTLat != receivedData.tLat)) {
           byte *dataToSend = new byte[9]; // 9 bytes: 4 for newTLat, 4 for newTLon, 1 for abort.
           memcpy(dataToSend, (byte *)&newTLat, sizeof(float));
           memcpy(dataToSend + sizeof(float), (byte *)&newTLon, sizeof(float));
           dataToSend[8] = abortFlight;
 
-          byte encodedData[18]; // Each byte is encoded into 2 bytes
+          byte encodedData[18]; // Each byte is encoded into 2 bytes.
 
           for (size_t i = 0; i < 9; ++i) {
-            encodedData[2 * i] = hammingEncode(dataToSend[i] >> 4);       // Encode high nibble
-            encodedData[2 * i + 1] = hammingEncode(dataToSend[i] & 0x0F); // Encode low nibble
+            encodedData[2 * i] = hammingEncode(dataToSend[i] >> 4);       // Encode high nibble.
+            encodedData[2 * i + 1] = hammingEncode(dataToSend[i] & 0x0F); // Encode low nibble.
           }
 
-          delete[] dataToSend; // Free the allocated memory
+          delete[] dataToSend; // Free the allocated memory.
 
-          // Send the encoded data
           LoRa.beginPacket();
           LoRa.write(encodedData, sizeof(encodedData));
           LoRa.endPacket(true); // Send in async mode.
         }
       } else {
 #ifdef DEVMODE
-        Serial.println("Failed to parse JSON response");
+        Serial.println("Failed to parse JSON response.");
 #endif
       }
     } else {
@@ -325,11 +325,9 @@ void sendToGlider() {
       Serial.println("Error on HTTP request");
 #endif
     }
-
-    http.end(); // Free resources.
   } else {
 #ifdef DEVMODE
-    Serial.println("WiFi Disconnected.");
+    Serial.println("WiFi Disconnected. Freezing sketch.");
 #endif
     while (1)
       longBlink(LED);

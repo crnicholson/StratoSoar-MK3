@@ -395,6 +395,6 @@ void loop3() {
     lastLoRa = millis();
 #endif
   }
-  hammingReceive(); // Receive LoRa data to abort flight and change targetLat and targetLon.
+  hammingReceive(); // Receive LoRa data to abort flight or change targetLat and targetLon.
 }
 #endif

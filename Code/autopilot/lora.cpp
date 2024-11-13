@@ -77,33 +77,30 @@ byte hammingEncode(byte data) {
 
 void hammingReceive() {
   int packetSize = LoRa.parsePacket(); // Parse packet.
-  if (packetSize > 0) {
-    // Ensure the packet size is 18 bytes (9 bytes * 2 after Hamming encoding).
-    if (packetSize == 18) {
-      while (LoRa.available() >= 18) {
-        shortBlink(LED);
+  if (packetSize == 18) {
+    while (LoRa.available() >= 18) {
+      shortBlink(LED);
 
-        byte encodedData[18];
-        LoRa.readBytes(encodedData, sizeof(encodedData));
+      byte encodedData[18];
+      LoRa.readBytes(encodedData, sizeof(encodedData));
 
-        byte decodedData[9];
+      byte decodedData[9];
 
-        for (size_t i = 0; i < 9; ++i) {
-          byte highNibble = hammingDecode(encodedData[2 * i]);
-          byte lowNibble = hammingDecode(encodedData[2 * i + 1]);
+      for (size_t i = 0; i < 9; ++i) {
+        byte highNibble = hammingDecode(encodedData[2 * i]);
+        byte lowNibble = hammingDecode(encodedData[2 * i + 1]);
 
-          decodedData[i] = (highNibble << 4) | lowNibble;
-        }
-
-        memcpy(&targetLat, decodedData, sizeof(float));
-        memcpy(&targetLon, decodedData + sizeof(float), sizeof(float));
-        abortFlight = decodedData[8];
+        decodedData[i] = (highNibble << 4) | lowNibble;
       }
-    } else {
-      // Discard the packet if it's not 18 bytes.
-      while (LoRa.available()) {
-        LoRa.read();
-      }
+
+      memcpy(&targetLat, decodedData, sizeof(float));
+      memcpy(&targetLon, decodedData + sizeof(float), sizeof(float));
+      abortFlight = decodedData[8];
+    }
+  } else {
+    // Discard the packet if it's not 18 bytes.
+    while (LoRa.available()) {
+      LoRa.read();
     }
   }
 }
