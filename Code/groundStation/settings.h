@@ -20,6 +20,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define DEVMODE   // Toggle serial monitor.
 #define FAST_LORA // Ignore other LoRA settings and use a fast LoRa setup.
 #define USE_SD    // Toggle the use of an SD card for data logging.
+#define HAMMING   // Toggle the use of forward error correction.
+#define WIFI      // Toggle data sending to SondeHub.
 
 // Pins.
 #define LED 3 // SCK uses pin 13.
@@ -33,3 +35,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define U_LAT 42.00
 #define U_LON -71.00
 #define U_ALT 1000
+
+// WiFi information.
+#define SSID "REPLACE_WITH_YOUR_SSID"
+#define PASSWORD "REPLACE_WITH_YOUR_PASSWORD"
+
+#define SERVER_NAME "http://192.168.1.106:1880/update-sensor"

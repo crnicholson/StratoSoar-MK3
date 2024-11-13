@@ -120,7 +120,7 @@ If the glider's altitude drops below a certain threshold, backup landing coordin
 
 ## File System and More Project Info
 
-I'm only listing the key items, leaving out all the unnessecary stuff. This should give you a general sense of the project and all its features. Note that this is also only stuff I did during Hack Club Arcade.
+I'm only listing the key items, leaving out all the unnecessary stuff. This should give you a general sense of the project and all its features. Note that this is also only stuff I did during Hack Club Arcade.
 
 - `Code/autopilot`: (5000 lines of code!)
     - `autopilot.ino`: The script that ties all of these files together.
