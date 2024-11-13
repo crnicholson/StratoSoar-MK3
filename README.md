@@ -50,14 +50,14 @@ UAVs, or Unmanned Aerial Vehicles, are autonomous aircraft, usually in the form 
 - Large (5-15 meter wingspan)
 - Heavy (2-20 kg)
 - Expensive ($10,000-10,000,000 USD)
-- Closed source and propietary
+- Closed source and proprietary
 
 ### StratoSoar Aims to Overcome These Limitations With:
 
 - Weight: less than 250 grams
 - Wingspan: 80 cm
 - Cost: less than $150 USD
-- Open source and accesible
+- Open source and accessible
 
 ## What Are the Uses of StratoSoar?
 
@@ -120,7 +120,7 @@ If the glider's altitude drops below a certain threshold, backup landing coordin
 
 ## File System and More Project Info
 
-I'm only listing the key items, leaving out all the unessecary stuff. This should give you a general sense of the project and all its features. Note that this is also only stuff I did during Hack Club Arcade.
+I'm only listing the key items, leaving out all the unnessecary stuff. This should give you a general sense of the project and all its features. Note that this is also only stuff I did during Hack Club Arcade.
 
 - `Code/autopilot`: (5000 lines of code!)
     - `autopilot.ino`: The script that ties all of these files together.
@@ -142,7 +142,7 @@ I'm only listing the key items, leaving out all the unessecary stuff. This shoul
 - `PCB/camera`: A breakout board for a low-power camera module. 
 - `PCB/imuBreakout`: One of the first breakout boards made for a new Interial Measurement Unit. 
 - `3D Files/cardboardGlider`: Parametric Fusion 360 design for a folding origami glider. 
-- `3D Files/StratoSoar Rev2 v36`: High efficieny glider.
+- `3D Files/StratoSoar Rev2 v36`: High efficiency glider.
 
 ## A Quick Note on MK1, MK2, Naming, and Revisions
 
