@@ -4,10 +4,10 @@ name: Spell Check
 on:
   push:
     paths-ignore:
-      - '/PCB + Schematic'
+      - 'PCB + Schematic/**'
   pull_request:
     paths-ignore:
-      - '/PCB + Schematic'
+      - 'PCB + Schematic/**'
   workflow_dispatch:
   repository_dispatch:
 
