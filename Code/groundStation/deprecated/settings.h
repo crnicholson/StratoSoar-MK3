@@ -1,5 +1,5 @@
 /*
-settings.h, part of StratoSoar MK3, for an autonomous glider.
+vars.h, part of StratoSoar MK3, for an autonomous glider.
 Copyright (C) 2024 Charles Nicholson
 
 This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
-
 #include "secrets.h" // I made a secret file with my WiFi and other info.
 
 // Enables.
 #define DEVMODE // Toggle serial monitor.
 // #define FAST_LORA // Ignore other LoRA settings and use a fast LoRa setup.
+// #define USE_SD    // Toggle the use of an SD card for data logging.
 // #define HAMMING   // Toggle the use of forward error correction.
 #define WIFI // Toggle data sending to SondeHub.
 
@@ -33,11 +32,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define SYNC_WORD 0xFB      // Only other devices with this sync word can receive your broadcast.
 
 // Pins.
-#define LED 13
-#define LORA_SS_PIN 2
+#define LED 13 
+#define SS_PIN 2
 #define RESET_PIN 12
 #define DIO0_PIN 14
-#define SD_SS_PIN 5
 
 #define BAUD_RATE 115200 // Baud rate of the serial monitor.
 
@@ -47,7 +45,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define U_ALT 1000
 
 // WiFi information.
-#define YOUR_SSID SECRET_SSID // Found in secrets.h!
+#define YOUR_SSID SECRET_SSID
 #define YOUR_PASSWORD SECRET_PASSWORD
 
-#define SERVER_NAME "strato.cnicholson.hackclub.app"
+#define SERVER_NAME SECRET_SERVER_NAME
+
+#define CALL_SIGN SECRET_CALL_SIGN

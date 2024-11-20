@@ -33,7 +33,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 // #define DROP_START // Don't start the program until the glider has detected a drop in altitude.
 #define DISPLAY_DATA // Dump the data on the serial monitor every update.
 // #define FLYING_WING  // If enabled, the glider uses flying wing kinematics. If not, it uses the traditional rudder and elevator.
-// #define SERVO_NONBLOCKING // Use non-blocking code for the servo. 
+// #define SERVO_NONBLOCKING // Use non-blocking code for the servo.
+// #define HAMMING // Use hamming encoding for the LoRa data.
 
 // Pins.
 #define LED 13

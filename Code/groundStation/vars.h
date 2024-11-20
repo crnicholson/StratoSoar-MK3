@@ -18,33 +18,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <Arduino.h>
+bool dataValid;
+long rxCount;
 
-// GPS vars.
-extern float lat, lon, altitude, targetLat, targetLon, prevTLat, prevTLon, hdop;
-extern int year, month, day, hour, minute, second, gpsLast;
-
-// Navigation/IMU vars.
-extern int turnAngle, servoPositionLeft, servoPositionRight, servoPositionRudder, servoPositionElevator, distance;
-extern float yaw, pitch, roll;
-
-// Environmental vars.
-extern float temperature, pressure, bmeAltitude;
-extern int humidity;
-
-struct data {
-  byte alignment = 100;
+struct receive {
+  byte alignment;
   float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts, hdop;
   short yaw, pitch, roll;
   byte year, month, day, hour, minute, second;
   short txCount;
-  byte abortFlight;
-  char callSign[7] = CALL_SIGN;
+  byte abort;
+  char callSign[7];
 };
-
-extern struct data packet;
-
-// Other vars.
-extern int lastLoRa, abortCounter, loraUpdateRate, updateRate, lastUpdate;
-extern bool abortFlight, loraAbortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
-extern float desiredPitch, voltage;

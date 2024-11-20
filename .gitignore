@@ -1,4 +1,5 @@
 .gitattributes
+secrets.h
 *.vscode
 *.json
 *.DS_Store

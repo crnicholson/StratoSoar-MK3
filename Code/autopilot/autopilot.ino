@@ -41,6 +41,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "waypoint.h"
 #include <Scheduler.h>
 
+// Below are global variables. If you edit these, you'll need to edit vars.h as well.
+
 // GPS vars.
 float lat, lon, altitude, targetLat = TARGET_LAT, targetLon = TARGET_LON, hdop;
 int year, month, day, hour, minute, second, gpsLast;
@@ -360,10 +362,12 @@ void loop3() {
   packet.pressure = pressure;
   packet.humidity = humidity;
   packet.volts = voltage;
-  packet.hdop = hdop;
   packet.yaw = yaw;
   packet.pitch = pitch;
   packet.roll = roll;
+  packet.year = year;
+  packet.month = month;
+  packet.day = day;
   packet.hour = hour;
   packet.minute = minute;
   packet.second = second;
@@ -386,15 +390,28 @@ void loop3() {
     packet.yaw = yaw;
     packet.pitch = pitch;
     packet.roll = roll;
+    packet.year = year;
+    packet.month = month;
+    packet.day = day;
     packet.hour = hour;
     packet.minute = minute;
     packet.second = second;
     packet.txCount++;
     packet.abortFlight = abortFlight;
+#ifdef HAMMING
     sendHammingData(packet); // Sends with forward error correction for redundancy over long distances.
+#endif
+#ifndef HAMMING
+    normalSend(); // Sends without forward error correction.
+#endif
     lastLoRa = millis();
 #endif
   }
+#ifdef HAMMING
   hammingReceive(); // Receive LoRa data to abort flight or change targetLat and targetLon.
+#endif
+#ifndef HAMMING
+  normalReceive(); // Receive LoRa data to abort flight or change targetLat and targetLon.
+#endif
 }
 #endif
