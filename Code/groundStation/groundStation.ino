@@ -16,15 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "lora.h"
+#include "misc.h"
+#include "sd.h"
 #include "settings.h"
-#include <ArduinoJson.h>
-#include <HTTPClient.h>
-#include <WiFi.h>
+#include "vars.h"
+#include "websockets.h"
 
 bool dataValid;
 long rxCount;
 
 struct receive receiveStruct;
+
+TaskHandle_t loop2;
 
 void setup() {
   pinMode(LED, OUTPUT);
@@ -40,50 +44,29 @@ void setup() {
 
   loraSetup(); // Set up the LoRa.
   sdSetup();   // Set up the SD card.
-
 #ifdef WIFI
-  WiFi.begin(YOUR_SSID, YOUR_PASSWORD);
-#ifdef DEVMODE
-  Serial.println("Connecting to WiFi...");
+  websocketsSetup(); // Set up the Websockets.
 #endif
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-#ifdef DEVMODE
-    Serial.print(".");
-#endif
-  }
-#ifdef DEVMODE
-  Serial.println("Connected to WiFi!");
-#endif
-#endif
+
+  xTaskCreatePinnedToCore(
+      pollWebsockets,   // Task function.
+      "pollWebsockets", // name of task.
+      10000,            // Stack size of task.
+      NULL,             // Parameter of the task.
+      1,                // Priority of the task.
+      &loop2,           // Task handle to keep track of created task.
+      1);               // Pin task to core 1.
 }
 
 void loop() {
 #ifdef HAMMING
   hammingReceive();
-  if (dataValid) { 
-    shortBlink(LED);
-    rssi = LoRa.packetRssi();
-    snr = LoRa.packetSnr();
-#ifdef WIFI
-    sendToSondehub();
-#endif
-    writeToCard();
-#ifdef DEVMODE
-    displayData();
-  } else {
-    Serial.println("Data is invalid.");
-    #endif
-  }
-#endif
-#ifndef HAMMING
-  normalReceive();
   if (dataValid) {
     shortBlink(LED);
     rssi = LoRa.packetRssi();
     snr = LoRa.packetSnr();
 #ifdef WIFI
-    sendToSondehub();
+    sendToServer();
 #endif
     writeToCard();
 #ifdef DEVMODE
@@ -93,4 +76,28 @@ void loop() {
 #endif
   }
 #endif
+#ifndef HAMMING
+  normalReceive();
+  if (dataValid) {
+    shortPulse(LED);
+    rssi = LoRa.packetRssi();
+    snr = LoRa.packetSnr();
+#ifdef WIFI
+    sendToServer();
+#endif
+    writeToCard();
+#ifdef DEVMODE
+    displayData();
+  } else {
+    Serial.println("Data is invalid.");
+#endif
+  }
+#endif
+}
+
+// This is using FreeRTOS to poll the Websockets.
+void pollWebsockets(void *pvParameters) {
+  if (client.available()) {
+    client.poll();
+  }
 }

@@ -51,3 +51,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define YOUR_PASSWORD SECRET_PASSWORD
 
 #define SERVER_NAME "strato.cnicholson.hackclub.app"
+#define SERVER_PORT 8080

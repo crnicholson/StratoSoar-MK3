@@ -1,5 +1,5 @@
 /*
-lora.h, part of StratoSoar MK3, for an autonomous glider.
+wifi.h, part of StratoSoar MK3, for an autonomous glider.
 Copyright (C) 2024 Charles Nicholson
 
 This program is free software: you can redistribute it and/or modify
@@ -18,16 +18,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "misc.h"
 #include "settings.h"
 #include "vars.h"
-#include <Arduino.h>
-#include <LoRa.h>
+#include <ArduinoJson.h>
+#include <ArduinoWebsockets.h>
+#include <WiFi.h>
 
-void loraSetup();
-void normalReceive();
-void normalSend();
-void hammingReceive();
-void hammingSend();
-byte hammingDecode(byte encoded);
-byte hammingEncode(byte data);
+using namespace websockets;
+
+WebsocketsClient client;
+
+uint32_t getChipId();
+void websocketsSetup();
+void sendToServer();

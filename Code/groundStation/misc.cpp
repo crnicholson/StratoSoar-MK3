@@ -31,3 +31,10 @@ void shortBlink(int pin) {
   digitalWrite(pin, LOW);
   delay(100);
 }
+
+void shortPulse(int pin) {
+  digitalWrite(pin, HIGH);
+  delay(10);
+  digitalWrite(pin, LOW);
+  delay(10);
+}

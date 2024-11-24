@@ -22,3 +22,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 void longBlink(int pin);
 void shortBlink(int pin);
+void shortPulse(int pin);
