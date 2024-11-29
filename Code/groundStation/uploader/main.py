@@ -285,13 +285,13 @@ def input_thread():
             )
 
 
-# Main WebSocket server coroutine
+# Main WebSocket server coroutine. 
 async def main():
     print(f"Starting server on ws://0.0.0.0:{PORT}")
     async with websockets.serve(handle_connection, "0.0.0.0", PORT):
-        await asyncio.Future()  # Run forever
+        await asyncio.Future()  # Run forever. 
 
 
-# Run the server
 if __name__ == "__main__":
+    threading.Thread(target=input_thread).start()
     asyncio.run(main())

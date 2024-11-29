@@ -58,6 +58,13 @@ void websocketsSetup() {
     Serial.print("Got Message: ");
     Serial.println(message.data());
 #endif
+    JsonDocument doc;
+    deserializeJson(doc, message.data());
+
+    const char *sensor = doc["sensor"];
+    long time = doc["time"];
+    double latitude =  doc["data"][0];
+    double longitude = doc["data"][1];
   });
 }
 
