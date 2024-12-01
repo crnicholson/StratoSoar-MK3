@@ -234,9 +234,9 @@ def input_thread():
 
                 print(f"\nData for {s_call_sign}:")
                 print(f"Lat: {df.iloc[-1]['Lat']}, lon: {df.iloc[-1]['Lon']}, alt: {df.iloc[-1]['Alt']}, last received at {df.iloc[-1]['Time']}, voltage: {df.iloc[-1]['Voltage']}")
-                print(f"Abort status: {df.iloc[-1]["Received abort"]}")
-                print(f"Target latitude: {df.iloc[-1]["Target lat"]}")
-                print(f"Target longitude: {df.iloc[-1]["Target lon"]}")
+                print(f"Abort status: {df.iloc[-1]['Received abort']}")
+                print(f"Target latitude: {df.iloc[-1]['Target lat']}")
+                print(f"Target longitude: {df.iloc[-1]['Target lon']}")
 
                 new_t_lat = float(
                     input("\nEnter the new target latitude. Enter 0 to do nothing:\n")
