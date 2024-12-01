@@ -49,16 +49,16 @@ void loraSetup() {
 }
 
 void normalReceive() {
-  while (LoRa.available() < sizeof(receiveStruct)) // Wait intil the packet is fully received.
+  while (LoRa.available() < sizeof(fromGliderStruct)) // Wait intil the packet is fully received.
     ;
 
   packetSize = LoRa.parsePacket();
-  if (packetSize == sizeof(receiveStruct)) {
-    LoRa.readBytes((byte *)&receiveStruct, sizeof(receiveStruct));
+  if (packetSize == sizeof(fromGliderStruct)) {
+    LoRa.readBytes((byte *)&fromGliderStruct, sizeof(fromGliderStruct));
 
     dataValid = true;
 
-    if (receiveStruct.alignmet != 100) {
+    if (fromGliderStruct.alignment != 100) {
       dataValid = false;
       while (LoRa.available())
         LoRa.read();
@@ -77,24 +77,24 @@ void normalSend() {
     ;
 
   LoRa.beginPacket();
-  LoRa.write((byte *)&sendStruct, sizeof(sendStruct));
+  LoRa.write((byte *)&toGliderStruct, sizeof(toGliderStruct));
   LoRa.endPacket(true); // Use async send.
 }
 
 void hammingReceive() {
-  while (LoRa.available() < sizeof(receiveStruct) * 2) // Wait intil the packet is fully received.
+  while (LoRa.available() < sizeof(fromGliderStruct) * 2) // Wait intil the packet is fully received.
     ;
 
   packetSize = LoRa.parsePacket(); // Parse packet.
-  if (sizeof(receiveStruct) * 2 == packetSize) {
+  if (sizeof(fromGliderStruct) * 2 == packetSize) {
     shortBlink(LED);
 
-    byte encodedData[2 * sizeof(receiveStruct)];
+    byte encodedData[2 * sizeof(fromGliderStruct)];
     LoRa.readBytes(encodedData, sizeof(encodedData));
 
-    byte *decodedData = (byte *)&receiveStruct;
+    byte *decodedData = (byte *)&fromGliderStruct;
 
-    for (size_t i = 0; i < sizeof(receiveStruct); ++i) {
+    for (size_t i = 0; i < sizeof(fromGliderStruct); ++i) {
       // Decode each byte using Hamming(7,4) code.
       byte highNibble = hammingDecode(encodedData[2 * i]);
       byte lowNibble = hammingDecode(encodedData[2 * i + 1]);
@@ -104,7 +104,7 @@ void hammingReceive() {
 
     dataValid = true;
 
-    if (receiveStruct.alignmet != 100) {
+    if (fromGliderStruct.alignment != 100) {
       dataValid = false;
       while (LoRa.available())
         LoRa.read();
@@ -118,11 +118,11 @@ void hammingReceive() {
 }
 
 void hammingSend() {
-  byte *byteArray = (byte *)&sendStruct; // Convert the packet to a byte array.
+  byte *byteArray = (byte *)&toGliderStruct; // Convert the packet to a byte array.
 
-  byte encodedData[2 * sizeof(sendStruct)]; // Hamming(7,4) doubles the size!
+  byte encodedData[2 * sizeof(toGliderStruct)]; // Hamming(7,4) doubles the size!
 
-  for (size_t i = 0; i < sizeof(sendStruct); ++i) {
+  for (size_t i = 0; i < sizeof(toGliderStruct); ++i) {
     byte highNibble = hammingEncode((byteArray[i] >> 4) & 0xF);
     byte lowNibble = hammingEncode(byteArray[i] & 0xF);
 

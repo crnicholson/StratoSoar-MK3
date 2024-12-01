@@ -38,7 +38,7 @@ struct data {
   short yaw, pitch, roll;
   byte year, month, day, hour, minute, second;
   short txCount;
-  byte abortFlight;
+  bool abortFlight;
   char callSign[7] = CALL_SIGN;
 };
 

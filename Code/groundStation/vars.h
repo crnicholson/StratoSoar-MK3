@@ -18,15 +18,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
-bool dataValid;
+bool dataValid, newPacketForGlider;
 long rxCount;
 
-struct receive {
+struct fromGlider {
   byte alignment;
   float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts, hdop;
   short yaw, pitch, roll;
   byte year, month, day, hour, minute, second;
   short txCount;
-  byte abort;
+  bool abort;
+  char callSign[7];
+};
+
+struct toGlider {
+  float tLat, tLon;
+  bool abort;
   char callSign[7];
 };

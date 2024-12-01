@@ -57,15 +57,15 @@ void sdSetup() {
 // }
 
 void writeToCard() {
-  File dataFile = SD.open(String(receiveStruct) + ".csv", FILE_WRITE);  // Create or open the file.
+  File dataFile = SD.open(String(fromGliderStruct) + ".csv", FILE_WRITE); // Create or open the file.
 
   dataFile.close();
 
-  File dataFile = SD.open(String(receiveStruct) + ".csv");
+  File dataFile = SD.open(String(fromGliderStruct) + ".csv");
 
   if (dataFile.read() != "l") {
     dataFile.close();
-    File dataFile = SD.open(String(receiveStruct) + ".csv", FILE_WRITE);
+    File dataFile = SD.open(String(fromGliderStruct) + ".csv", FILE_WRITE);
     if (dataFile) {
       dataFile.println("lat,lon,altitude,tLat,tLon,temperature,pressure,humidity,volts,yaw,pitch,roll,year,month,day,hour,minute,second,abort,txCount,rxCount,uLat,uLon,uAlt,rssi,snr,callsign");
       dataFile.close();
@@ -78,48 +78,48 @@ void writeToCard() {
     }
   }
 
-  File dataFile = SD.open(String(receiveStruct) + ".csv", FILE_WRITE);
+  File dataFile = SD.open(String(fromGliderStruct) + ".csv", FILE_WRITE);
 
   if (dataFile) {
-    dataFile.print(receivedData.lat);
+    dataFile.print(fromGliderStruct.lat);
     dataFile.print(",");
-    dataFile.print(receivedData.lon);
+    dataFile.print(fromGliderStruct.lon);
     dataFile.print(",");
-    dataFile.print(receivedData.altitude);
+    dataFile.print(fromGliderStruct.altitude);
     dataFile.print(",");
-    dataFile.print(receivedData.tLat);
+    dataFile.print(fromGliderStruct.tLat);
     dataFile.print(",");
-    dataFile.print(receivedData.tLon);
+    dataFile.print(fromGliderStruct.tLon);
     dataFile.print(",");
-    dataFile.print(receivedData.temperature);
+    dataFile.print(fromGliderStruct.temperature);
     dataFile.print(",");
-    dataFile.print(receivedData.pressure);
+    dataFile.print(fromGliderStruct.pressure);
     dataFile.print(",");
-    dataFile.print(receivedData.humidity);
+    dataFile.print(fromGliderStruct.humidity);
     dataFile.print(",");
-    dataFile.print(receivedData.volts);
+    dataFile.print(fromGliderStruct.volts);
     dataFile.print(",");
-    dataFile.print(receivedData.yaw);
+    dataFile.print(fromGliderStruct.yaw);
     dataFile.print(",");
-    dataFile.print(receivedData.pitch);
+    dataFile.print(fromGliderStruct.pitch);
     dataFile.print(",");
-    dataFile.print(receivedData.roll);
+    dataFile.print(fromGliderStruct.roll);
     dataFile.print(",");
-    dataFile.print(receivedData.year);
+    dataFile.print(fromGliderStruct.year);
     dataFile.print(",");
-    dataFile.print(receivedData.month);
+    dataFile.print(fromGliderStruct.month);
     dataFile.print(",");
-    dataFile.print(receivedData.day);
+    dataFile.print(fromGliderStruct.day);
     dataFile.print(",");
-    dataFile.print(receivedData.hour);
+    dataFile.print(fromGliderStruct.hour);
     dataFile.print(",");
-    dataFile.print(receivedData.minute);
+    dataFile.print(fromGliderStruct.minute);
     dataFile.print(",");
-    dataFile.print(receivedData.second);
+    dataFile.print(fromGliderStruct.second);
     dataFile.print(",");
-    dataFile.print(receivedData.abort);
+    dataFile.print(fromGliderStruct.abort);
     dataFile.print(",");
-    dataFile.print(receivedData.txCount);
+    dataFile.print(fromGliderStruct.txCount);
     dataFile.print(",");
     dataFile.print(rxCount);
     dataFile.print(",");
@@ -133,7 +133,7 @@ void writeToCard() {
     dataFile.print(",");
     dataFile.print(snr);
     dataFile.print(",");
-    dataFile.println(receivedData.callSign);
+    dataFile.println(fromGliderStruct.callSign);
 
     dataFile.close(); // Close the file.
 #ifdef DEVMODE

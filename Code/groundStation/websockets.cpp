@@ -54,49 +54,52 @@ void websocketsSetup() {
 
   // Run callback when messages are received.
   client.onMessage([&](WebsocketsMessage message) {
-#ifdef DEVMODE
-    Serial.print("Got Message: ");
-    Serial.println(message.data());
-#endif
     JsonDocument doc;
     deserializeJson(doc, message.data());
 
-    const char *sensor = doc["sensor"];
-    long time = doc["time"];
-    double latitude =  doc["data"][0];
-    double longitude = doc["data"][1];
+    toGliderStruct.tLat = doc["tLat"];
+    toGliderStruct.tLon = doc["tLon"];
+    toGliderStruct.abort = doc["abort"];
+    strcpy(toGliderStruct.callSign, doc["callSign"]);
+
+#ifdef DEVMODE
+    Serial.print("Raw data from server: ");
+    Serial.println(message.data());
+#endif
+
+    newPacketForGlider = true;
   });
 }
 
 void sendToServer() {
   JsonDocument doc;
-  doc["lat"] = receivedData.lat;
-  doc["lon"] = receivedData.lon;
-  doc["altitude"] = receivedData.altitude;
-  doc["tLat"] = receivedData.tLat;
-  doc["tLon"] = receivedData.tLon;
-  doc["temperature"] = receivedData.temperature;
-  doc["pressure"] = receivedData.pressure;
-  doc["humidity"] = receivedData.humidity;
-  doc["volts"] = receivedData.volts;
-  doc["yaw"] = receivedData.yaw;
-  doc["pitch"] = receivedData.pitch;
-  doc["roll"] = receivedData.roll;
-  doc["hour"] = receivedData.hour;
-  doc["year"] = receivedData.year;
-  doc["month"] = receivedData.month;
-  doc["day"] = receivedData.day;
-  doc["minute"] = receivedData.minute;
-  doc["second"] = receivedData.second;
-  doc["abort"] = receivedData.abort;
-  doc["txCount"] = receivedData.txCount;
+  doc["lat"] = fromGliderStruct.lat;
+  doc["lon"] = fromGliderStruct.lon;
+  doc["altitude"] = fromGliderStruct.altitude;
+  doc["tLat"] = fromGliderStruct.tLat;
+  doc["tLon"] = fromGliderStruct.tLon;
+  doc["temperature"] = fromGliderStruct.temperature;
+  doc["pressure"] = fromGliderStruct.pressure;
+  doc["humidity"] = fromGliderStruct.humidity;
+  doc["volts"] = fromGliderStruct.volts;
+  doc["yaw"] = fromGliderStruct.yaw;
+  doc["pitch"] = fromGliderStruct.pitch;
+  doc["roll"] = fromGliderStruct.roll;
+  doc["hour"] = fromGliderStruct.hour;
+  doc["year"] = fromGliderStruct.year;
+  doc["month"] = fromGliderStruct.month;
+  doc["day"] = fromGliderStruct.day;
+  doc["minute"] = fromGliderStruct.minute;
+  doc["second"] = fromGliderStruct.second;
+  doc["abort"] = fromGliderStruct.abort;
+  doc["txCount"] = fromGliderStruct.txCount;
   doc["rxCount"] = rxCount;
   doc["uLat"] = U_LAT; // Uploader location!
   doc["uLon"] = U_LON;
   doc["uAlt"] = U_ALT;
   doc["rssi"] = rssi;
   doc["snr"] = snr;
-  doc["callsign"] = receivedData.callSign;
+  doc["callsign"] = fromGliderStruct.callSign;
   doc["id"] = getChipId();
 
   String requestBody;

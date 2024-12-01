@@ -23,10 +23,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "vars.h"
 #include "websockets.h"
 
-bool dataValid;
+bool dataValid, newPacketForGlider;
 long rxCount;
 
-struct receive receiveStruct;
+struct fromGlider fromGliderStruct;
+struct toGlider toGliderStruct;
 
 TaskHandle_t loop2;
 
@@ -98,6 +99,15 @@ void loop() {
 // This is using FreeRTOS to poll the Websockets.
 void pollWebsockets(void *pvParameters) {
   if (client.available()) {
-    client.poll();
+    client.poll(); // If there is data, a call back will be run in websockets.cpp. It will add all new data to toGliderStruct.
+  }
+  if (newPacketForGlider) {
+    newPacketForGlider = false;
+#ifdef HAMMING
+    hammingSend();
+#endif
+#ifndef HAMMING
+    normalSend();
+#endif
   }
 }

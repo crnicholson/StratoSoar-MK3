@@ -34,7 +34,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <SPI.h>
 #include <WiFi.h>
 
-struct receive {
+struct fromGlider {
   float lat, lon, tLat, tLon, altitude, temperature, pressure, humidity, volts, hdop;
   short yaw, pitch, roll;
   byte hour, minute, second;
