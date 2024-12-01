@@ -69,6 +69,8 @@ async def handle_connection(websocket):
                 microsecond=0,
             )
             utc_time_str = utc_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+            
+            print(f"\nReceived data from {call_sign} at {utc_time_str}")
 
             df = pd.DataFrame()
 
@@ -138,7 +140,7 @@ async def handle_connection(websocket):
                     "ID": id,
                 }
                 
-                print(f"\nLat: {lat}, lon: {lon}, alt: {alt}, target lat: {t_lat}, target lon: {t_lon}, yaw: {yaw}, pitch: {pitch}, roll: {roll}, time: {utc_time_str}, temp: {temp}, pressure: {pressure}, humidity: {humidity}, volts: {volts}, received abort: {received_abort}, tx count: {tx_count}, rx count: {rx_count}, rssi: {rssi}, snr: {snr}, uploader lat: {u_lat}, uploader lon: {u_lon}, uploader alt: {u_alt}, id: {id}")
+                print(f"Lat: {lat}, lon: {lon}, alt: {alt}, target lat: {t_lat}, target lon: {t_lon}, yaw: {yaw}, pitch: {pitch}, roll: {roll}, time: {utc_time_str}, temp: {temp}, pressure: {pressure}, humidity: {humidity}, volts: {volts}, received abort: {received_abort}, tx count: {tx_count}, rx count: {rx_count}, rssi: {rssi}, snr: {snr}, uploader lat: {u_lat}, uploader lon: {u_lon}, uploader alt: {u_alt}, id: {id}")
 
                 df = pd.DataFrame([data])
 
@@ -224,24 +226,25 @@ async def handle_connection(websocket):
 def input_thread():
     while True:
         try:
-            print("Avialable call signs:")
-            print([file.replace(".csv", "") for file in os.listdir(f"{os.getcwd()}/data")])
+            print("\nAvialable call signs:")
+            print([file.replace(".csv", "") for file in os.listdir(f"{os.getcwd()}/data") if "glider" not in file])
             s_call_sign = input("Enter the call sign you would like to change:\n")
             if s_call_sign + ".csv" in os.listdir(f"{cwd}/data"):
                 df = pd.read_csv(f"{cwd}/data/{s_call_sign}.csv")
 
-                print(f"Lat: {df.loc[-1, 'Lat']}, lon: {df.loc[-1, 'Lon']}, alt: {df.loc[-1, 'Alt']}, last received at {df.loc[-1, 'Time']}, voltage: {df.loc[-1, 'Voltage']}")
-                print(f"Abort status: {df.loc[-1, "Abort"]}")
-                print(f"Target latitude: {df.loc[-1, "Target lat"]}")
-                print(f"Target longitude: {df.loc[-1, "Target lon"]}")
+                print(f"\nData for {s_call_sign}:")
+                print(f"Lat: {df.iloc[-1]['Lat']}, lon: {df.iloc[-1]['Lon']}, alt: {df.iloc[-1]['Alt']}, last received at {df.iloc[-1]['Time']}, voltage: {df.iloc[-1]['Voltage']}")
+                print(f"Abort status: {df.iloc[-1]["Received abort"]}")
+                print(f"Target latitude: {df.iloc[-1]["Target lat"]}")
+                print(f"Target longitude: {df.iloc[-1]["Target lon"]}")
 
                 new_t_lat = float(
-                    input("Enter the new target latitude. Enter 0 to do nothing:\n")
+                    input("\nEnter the new target latitude. Enter 0 to do nothing:\n")
                 )
                 new_t_lon = float(
                     input("Enter the new target longitude. Enter 0 to do nothing:\n")
                 )
-                abort = bool(
+                abort = int(
                     input(
                         "Enter 1 to abort the mission or 0 to do nothing or revert your change:\n"
                     )
@@ -252,18 +255,25 @@ def input_thread():
                 if new_t_lon == 0:
                     new_t_lon = df.iloc[-1]["Target lon"]
 
-                if abort != 0 or 1:
+                if abort != 0 and abort != 1:
                     print(f"Abort changed to {abort}, which is not 0 or 1.")
                     abort = input("Please enter 0 (do nothing) or 1 (abort mission):\n")
-                    if abort != 0 or 1:
+                    if abort != 0 and abort != 1:
                         print("Abort status still invalid. Resorting to orginal value.")
-                        abort = df.iloc[-1]["Abort"]
+                        abort = df.iloc[-1]["Received abort"]
 
                 if os.path.exists(f"{cwd}/data/{s_call_sign}_to_glider.csv"):
                     df = pd.read_csv(f"{cwd}/data/{s_call_sign}_to_glider.csv")
-                    df.iloc[-1]["tLat"] = new_t_lat
-                    df.iloc[-1]["tLon"] = new_t_lon
-                    df.iloc[-1]["abort"] = abort
+
+                    data = {
+                        "tLat": new_t_lat,
+                        "tLon": new_t_lon,
+                        "abort": abort,
+                    }
+
+                    df = df._append(data, ignore_index=True)
+
+                    df.to_csv(f"{cwd}/data/{s_call_sign}_to_glider.csv", index=False)
                 else:
                     data = {
                         "tLat": new_t_lat,
@@ -282,7 +292,7 @@ def input_thread():
                     )
 
                 print(
-                    f"Data for {s_call_sign} has been changed to coordinates {new_t_lat, new_t_lon} with abort status of {abort}. Sending to ground station shortly."
+                    f"\nData for {s_call_sign} has been changed to coordinates {new_t_lat, new_t_lon} with abort status of {abort}. Sending to ground station shortly."
                 )
             else:
                 print(f"{s_call_sign} not found in data directory.")
