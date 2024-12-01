@@ -7,7 +7,7 @@ import os
 import datetime
 import threading
 
-PORT = 8765  # Match this with the port in your ESP32 code.
+PORT = 41773  # Match this with the port in your ESP32 code.
 COMMENT = "StratoSoar MK3 high altitude glider."
 ANTENNA = "Wire monopole"
 RADIO = "SX1278 LoRa module"
