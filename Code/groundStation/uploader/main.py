@@ -11,7 +11,7 @@ from flask_cors import CORS
 import numpy as np
 
 WEBSOCKET_PORT = 41773  # Match this with the port in your ESP32 code.
-HTTP_PORT = 5000
+HTTP_PORT = 36563
 COMMENT = "StratoSoar MK3 high altitude glider."
 ANTENNA = "Wire monopole"
 RADIO = "SX1278 LoRa module"
