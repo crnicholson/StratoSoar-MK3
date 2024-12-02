@@ -6,12 +6,9 @@ import pandas as pd
 import os
 import datetime
 import threading
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import numpy as np
+
 
 WEBSOCKET_PORT = 41773  # Match this with the port in your ESP32 code.
-HTTP_PORT = 5000
 COMMENT = "StratoSoar MK3 high altitude glider."
 ANTENNA = "Wire monopole"
 RADIO = "SX1278 LoRa module"
@@ -20,9 +17,6 @@ FREQ = "433.000"  # Frequency in MHz of the received telemetry.
 cwd = os.getcwd()
 
 last_print = 0
-
-app = Flask(__name__)
-CORS(app)
 
 
 # Handler for incoming WebSocket connections.
@@ -194,6 +188,31 @@ async def handle_connection(websocket):
                 index=False,
             )
 
+            if datetime.datetime.now().second - last_print > 60:
+                print("Printing stations receiving in the last 60 seconds.")
+                df = pd.read_csv(f"{cwd}/stations.csv")
+                last_print = datetime.datetime.now().second
+                for i in range(len(df)):
+                    if (
+                        datetime.datetime.now(datetime.UTC)
+                        - datetime.datetime.strptime(
+                            df.loc[i, "Time"], "%Y-%m-%dT%H:%M:%SZ"
+                        )
+                    ).seconds < 60:
+                        print(
+                            df.loc[i, "ID"],
+                            "received data from",
+                            df.loc[i, "Call sign"],
+                            "at",
+                            df.loc[i, "Time"],
+                            "with SNR",
+                            df.loc[i, "SNR"],
+                            "and RSSI",
+                            df.loc[i, "RSSI"],
+                        )
+                    else:
+                        print("No stations received data in the last 60 seconds.")
+
         except json.JSONDecodeError:
             print("Error: Received data is not valid JSON")
             # await websocket.send(json.dumps({"error": "Invalid JSON"}))
@@ -207,191 +226,100 @@ async def handle_connection(websocket):
     #     print("Connection closed")
 
 
-@app.route("/api/get-stations", methods=["POST"])
-def get_stations():
-    df = pd.read_csv(f"{cwd}/stations.csv")
-    recent_stations = []
+def input_thread():
+    while True:
+        try:
+            print("\nAvialable call signs:")
+            print(
+                [
+                    file.replace(".csv", "")
+                    for file in os.listdir(f"{os.getcwd()}/data")
+                    if "glider" not in file
+                ]
+            )
+            s_call_sign = input("Enter the call sign you would like to change:\n")
+            if s_call_sign + ".csv" in os.listdir(f"{cwd}/data"):
+                df = pd.read_csv(f"{cwd}/data/{s_call_sign}.csv")
 
-    for i in range(len(df)):
-        station_time = datetime.datetime.strptime(
-            df.loc[i, "Time"], "%Y-%m-%dT%H:%M:%SZ"
-        )
-        time_diff = datetime.datetime.now(datetime.timezone.utc) - station_time
+                print(f"\nData for {s_call_sign}:")
+                print(
+                    f"Lat: {df.iloc[-1]['Lat']}, lon: {df.iloc[-1]['Lon']}, alt: {df.iloc[-1]['Alt']}, last received at {df.iloc[-1]['Time']}, voltage: {df.iloc[-1]['Voltage']}"
+                )
+                print(f"Abort status: {df.iloc[-1]['Received abort']}")
+                print(f"Target latitude: {df.iloc[-1]['Target lat']}")
+                print(f"Target longitude: {df.iloc[-1]['Target lon']}")
 
-        if time_diff.total_seconds() < 60:
-            station_data = {
-                "ID": df.loc[i, "ID"],
-                "Call sign": df.loc[i, "Call sign"],
-                "Time": df.loc[i, "Time"],
-                "SNR": df.loc[i, "SNR"],
-                "RSSI": df.loc[i, "RSSI"],
-            }
-            recent_stations.append(station_data)  #
-        else:
-            if not recent_stations:
-                print("No stations received data in the last 60 seconds.")
+                new_t_lat = float(
+                    input("\nEnter the new target latitude. Enter 0 to do nothing:\n")
+                )
+                new_t_lon = float(
+                    input("Enter the new target longitude. Enter 0 to do nothing:\n")
+                )
+                abort = int(
+                    input(
+                        "Enter 1 to abort the mission or 0 to do nothing or revert your change:\n"
+                    )
+                )
 
-    return jsonify(recent_stations)
+                if new_t_lat == 0:
+                    new_t_lat = df.iloc[-1]["Target lat"]
+                if new_t_lon == 0:
+                    new_t_lon = df.iloc[-1]["Target lon"]
 
+                if abort != 0 and abort != 1:
+                    print(f"Abort changed to {abort}, which is not 0 or 1.")
+                    abort = input("Please enter 0 (do nothing) or 1 (abort mission):\n")
+                    if abort != 0 and abort != 1:
+                        print("Abort status still invalid. Resorting to orginal value.")
+                        abort = df.iloc[-1]["Received abort"]
 
-@app.route("/api/get-gliders", methods=["POST"])
-def get_gliders():
-    gliders = [
-        file.replace(".csv", "")
-        for file in os.listdir(f"{os.getcwd()}/data")
-        if "glider" not in file
-    ]
-    return jsonify({"gliders": gliders}), 200
+                if os.path.exists(f"{cwd}/data/{s_call_sign}_to_glider.csv"):
+                    df = pd.read_csv(f"{cwd}/data/{s_call_sign}_to_glider.csv")
 
+                    data = {
+                        "tLat": new_t_lat,
+                        "tLon": new_t_lon,
+                        "abort": abort,
+                    }
 
-@app.route("/api/get-glider-data", methods=["POST"])
-def get_data():
-    received = request.get_json()
-    call_sign = received["call_sign"]
-    if not call_sign:
-        return jsonify({"error": "Missing call_sign parameter"}), 400
+                    df = df._append(data, ignore_index=True)
 
-    if not os.path.isfile(f"{cwd}/data/{call_sign}.csv"):
-        return jsonify({"error": f"Data file for {call_sign} not found"}), 404
+                    df.to_csv(f"{cwd}/data/{s_call_sign}_to_glider.csv", index=False)
+                else:
+                    data = {
+                        "tLat": new_t_lat,
+                        "tLon": new_t_lon,
+                        "abort": abort,
+                    }
 
-    try:
-        df = pd.read_csv(f"{cwd}/data/{call_sign}.csv")
-    except Exception as e:
-        return jsonify({"error": f"Error reading data file: {str(e)}"}), 500
+                    df = pd.DataFrame([data])
 
-    if df.empty:
-        return jsonify({"error": "Data file is empty"}), 404
+                    file = f"{cwd}/data/{s_call_sign}_to_glider.csv"
+                    df.to_csv(
+                        file,
+                        mode="a",
+                        header=not pd.io.common.file_exists(file),
+                        index=False,
+                    )
 
-    latest_data = df.iloc[-1]
-
-    def safe_get(column):
-        value = latest_data.get(column, None)
-        if pd.isna(value):
-            return None
-        # Convert numpy types to native Python types
-        if isinstance(value, (np.int64, np.int32)):
-            return int(value)
-        elif isinstance(value, (np.float64, np.float32)):
-            return float(value)
-        return value
-
-    response_data = {
-        "Lat": safe_get("Lat"),
-        "Lon": safe_get("Lon"),
-        "Alt": safe_get("Alt"),
-        "Target_Lat": safe_get("Target_Lat"),
-        "Target_Lon": safe_get("Target_Lon"),
-        "Yaw": safe_get("Yaw"),
-        "Pitch": safe_get("Pitch"),
-        "Roll": safe_get("Roll"),
-        "Time": safe_get("Time"),
-        "Temp": safe_get("Temp"),
-        "Pressure": safe_get("Pressure"),
-        "Humidity": safe_get("Humidity"),
-        "Volts": safe_get("Voltage"),
-        "Received_Abort": safe_get("Received_Abort"),
-        "Tx_Count": safe_get("Tx_Count"),
-        "Rx_Count": safe_get("Rx_Count"),
-        "RSSI": safe_get("RSSI"),
-        "SNR": safe_get("SNR"),
-        "Uploader_Lat": safe_get("Uploader_Lat"),
-        "Uploader_Lon": safe_get("Uploader_Lon"),
-        "Uploader_Alt": safe_get("Uploader_Alt"),
-        "ID": safe_get("ID"),
-    }
-
-    return jsonify(response_data)
-
-
-@app.route("/api/change-glider-data", methods=["POST"])
-def change_data():
-    received = request.get_json()
-    call_sign = received["call_sign"]
-    abort = received["abort"]
-    new_t_lat = received["t_lat"]
-    new_t_lon = received["t_lon"]
-
-    if not os.path.isfile(f"{cwd}/data/{call_sign}.csv"):
-        return jsonify({"error": f"Data file for {call_sign} not found"}), 404
-
-    try:
-        df = pd.read_csv(f"{cwd}/data/{call_sign}.csv")
-    except Exception as e:
-        return jsonify({"error": f"Error reading data file: {str(e)}"}), 500
-
-    if new_t_lat == 0 or new_t_lon == None:
-        new_t_lat = df.iloc[-1]["Target lat"]
-    if new_t_lon == 0 or new_t_lon == None:
-        new_t_lon = df.iloc[-1]["Target lon"]
-    if abort == None:
-        abort = df.iloc[-1]["Received abort"]
-
-    if os.path.exists(f"{cwd}/data/{call_sign}_to_glider.csv"):
-        df = pd.read_csv(f"{cwd}/data/{call_sign}_to_glider.csv")
-
-        data = {
-            "tLat": new_t_lat,
-            "tLon": new_t_lon,
-            "abort": abort,
-        }
-
-        df = df._append(data, ignore_index=True)
-
-        df.to_csv(f"{cwd}/data/{call_sign}_to_glider.csv", index=False)
-    else:
-        data = {
-            "tLat": new_t_lat,
-            "tLon": new_t_lon,
-            "abort": abort,
-        }
-
-        df = pd.DataFrame([data])
-
-        file = f"{cwd}/data/{call_sign}_to_glider.csv"
-        df.to_csv(
-            file,
-            mode="a",
-            header=not pd.io.common.file_exists(file),
-            index=False,
-        )
-
-    return jsonify({"message": "Success"}), 200
-
-
-def flask_thread():
-    app.run(debug=True, port=HTTP_PORT)
+                print(
+                    f"\nData for {s_call_sign} has been changed to coordinates {new_t_lat, new_t_lon} with abort status of {abort}. Sending to ground station shortly."
+                )
+            else:
+                print(f"{s_call_sign} not found in data directory.")
+        except ValueError:
+            print(
+                "Invalid input. Please enter numerical values for latitude and longitude."
+            )
 
 
 # Main WebSocket server coroutine.
-async def websocket():
+async def main():
     print(f"Starting server on ws://0.0.0.0:{WEBSOCKET_PORT}")
     async with websockets.serve(handle_connection, "0.0.0.0", WEBSOCKET_PORT):
         await asyncio.Future()  # Run forever.
 
 
-def websocket_thread():
-    asyncio.run(websocket())
-
-
-# if __name__ == "__main__":
-#     threading.Thread(target=websocket_thread).start()
-#     # threading.Thread(target=flask_thread).start()
-
-#     app.run(debug=True, port=HTTP_PORT)
-
-
-# Run the WebSocket server in a separate thread using asyncio loop
-def start_websocket_server():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(websocket())
-
-
-
-
 if __name__ == "__main__":
-    # Start WebSocket server in a separate thread
-    threading.Thread(target=start_websocket_server).start()
-
-    # Start Flask server in the main thread
-    app.run(debug=False, port=HTTP_PORT, use_reloader=False)
+    threading.Thread(target=input_thread).start()
+    asyncio.run(main())
