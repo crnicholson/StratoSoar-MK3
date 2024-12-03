@@ -365,7 +365,7 @@ def flask_thread():
 # Main WebSocket server coroutine.
 async def websocket():
     print(f"Starting server on ws://0.0.0.0:{WEBSOCKET_PORT}")
-    async with websockets.serve(handle_connection, "0.0.0.0", WEBSOCKET_PORT):
+    async with websockets.serve(handle_connection, "localhost", WEBSOCKET_PORT):
         await asyncio.Future()  # Run forever.
 
 
