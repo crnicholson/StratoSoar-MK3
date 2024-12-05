@@ -21,3 +21,6 @@ PCB + Schematic/loRaNew/#auto_saved_files#
 PCB + Schematic/loRa/_autosave-loRa.kicad_pcb
 PCB + Schematic/loRa/#auto_saved_files#
 PCB + Schematic/camera/#auto_saved_files#
+Code/groundStation/uploader/data/
+Code/groundStation/uploader/data/*
+stations.csv
