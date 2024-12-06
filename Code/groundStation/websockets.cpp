@@ -100,6 +100,12 @@ void sendToServer() {
   doc["rssi"] = rssi;
   doc["snr"] = snr;
   doc["callsign"] = fromGliderStruct.callSign;
+  doc["user1"] = fromGliderStruct.user1;
+  doc["user2"] = fromGliderStruct.user2;
+  doc["user3"] = fromGliderStruct.user3;
+  doc["user4"] = fromGliderStruct.user4;
+  doc["user5"] = fromGliderStruct.user5;
+  doc["password"] = fromGliderStruct.password;
   doc["id"] = getChipId();
 
   String requestBody;

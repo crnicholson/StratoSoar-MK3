@@ -28,11 +28,17 @@ struct fromGlider {
   byte year, month, day, hour, minute, second;
   short txCount;
   bool abort;
+  int password;
+  float user1, user2, user3, user4, user5;
   char callSign[7];
 };
+
+extern struct fromGlider fromGliderStruct;
 
 struct toGlider {
   float tLat, tLon;
   bool abort;
   char callSign[7];
 };
+
+extern struct toGlider toGliderStruct;

@@ -80,7 +80,6 @@ def get_data():
         value = latest_data.get(column, None)
         if pd.isna(value):
             return None
-        # Convert numpy types to native Python types
         if isinstance(value, (np.int64, np.int32)):
             return int(value)
         elif isinstance(value, (np.float64, np.float32)):
@@ -88,28 +87,33 @@ def get_data():
         return value
 
     response_data = {
-        "Lat": safe_get("Lat"),
-        "Lon": safe_get("Lon"),
-        "Alt": safe_get("Alt"),
-        "Target_Lat": safe_get("Target_Lat"),
-        "Target_Lon": safe_get("Target_Lon"),
-        "Yaw": safe_get("Yaw"),
-        "Pitch": safe_get("Pitch"),
-        "Roll": safe_get("Roll"),
-        "Time": safe_get("Time"),
-        "Temp": safe_get("Temp"),
-        "Pressure": safe_get("Pressure"),
-        "Humidity": safe_get("Humidity"),
-        "Volts": safe_get("Voltage"),
-        "Received_Abort": safe_get("Received_Abort"),
-        "Tx_Count": safe_get("Tx_Count"),
-        "Rx_Count": safe_get("Rx_Count"),
-        "RSSI": safe_get("RSSI"),
-        "SNR": safe_get("SNR"),
-        "Uploader_Lat": safe_get("Uploader_Lat"),
-        "Uploader_Lon": safe_get("Uploader_Lon"),
-        "Uploader_Alt": safe_get("Uploader_Alt"),
-        "ID": safe_get("ID"),
+        "lat": safe_get("Lat"),
+        "lon": safe_get("Lon"),
+        "alt": safe_get("Alt"),
+        "t_lat": safe_get("Target lat"),
+        "t_lon": safe_get("Target lon"),
+        "yaw": safe_get("Yaw"),
+        "pitch": safe_get("Pitch"),
+        "roll": safe_get("Roll"),
+        "time": safe_get("Time"),
+        "temp": safe_get("Temp"),
+        "pressure": safe_get("Pressure"),
+        "humidity": safe_get("Humidity"),
+        "volts": safe_get("Voltage"),
+        "received_abort": safe_get("Received abort"),
+        "tx_count": safe_get("TX count"),
+        "rx_count": safe_get("RX count"),
+        "rssi": safe_get("RSSI"),
+        "snr": safe_get("SNR"),
+        "u_lat": safe_get("Uploader lat"),
+        "u_lon": safe_get("Uploader lon"),
+        "u_alt": safe_get("Uploader alt"),
+        "user_1": safe_get("User 1"),
+        "user_2": safe_get("User 2"),
+        "user_3": safe_get("User 3"),
+        "user_4": safe_get("User 4"),
+        "user_5": safe_get("User 5"),
+        "id": safe_get("ID"),
     }
 
     return jsonify(response_data)
@@ -206,6 +210,12 @@ def handle_data(message):
         u_alt = received["uAlt"]
         rssi = received["rssi"]
         snr = received["snr"]
+        user_1 = received["user1"]
+        user_2 = received["user2"]
+        user_3 = received["user3"]
+        user_4 = received["user4"]
+        user_5 = received["user5"]
+        password = received["password"]
         call_sign = received["callsign"]
         id = received["id"]
 
@@ -287,6 +297,12 @@ def handle_data(message):
                 "Uploader lat": u_lat,
                 "Uploader lon": u_lon,
                 "Uploader alt": u_alt,
+                "User 1": user_1,
+                "User 2": user_2,
+                "User 3": user_3,
+                "User 4": user_4,
+                "User 5": user_5,
+                "Password": password,
                 "ID": id,
             }
 
