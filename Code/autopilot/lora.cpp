@@ -31,23 +31,23 @@ void loraSetup() {
 #endif
 }
 
-void sendData(struct data packet) {
+void sendData(struct data toGliderStruct) {
   // Wait until the LoRa is ready to send a new packet!
   while (LoRa.beginPacket() == 0) {
     delay(2);
   }
 
   LoRa.beginPacket();
-  LoRa.write((byte *)&packet, sizeof(packet));
+  LoRa.write((byte *)&toGliderStruct. sizeof(toGliderStruct);
   LoRa.endPacket(true); // Use async send.
 }
 
-void sendHammingData(struct data packet) {
-  byte *byteArray = (byte *)&packet; // Convert the packet to a byte array.
+void sendHammingData(struct data toGliderStruct) {
+  byte *byteArray = (byte *)&toGliderStruct; // Convert the toGliderStruct.to a byte array.
 
-  byte encodedData[2 * sizeof(packet)]; // Hamming(7,4) doubles the size!
+  byte encodedData[2 * sizeof(toGliderStruct)]; // Hamming(7,4) doubles the size!
 
-  for (size_t i = 0; i < sizeof(packet); ++i) {
+  for (size_t i = 0; i < sizeof(toGliderStruct; ++i) {
     byte highNibble = hammingEncode((byteArray[i] >> 4) & 0xF);
     byte lowNibble = hammingEncode(byteArray[i] & 0xF);
 

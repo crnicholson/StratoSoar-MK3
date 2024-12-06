@@ -60,7 +60,7 @@ int lastLoRa, loraUpdateRate = LORA_UPDATE_RATE, updateRate = UPDATE_RATE, lastU
 bool abortFlight, altitudeLock, lowVoltage, ultraLowVoltage;
 float desiredPitch = DESIRED_PITCH, voltage;
 
-struct data packet;
+struct data toGliderStruct;
 
 void setup() {
   pinMode(GPS_SLEEP_PIN, OUTPUT);
@@ -353,53 +353,53 @@ void loop2() {
 #ifdef USE_LORA
 void loop3() {
 #ifdef FAST_LORA
-  packet.lat = lat;
-  packet.lon = lon;
-  packet.tLat = targetLat;
-  packet.tLon = targetLon;
-  packet.altitude = altitude;
-  packet.temperature = temperature;
-  packet.pressure = pressure;
-  packet.humidity = humidity;
-  packet.volts = voltage;
-  packet.yaw = yaw;
-  packet.pitch = pitch;
-  packet.roll = roll;
-  packet.year = year;
-  packet.month = month;
-  packet.day = day;
-  packet.hour = hour;
-  packet.minute = minute;
-  packet.second = second;
-  packet.txCount++;
-  packet.abortFlight = abortFlight;
-  sendData(packet);
+  toGliderStruct.lat = lat;
+  toGliderStruct.lon = lon;
+  toGliderStruct.tLat = targetLat;
+  toGliderStruct.tLon = targetLon;
+  toGliderStruct.altitude = altitude;
+  toGliderStruct.temperature = temperature;
+  toGliderStruct.pressure = pressure;
+  toGliderStruct.humidity = humidity;
+  toGliderStruct.volts = voltage;
+  toGliderStruct.yaw = yaw;
+  toGliderStruct.pitch = pitch;
+  toGliderStruct.roll = roll;
+  toGliderStruct.year = year;
+  toGliderStruct.month = month;
+  toGliderStruct.day = day;
+  toGliderStruct.hour = hour;
+  toGliderStruct.minute = minute;
+  toGliderStruct.second = second;
+  toGliderStruct.txCount++;
+  toGliderStruct.abortFlight = abortFlight;
+  sendData(toGliderStruct);
   lastLoRa = millis();
 #endif
 #ifndef FAST_LORA
   if (millis() - lastLoRa > loraUpdateRate) {
-    packet.lat = lat;
-    packet.lon = lon;
-    packet.tLat = targetLat;
-    packet.tLon = targetLon;
-    packet.altitude = altitude;
-    packet.temperature = temperature;
-    packet.pressure = pressure;
-    packet.humidity = humidity;
-    packet.volts = voltage;
-    packet.yaw = yaw;
-    packet.pitch = pitch;
-    packet.roll = roll;
-    packet.year = year;
-    packet.month = month;
-    packet.day = day;
-    packet.hour = hour;
-    packet.minute = minute;
-    packet.second = second;
-    packet.txCount++;
-    packet.abortFlight = abortFlight;
+    toGliderStruct.lat = lat;
+    toGliderStruct.lon = lon;
+    toGliderStruct.tLat = targetLat;
+    toGliderStruct.tLon = targetLon;
+    toGliderStruct.altitude = altitude;
+    toGliderStruct.temperature = temperature;
+    toGliderStruct.pressure = pressure;
+    toGliderStruct.humidity = humidity;
+    toGliderStruct.volts = voltage;
+    toGliderStruct.yaw = yaw;
+    toGliderStruct.pitch = pitch;
+    toGliderStruct.roll = roll;
+    toGliderStruct.year = year;
+    toGliderStruct.month = month;
+    toGliderStruct.day = day;
+    toGliderStruct.hour = hour;
+    toGliderStruct.minute = minute;
+    toGliderStruct.second = second;
+    toGliderStruct.txCount++;
+    toGliderStruct.abortFlight = abortFlight;
 #ifdef HAMMING
-    sendHammingData(packet); // Sends with forward error correction for redundancy over long distances.
+    sendHammingData(toGliderStruct); // Sends with forward error correction for redundancy over long distances.
 #endif
 #ifndef HAMMING
     normalSend(); // Sends without forward error correction.

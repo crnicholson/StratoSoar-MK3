@@ -44,43 +44,43 @@
 //   }
 // }
 
-// void writeDataToSD(Packet packet) {
+// void writeDataToSD(Packet toGliderStruct) {
 //   File dataFile = SD.open(FILE_NAME, FILE_WRITE);
 
 //   if (dataFile) {
-//     dataFile.print(packet.lat);
+//     dataFile.print(toGliderStruct.lat);
 //     dataFile.print(",");
-//     dataFile.print(packet.lon);
+//     dataFile.print(toGliderStruct.lon);
 //     dataFile.print(",");
-//     dataFile.print(packet.tLat);
+//     dataFile.print(toGliderStruct.tLat);
 //     dataFile.print(",");
-//     dataFile.print(packet.tLon);
+//     dataFile.print(toGliderStruct.tLon);
 //     dataFile.print(",");
-//     dataFile.print(packet.altitude);
+//     dataFile.print(toGliderStruct.altitude);
 //     dataFile.print(",");
-//     dataFile.print(packet.temperature);
+//     dataFile.print(toGliderStruct.temperature);
 //     dataFile.print(",");
-//     dataFile.print(packet.pressure);
+//     dataFile.print(toGliderStruct.pressure);
 //     dataFile.print(",");
-//     dataFile.print(packet.humidity);
+//     dataFile.print(toGliderStruct.humidity);
 //     dataFile.print(",");
-//     dataFile.print(packet.volts);
+//     dataFile.print(toGliderStruct.volts);
 //     dataFile.print(",");
-//     dataFile.print(packet.yaw);
+//     dataFile.print(toGliderStruct.yaw);
 //     dataFile.print(",");
-//     dataFile.print(packet.pitch);
+//     dataFile.print(toGliderStruct.pitch);
 //     dataFile.print(",");
-//     dataFile.print(packet.roll);
+//     dataFile.print(toGliderStruct.roll);
 //     dataFile.print(",");
-//     dataFile.print(packet.hour);
+//     dataFile.print(toGliderStruct.hour);
 //     dataFile.print(",");
-//     dataFile.print(packet.minute);
+//     dataFile.print(toGliderStruct.minute);
 //     dataFile.print(",");
-//     dataFile.print(packet.second);
+//     dataFile.print(toGliderStruct.second);
 //     dataFile.print(",");
-//     dataFile.print(packet.txCount);
+//     dataFile.print(toGliderStruct.txCount);
 //     dataFile.print(",");
-//     dataFile.println(packet.abortFlight);
+//     dataFile.println(toGliderStruct.abortFlight);
 
 //     dataFile.close();
 //   } else {

@@ -8,8 +8,8 @@
 #include <SPI.h>
 
 void loraSetup();
-void sendData(struct data packet);
-void sendHammingData(struct data packet);
+void sendData(struct data toGliderStruct);
+void sendHammingData(struct data toGliderStruct);
 byte hammingEncode(byte data);
 void hammingReceive();
 byte hammingDecode(byte data);

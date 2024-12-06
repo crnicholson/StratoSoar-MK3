@@ -39,10 +39,12 @@ struct data {
   byte year, month, day, hour, minute, second;
   short txCount;
   bool abortFlight;
+  int password;
+  float user1, user2, user3, user4, user5;
   char callSign[7] = CALL_SIGN;
 };
 
-extern struct data packet;
+extern struct data toGliderStruct;
 
 // Other vars.
 extern int lastLoRa, abortCounter, loraUpdateRate, updateRate, lastUpdate;

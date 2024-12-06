@@ -8,4 +8,4 @@
 // #include <SPI.h>
 
 // void sdSetup();
-// void writeDataToSD(Packet packet);
+// void writeDataToSD(Packet toGliderStruct);
