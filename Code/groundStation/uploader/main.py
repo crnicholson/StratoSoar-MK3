@@ -19,6 +19,23 @@ CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")  # Enable SocketIO
 
 
+@app.route("/data", methods=["GET"])
+def data():
+    sample_data = {"id": 1, "name": "Sample Data", "value": 123}
+    return jsonify(sample_data)
+
+
+@app.route("/greet", methods=["GET"])
+def greet():
+    name = request.args.get("name", "Guest")
+    return f"Hello, {name}!"
+
+
+@app.route("/hello", methods=["GET"])
+def hello():
+    return "Hello, World!"
+
+
 @app.route("/api/get-stations", methods=["POST"])
 def get_stations():
     df = pd.read_csv(f"{cwd}/stations.csv")
@@ -28,22 +45,25 @@ def get_stations():
         station_time = datetime.datetime.strptime(
             df.loc[i, "Time"], "%Y-%m-%dT%H:%M:%SZ"
         )
+
+        station_time = station_time.replace(tzinfo=datetime.timezone.utc)
+
         time_diff = datetime.datetime.now(datetime.timezone.utc) - station_time
 
-        if time_diff.total_seconds() < 60:
+        if time_diff.total_seconds() > 0:
             station_data = {
-                "ID": df.loc[i, "ID"],
+                "ID": int(df.loc[i, "ID"]),
                 "Call sign": df.loc[i, "Call sign"],
                 "Time": df.loc[i, "Time"],
                 "SNR": df.loc[i, "SNR"],
                 "RSSI": df.loc[i, "RSSI"],
             }
-            recent_stations.append(station_data)  #
+            recent_stations.append(station_data)
         else:
             if not recent_stations:
                 print("No stations received data in the last 60 seconds.")
 
-    return jsonify(recent_stations)
+    return jsonify({"stations": recent_stations}), 200
 
 
 @app.route("/api/get-gliders", methods=["POST"])
@@ -60,6 +80,8 @@ def get_gliders():
 def get_data():
     received = request.get_json()
     call_sign = received["call_sign"]
+    password = received["password"]
+
     if not call_sign:
         return jsonify({"error": "Missing call_sign parameter"}), 400
 
@@ -84,7 +106,15 @@ def get_data():
             return int(value)
         elif isinstance(value, (np.float64, np.float32)):
             return float(value)
+        elif isinstance(value, np.bool_):  # Handle numpy boolean type
+            return bool(value)
         return value
+
+    if int(password) != int(safe_get("Password")):
+        print("\nWRONG PASSWORD\n")
+        print(f"Password: {password}")
+        print(f"Correct password: {safe_get('Password')}\n")
+        return jsonify({"error": "Wrong password!"}), 403
 
     response_data = {
         "lat": safe_get("Lat"),
@@ -108,11 +138,11 @@ def get_data():
         "u_lat": safe_get("Uploader lat"),
         "u_lon": safe_get("Uploader lon"),
         "u_alt": safe_get("Uploader alt"),
-        "user_1": safe_get("User 1"),
-        "user_2": safe_get("User 2"),
-        "user_3": safe_get("User 3"),
-        "user_4": safe_get("User 4"),
-        "user_5": safe_get("User 5"),
+        # "user_1": safe_get("User 1"),
+        # "user_2": safe_get("User 2"),
+        # "user_3": safe_get("User 3"),
+        # "user_4": safe_get("User 4"),
+        # "user_5": safe_get("User 5"),
         "id": safe_get("ID"),
     }
 
