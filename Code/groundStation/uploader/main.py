@@ -16,8 +16,15 @@ FREQ = "433.000"  # Frequency in MHz of the received telemetry.
 cwd = os.getcwd()
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")  # Enable SocketIO
+socketio = SocketIO(app, cors_allowed_origins="*")  # Enable SocketIO.
 
+# /data: get sample shitty data. GET. Returns a JSON object.
+# /greet: greet the user. GET. Returns a string.
+# /hello: say hello to the world. GET. Returns a string.
+# /api/get-stations: get the latest stations. POST. Returns a JSON object.
+# /api/get-gliders: get the list of gliders. POST. Returns a JSON object.
+# /api/get-glider-data: get the data of a glider. POST. Returns a JSON object. Need password and call sign and user name.
+# /api/change-glider-data: change the data of a glider. POST. Returns a JSON object. Need password, call sign, and user name.
 
 @app.route("/data", methods=["GET"])
 def data():
